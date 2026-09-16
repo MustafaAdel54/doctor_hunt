@@ -1,0 +1,54 @@
+import 'package:dartz/dartz.dart';
+import '../../../../core/error/failures.dart';
+import '../../../../core/network/firebase_error_mapper.dart';
+import '../../../../core/network/network_info.dart';
+import '../models/availability_model.dart';
+import '../../../appointments/data/models/appointment_model.dart';
+import 'availability_repo.dart';
+import '../service/availability_service.dart';
+import 'slot_calculator.dart';
+
+class AvailabilityRepoImpl implements AvailabilityRepo {
+  const AvailabilityRepoImpl({
+    required this.service,
+    required this.networkInfo,
+  });
+
+  final AvailabilityService service;
+  final NetworkInfo networkInfo;
+
+  @override
+  Future<Either<Failure, AvailabilityModel>> getDoctorAvailability(
+    String doctorId,
+  ) async {
+    if (!await networkInfo.isConnected) return const Left(NetworkFailure());
+    try {
+      final availability = await service.getDoctorAvailability(doctorId);
+      return Right(availability);
+    } catch (e) {
+      return Left(FirebaseErrorMapper.map(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateDoctorAvailability(
+    AvailabilityModel availability,
+  ) async {
+    if (!await networkInfo.isConnected) return const Left(NetworkFailure());
+    try {
+      await service.updateDoctorAvailability(availability);
+      return const Right(null);
+    } catch (e) {
+      return Left(FirebaseErrorMapper.map(e));
+    }
+  }
+
+  @override
+  List<TimeSlot> calculateAvailableSlots(
+    DateTime date,
+    AvailabilityModel availability,
+    List<AppointmentModel> existingAppointments,
+  ) {
+    return SlotCalculator.calculate(date, availability, existingAppointments);
+  }
+}

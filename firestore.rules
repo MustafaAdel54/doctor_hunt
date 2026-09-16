@@ -1,0 +1,57 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Allow authenticated users to read everything (simplified for v1).
+    // In production, tighten patient data access.
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    match /users/{userId} {
+      // Anyone can read doctors. Users can read/write their own profiles.
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && request.auth.uid == userId;
+    }
+
+    match /doctors/{doctorId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && request.auth.uid == doctorId;
+      
+      match /reviews/{reviewId} {
+        allow read: if isAuthenticated();
+        // Patients can leave reviews. Doctors cannot review themselves.
+        allow create: if isAuthenticated() && request.auth.uid != doctorId;
+        allow update, delete: if isAuthenticated() && request.auth.uid == resource.data.patientId;
+      }
+    }
+    
+    match /availability/{doctorId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && request.auth.uid == doctorId;
+    }
+
+    match /appointments/{appointmentId} {
+      // Patients read their own, doctors read their own.
+      allow read: if isAuthenticated() && (
+        request.auth.uid == resource.data.patientId ||
+        request.auth.uid == resource.data.doctorId
+      );
+      
+      // Patients create appointments.
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.patientId;
+      
+      // Doctors or patients can update status.
+      allow update: if isAuthenticated() && (
+        request.auth.uid == resource.data.patientId ||
+        request.auth.uid == resource.data.doctorId
+      );
+    }
+    
+    match /slotLocks/{lockId} {
+      // slotLocks are used for transaction safety.
+      allow read, write: if isAuthenticated();
+    }
+  }
+}

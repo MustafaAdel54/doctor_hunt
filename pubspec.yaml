@@ -1,0 +1,86 @@
+name: doctor_hunt
+description: Doctor appointment booking app
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Firebase
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.4
+  google_sign_in: ^6.2.1
+
+  # Routing
+  go_router: ^14.2.7
+
+  # Localization
+  slang: ^4.19.1
+  slang_flutter: ^4.19.0
+  intl: ^0.20.2
+
+  # Responsive
+  flutter_screenutil: ^5.9.3
+
+  # State Management
+  flutter_bloc: ^8.1.5
+
+  # DI
+  get_it: ^7.7.0
+
+  # Models / functional
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  dartz: ^0.10.1
+  equatable: ^2.0.5
+
+  # Launchers
+  url_launcher: ^6.3.0
+
+  # UI helpers
+  cached_network_image: ^3.4.1
+  flutter_rating_bar: ^4.0.1
+  shimmer: ^3.0.0
+  flutter_svg: ^2.0.10+1
+  shared_preferences: ^2.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.13
+  freezed: ^2.5.7
+  json_serializable: ^6.8.0
+  mocktail: ^1.0.4
+  fake_cloud_firestore: ^3.0.3
+  firebase_auth_mocks: ^0.14.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/images/onboarding/
+    - assets/images/logos/
+    - assets/images/home/
+    - assets/icons/
+    - assets/icons/home/
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Cairo-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Cairo-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Cairo-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Cairo-Bold.ttf
+          weight: 700

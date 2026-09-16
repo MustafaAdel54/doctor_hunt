@@ -1,0 +1,178 @@
+{
+  "common": {
+    "appName": "دكتور هانت",
+    "ok": "حسناً",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "retry": "إعادة المحاولة",
+    "confirm": "تأكيد",
+    "loading": "جاري التحميل...",
+    "noData": "لا يوجد شيء هنا بعد",
+    "search": "بحث"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "forgotPassword": "هل نسيت كلمة المرور؟",
+    "continueWithGoogle": "المتابعة باستخدام جوجل",
+    "noAccount": "ليس لديك حساب؟",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "iAmA": "أنا",
+    "rolePatient": "مريض",
+    "roleDoctor": "طبيب",
+    "rolePatientDesc": "ابحث عن الأطباء واحجز المواعيد",
+    "roleDoctorDesc": "إدارة عيادتك ومواعيدك",
+    "chooseRole": "كيف ستستخدم التطبيق؟",
+    "welcomeBack": "مرحباً بك، {{name}}"
+  },
+  "onboarding": {
+    "page1Title": "ابحث عن أطباء موثوقين",
+    "page1Subtitle": "خلافاً للاعتقاد السائد، لوريم إيبسوم ليس نصاً عشوائياً. بل له جذور في قطعة منه تعود لأكثر من 2000 عام.",
+    "page2Title": "احصل على استشارة الخبراء",
+    "page2Subtitle": "خلافاً للاعتقاد السائد، لوريم إيبسوم ليس نصاً عشوائياً. بل له جذور في قطعة منه تعود لأكثر من 2000 عام.",
+    "page3Title": "احجز المواعيد",
+    "page3Subtitle": "خلافاً للاعتقاد السائد، لوريم إيبسوم ليس نصاً عشوائياً. بل له جذور في قطعة منه تعود لأكثر من 2000 عام.",
+    "skip": "تخطي",
+    "next": "التالي",
+    "getStarted": "ابدأ الآن"
+  },
+  "doctorOnboarding": {
+    "stepProfessional": "المعلومات المهنية",
+    "stepAvailability": "ساعات العمل",
+    "stepLocation": "موقع العيادة",
+    "stepContact": "تفاصيل الاتصال",
+    "next": "التالي",
+    "back": "رجوع",
+    "finish": "إنهاء الإعداد",
+    "stepOf": "الخطوة {{current}} من {{total}}",
+    "treats": "بماذا تعالج؟",
+    "yearsExperience": "سنوات الخبرة",
+    "clinicPhone": "رقم هاتف العيادة",
+    "whatsapp": "واتساب (اختياري)",
+    "pickOnMap": "اختر الموقع على الخريطة",
+    "useMyLocation": "استخدام موقعي الحالي"
+  },
+  "doctors": {
+    "title": "ابحث عن طبيب",
+    "specialization": "التخصص",
+    "experience": "{{n}} سنوات من الخبرة",
+    "fee": "رسوم الاستشارة",
+    "about": "حول",
+    "bookNow": "احجز الآن",
+    "noDoctors": "لا يوجد أطباء يطابقون بحثك",
+    "searchHint": "ابحث بالاسم أو التخصص",
+    "nearby": "الأطباء القريبون",
+    "mapView": "خريطة",
+    "listView": "قائمة",
+    "distanceKm": "على بعد {{km}} كم",
+    "callClinic": "اتصل بالعيادة",
+    "openInMaps": "فتح في الخرائط",
+    "treats": "يعالج",
+    "withinRadius": "ضمن {{km}} كم",
+    "recentSearches": "عمليات البحث الأخيرة"
+  },
+  "reviews": {
+    "title": "التقييمات",
+    "rateVisit": "قيم زيارتك",
+    "rateDoctor": "تقييم {{name}}",
+    "yourRating": "تقييمك",
+    "commentHint": "شارك تجربتك (اختياري)",
+    "submit": "إرسال التقييم",
+    "noReviews": "لا توجد تقييمات بعد",
+    "seeAll": "عرض كل التقييمات",
+    "thanks": "شكراً لملاحظاتك!",
+    "count": {
+      "zero": "لا توجد تقييمات",
+      "one": "تقييم واحد",
+      "other": "{{n}} تقييمات"
+    }
+  },
+  "location": {
+    "permissionTitle": "تمكين الموقع",
+    "permissionBody": "نستخدم موقعك فقط لإظهار أقرب الأطباء.",
+    "enable": "تمكين الموقع",
+    "denied": "الموقع متوقف. عرض جميع الأطباء بدلاً من ذلك.",
+    "openSettings": "فتح الإعدادات",
+    "servicesDisabled": "قم بتشغيل خدمات الموقع لرؤية الأطباء القريبين"
+  },
+  "appointments": {
+    "title": "مواعيدي",
+    "upcoming": "القادمة",
+    "past": "السابقة",
+    "pickDate": "اختر تاريخاً",
+    "pickSlot": "الأوقات المتاحة",
+    "noSlots": "لا توجد أوقات متاحة في هذا اليوم",
+    "confirmBooking": "تأكيد الحجز",
+    "bookedFor": "تم الحجز لـ {{date}} الساعة {{time}}",
+    "cancelBooking": "إلغاء الحجز",
+    "cancelConfirm": "هل أنت متأكد أنك تريد إلغاء هذا الموعد؟",
+    "count": {
+      "zero": "لا توجد مواعيد",
+      "one": "موعد واحد",
+      "other": "{{n}} مواعيد"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "confirmed": "مؤكد",
+      "cancelled": "ملغى",
+      "completed": "مكتمل"
+    }
+  },
+  "doctor": {
+    "dashboard": "لوحة القيادة",
+    "todayAppointments": "مواعيد اليوم",
+    "totalPatients": "إجمالي المرضى",
+    "pendingRequests": "الطلبات المعلقة",
+    "availability": "توفري",
+    "addSlot": "إضافة وقت",
+    "workingHours": "ساعات العمل",
+    "accept": "قبول",
+    "reject": "رفض"
+  },
+  "specializations": {
+    "general": "طب عام",
+    "cardiology": "طب القلب",
+    "dermatology": "طب الأمراض الجلدية",
+    "orthopedics": "طب العظام",
+    "pediatrics": "طب الأطفال",
+    "neurology": "طب الأعصاب",
+    "dentistry": "طب الأسنان",
+    "ophthalmology": "طب العيون"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "language": "اللغة",
+    "theme": "المظهر",
+    "themeLight": "فاتح",
+    "themeDark": "داكن",
+    "themeSystem": "النظام",
+    "signOut": "تسجيل الخروج"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "invalidEmail": "أدخل عنوان بريد إلكتروني صالح",
+    "shortPassword": "يجب أن تتكون كلمة المرور من {{n}} أحرف على الأقل",
+    "passwordsMismatch": "كلمات المرور غير متطابقة"
+  },
+  "errors": {
+    "server": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "network": "لا يوجد اتصال بالإنترنت",
+    "cache": "لا يمكن قراءة البيانات المحلية",
+    "slotTaken": "تم حجز هذا الوقت للتو من قبل شخص آخر",
+    "locationUnavailable": "لا يمكن تحديد موقعك",
+    "alreadyReviewed": "لقد قمت بتقييم هذه الزيارة بالفعل",
+    "callFailed": "تعذر بدء المكالمة",
+    "auth": {
+      "invalidCredential": "البريد الإلكتروني أو كلمة المرور خاطئة",
+      "emailAlreadyInUse": "هذا البريد الإلكتروني مسجل بالفعل",
+      "weakPassword": "كلمة المرور ضعيفة جداً",
+      "userDisabled": "تم تعطيل هذا الحساب",
+      "tooManyRequests": "محاولات كثيرة جداً. حاول مرة أخرى لاحقاً.",
+      "unknown": "فشلت المصادقة",
+      "emailNotVerified": "يرجى التحقق من عنوان بريدك الإلكتروني. تفقد صندوق الوارد الخاص بك."
+    }
+  }
+}

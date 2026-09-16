@@ -1,0 +1,186 @@
+{
+  "common": {
+    "appName": "Doctor Hunt",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "save": "Save",
+    "retry": "Retry",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "noData": "Nothing here yet",
+    "search": "Search"
+  },
+  "auth": {
+    "login": "Log in",
+    "register": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "forgotPassword": "Forgot password?",
+    "continueWithGoogle": "Continue with Google",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "iAmA": "I am a",
+    "rolePatient": "Patient",
+    "roleDoctor": "Doctor",
+    "rolePatientDesc": "Find doctors, book appointments, and manage your medical records.",
+    "roleDoctorDesc": "Manage your clinic and appointments",
+    "chooseRole": "Choose your role",
+    "roleSubtitle": "The selected role determines the experience and available features.",
+    "welcomeBack": "Welcome back, {{name}}",
+    "welcomeBackTitle": "Welcome back",
+    "loginSubtitle": "You can search course, apply course and find scholarship for abroad studies",
+    "joinUsTitle": "Join us to start searching",
+    "agreeTerms": "I agree with the Terms of Service & Privacy Policy",
+    "name": "Name",
+    "google": "Google",
+    "facebook": "Facebook"
+  },
+  "onboarding": {
+    "page1Title": "Find Trusted Doctors",
+    "page1Subtitle": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of it over 2000 years old.",
+    "page2Title": "Choose Best Doctors",
+    "page2Subtitle": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of it over 2000 years old.",
+    "page3Title": "Easy Appointments",
+    "page3Subtitle": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of it over 2000 years old.",
+    "skip": "Skip",
+    "next": "Next",
+    "getStarted": "Get Started"
+  },
+  "doctorOnboarding": {
+    "stepProfessional": "Professional info",
+    "stepAvailability": "Working hours",
+    "stepLocation": "Clinic location",
+    "stepContact": "Contact details",
+    "next": "Next",
+    "back": "Back",
+    "finish": "Finish setup",
+    "stepOf": "Step {{current}} of {{total}}",
+    "treats": "What do you treat?",
+    "yearsExperience": "Years of experience",
+    "clinicPhone": "Clinic phone number",
+    "whatsapp": "WhatsApp (optional)",
+    "pickOnMap": "Pick location on map",
+    "useMyLocation": "Use my current location"
+  },
+  "doctors": {
+    "title": "Find a doctor",
+    "specialization": "Specialization",
+    "experience": "{{n}} years of experience",
+    "fee": "Consultation fee",
+    "about": "About",
+    "bookNow": "Book now",
+    "noDoctors": "No doctors match your search",
+    "searchHint": "Search by name or specialization",
+    "nearby": "Nearby doctors",
+    "mapView": "Map",
+    "listView": "List",
+    "distanceKm": "{{km}} km away",
+    "callClinic": "Call clinic",
+    "openInMaps": "Open in Maps",
+    "treats": "Treats",
+    "withinRadius": "Within {{km}} km",
+    "recentSearches": "Recent searches"
+  },
+  "reviews": {
+    "title": "Reviews",
+    "rateVisit": "Rate your visit",
+    "rateDoctor": "Rate {{name}}",
+    "yourRating": "Your rating",
+    "commentHint": "Share your experience (optional)",
+    "submit": "Submit review",
+    "noReviews": "No reviews yet",
+    "seeAll": "See all reviews",
+    "thanks": "Thanks for your feedback!",
+    "count": {
+      "zero": "No reviews",
+      "one": "1 review",
+      "other": "{{n}} reviews"
+    }
+  },
+  "location": {
+    "permissionTitle": "Enable location",
+    "permissionBody": "We use your location only to show the nearest doctors.",
+    "enable": "Enable location",
+    "denied": "Location is off. Showing all doctors instead.",
+    "openSettings": "Open settings",
+    "servicesDisabled": "Turn on location services to see nearby doctors"
+  },
+  "appointments": {
+    "title": "My appointments",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "pickDate": "Pick a date",
+    "pickSlot": "Available times",
+    "noSlots": "No free slots on this day",
+    "confirmBooking": "Confirm booking",
+    "bookedFor": "Booked for {{date}} at {{time}}",
+    "cancelBooking": "Cancel booking",
+    "cancelConfirm": "Are you sure you want to cancel this appointment?",
+    "count": {
+      "zero": "No appointments",
+      "one": "1 appointment",
+      "other": "{{n}} appointments"
+    },
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    }
+  },
+  "doctor": {
+    "dashboard": "Dashboard",
+    "todayAppointments": "Today's appointments",
+    "totalPatients": "Total patients",
+    "pendingRequests": "Pending requests",
+    "availability": "My availability",
+    "addSlot": "Add slot",
+    "workingHours": "Working hours",
+    "accept": "Accept",
+    "reject": "Reject"
+  },
+  "specializations": {
+    "general": "General Practice",
+    "cardiology": "Cardiology",
+    "dermatology": "Dermatology",
+    "orthopedics": "Orthopedics",
+    "pediatrics": "Pediatrics",
+    "neurology": "Neurology",
+    "dentistry": "Dentistry",
+    "ophthalmology": "Ophthalmology"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System",
+    "signOut": "Sign out"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidEmail": "Enter a valid email address",
+    "shortPassword": "Password must be at least {{n}} characters",
+    "passwordsMismatch": "Passwords do not match"
+  },
+  "errors": {
+    "server": "Something went wrong. Please try again.",
+    "network": "No internet connection",
+    "cache": "Could not read local data",
+    "slotTaken": "This slot was just booked by someone else",
+    "locationUnavailable": "Could not determine your location",
+    "alreadyReviewed": "You have already reviewed this visit",
+    "callFailed": "Could not start the call",
+    "auth": {
+      "invalidCredential": "Wrong email or password",
+      "emailAlreadyInUse": "This email is already registered",
+      "weakPassword": "Password is too weak",
+      "userDisabled": "This account has been disabled",
+      "tooManyRequests": "Too many attempts. Try again later.",
+      "unknown": "Authentication failed",
+      "emailNotVerified": "Please verify your email address. Check your inbox."
+    }
+  }
+}
