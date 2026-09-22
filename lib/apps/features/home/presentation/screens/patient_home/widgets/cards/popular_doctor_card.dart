@@ -37,23 +37,26 @@ class PopularDoctorCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(12),
-              ),
-              child: Image.asset(
-                doctor.imageAsset,
-                width: 190,
-                height: 180,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
+            Hero(
+              tag: 'doctor_image_${doctor.id}',
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                ),
+                child: Image.asset(
+                  doctor.imageAsset,
                   width: 190,
                   height: 180,
-                  color: palette.surfaceAlt,
-                  child: Icon(
-                    Icons.person,
-                    color: palette.textPlaceholder,
-                    size: 40,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    width: 190,
+                    height: 180,
+                    color: palette.surfaceAlt,
+                    child: Icon(
+                      Icons.person,
+                      color: palette.textPlaceholder,
+                      size: 40,
+                    ),
                   ),
                 ),
               ),

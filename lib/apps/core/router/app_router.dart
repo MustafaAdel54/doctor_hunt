@@ -9,6 +9,7 @@ import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/auth/presentation/screens/login/login_screen.dart';
 import '../../features/auth/presentation/screens/signup/signup_screen.dart';
 import '../../features/auth/presentation/screens/role_selection/role_selection_screen.dart';
+import '../../features/doctors/presentation/screens/doctor_details/doctor_details_screen.dart';
 
 GoRouter createRouter(SessionService session) => GoRouter(
   initialLocation: Paths.splash,

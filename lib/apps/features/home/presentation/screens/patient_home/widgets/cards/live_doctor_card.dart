@@ -20,21 +20,24 @@ class LiveDoctorCard extends StatelessWidget {
         child: Stack(
           children: [
             // Background Image
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                doctor.imageAsset,
-                width: 116,
-                height: 168,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
+            Hero(
+              tag: 'doctor_image_${doctor.id}',
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  doctor.imageAsset,
                   width: 116,
                   height: 168,
-                  color: palette.surfaceAlt,
-                  child: Icon(
-                    Icons.person,
-                    color: palette.textPlaceholder,
-                    size: 40,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    width: 116,
+                    height: 168,
+                    color: palette.surfaceAlt,
+                    child: Icon(
+                      Icons.person,
+                      color: palette.textPlaceholder,
+                      size: 40,
+                    ),
                   ),
                 ),
               ),

@@ -41,20 +41,23 @@ class FeatureDoctorCard extends StatelessWidget {
               children: [
                 Gaps.h16,
                 Center(
-                  child: ClipOval(
-                    child: Image.asset(
-                      doctor.imageAsset,
-                      width: 54,
-                      height: 54,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
+                  child: Hero(
+                    tag: 'doctor_image_${doctor.id}',
+                    child: ClipOval(
+                      child: Image.asset(
+                        doctor.imageAsset,
                         width: 54,
                         height: 54,
-                        color: palette.surfaceAlt,
-                        child: Icon(
-                          Icons.person,
-                          color: palette.textPlaceholder,
-                          size: 24,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          width: 54,
+                          height: 54,
+                          color: palette.surfaceAlt,
+                          child: Icon(
+                            Icons.person,
+                            color: palette.textPlaceholder,
+                            size: 24,
+                          ),
                         ),
                       ),
                     ),

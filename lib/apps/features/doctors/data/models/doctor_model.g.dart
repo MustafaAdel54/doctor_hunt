@@ -6,38 +6,39 @@ part of 'doctor_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$DoctorModelImpl _$$DoctorModelImplFromJson(Map<String, dynamic> json) =>
-    _$DoctorModelImpl(
-      uid: json['uid'] as String,
-      name: Map<String, String>.from(json['name'] as Map),
-      specialization: json['specialization'] as String,
-      bio: Map<String, String>.from(json['bio'] as Map),
-      address: Map<String, String>.from(json['address'] as Map),
-      fee: (json['fee'] as num).toInt(),
-      ratingSum: (json['ratingSum'] as num?)?.toDouble() ?? 0.0,
-      ratingCount: (json['ratingCount'] as num?)?.toInt() ?? 0,
-      photoUrl: json['photoUrl'] as String?,
-      clinicPhone: json['clinicPhone'] as String?,
-      treats:
-          (json['treats'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const [],
-      yearsExperience: (json['yearsExperience'] as num?)?.toInt() ?? 0,
-    );
+DoctorModel _$DoctorModelFromJson(Map<String, dynamic> json) => DoctorModel(
+  name: Map<String, String>.from(json['name'] as Map),
+  image: json['image'] as String?,
+  phone: json['phone'] as String,
+  ratingSum: (json['ratingSum'] as num).toDouble(),
+  ratingCount: (json['ratingCount'] as num).toInt(),
+  specialization: json['specialization'] as String,
+  yearsExperience: (json['yearsExperience'] as num).toInt(),
+  patientsCount: (json['patientsCount'] as num?)?.toInt() ?? 700,
+  runningCount: (json['runningCount'] as num?)?.toInt() ?? 100,
+  ongoingCount: (json['ongoingCount'] as num?)?.toInt() ?? 500,
+  hourlyRate: (json['hourlyRate'] as num?)?.toDouble() ?? 28.0,
+  services:
+      (json['services'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+      [
+        'Patient care should be the number one priority.',
+        'If you run your practice you know how frustrating.',
+        "That's why some of appointment reminder system.",
+      ],
+);
 
-Map<String, dynamic> _$$DoctorModelImplToJson(_$DoctorModelImpl instance) =>
+Map<String, dynamic> _$DoctorModelToJson(DoctorModel instance) =>
     <String, dynamic>{
-      'uid': instance.uid,
       'name': instance.name,
-      'specialization': instance.specialization,
-      'bio': instance.bio,
-      'address': instance.address,
-      'fee': instance.fee,
+      'image': instance.image,
+      'phone': instance.phone,
       'ratingSum': instance.ratingSum,
       'ratingCount': instance.ratingCount,
-      'photoUrl': instance.photoUrl,
-      'clinicPhone': instance.clinicPhone,
-      'treats': instance.treats,
+      'specialization': instance.specialization,
       'yearsExperience': instance.yearsExperience,
+      'patientsCount': instance.patientsCount,
+      'runningCount': instance.runningCount,
+      'ongoingCount': instance.ongoingCount,
+      'hourlyRate': instance.hourlyRate,
+      'services': instance.services,
     };

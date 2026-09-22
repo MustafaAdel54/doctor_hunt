@@ -38,14 +38,6 @@ class SearchScreen extends StatelessWidget {
       const Scaffold(body: Center(child: Text('Search')));
 }
 
-class DoctorDetailsScreen extends StatelessWidget {
-  const DoctorDetailsScreen({super.key, required this.doctorId});
-  final String doctorId;
-  @override
-  Widget build(BuildContext context) =>
-      Scaffold(body: Center(child: Text('DoctorDetails: $doctorId')));
-}
-
 class BookAppointmentScreen extends StatelessWidget {
   const BookAppointmentScreen({super.key, required this.doctorId});
   final String doctorId;

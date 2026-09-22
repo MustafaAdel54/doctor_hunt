@@ -50,14 +50,14 @@ class DoctorCard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 color: palette.primary.withValues(alpha: 0.1),
-                image: doctor.photoUrl != null
+                image: doctor.image != null
                     ? DecorationImage(
-                        image: NetworkImage(doctor.photoUrl!),
+                        image: NetworkImage(doctor.image!),
                         fit: BoxFit.cover,
                       )
                     : null,
               ),
-              child: doctor.photoUrl == null
+              child: doctor.image == null
                   ? Icon(Icons.person, color: palette.primary, size: 40)
                   : null,
             ),
@@ -84,7 +84,7 @@ class DoctorCard extends StatelessWidget {
                       const Icon(Icons.star, color: Colors.amber, size: 16),
                       Gaps.w4,
                       Text(
-                        doctor.averageRating.toStringAsFixed(1),
+                        doctor.rating.toStringAsFixed(1),
                         style: context.medium.copyWith(color: palette.textMain),
                       ),
                       Gaps.w12,
