@@ -41,7 +41,7 @@ lib/
 2. There is **no `domain/` layer.** The structure is `data` (models / repo / service)
    + `presentation` (controller / screens / widgets). This is a **two-layer** design,
    not Clean Architecture. `01-architecture.md` has been updated to match.
-3. `service/` is the Firebase-facing layer (what I called `datasources`).
+3. `service/` is the Supabase-facing layer (what I called `datasources`).
 4. `repo/` maps service output to models and handles errors.
 5. Screens folder is `screens/`, not `pages/`. Controllers folder is `controller/`
    (singular) — works for all three branches: cubits, notifiers, and GetX controllers
@@ -55,6 +55,8 @@ lib/
 
 ## 2. Final Structure (screenshot + required additions)
 
+> **Migration Note:** The renames (`supabase_error_mapper.dart` and `supabase_constants.dart`) below describe the target state. The live code still uses the old `firebase_` filenames until the service-layer swap phase — this document must not imply the new files exist today.
+
 ```
 assets/
 ├── images/
@@ -62,7 +64,7 @@ assets/
 └── fonts/
 
 lib/
-├── main.dart                                  # entrypoint only: ensureInitialized, Firebase, DI, runApp
+├── main.dart                                  # entrypoint only: ensureInitialized, Supabase, DI, runApp
 │
 ├── apps/
 │   ├── main/
@@ -77,7 +79,7 @@ lib/
 │   │   │   └── num_ext.dart
 │   │   ├── network/
 │   │   │   ├── network_info.dart
-│   │   │   └── firebase_error_mapper.dart
+│   │   │   └── supabase_error_mapper.dart
 │   │   ├── router/
 │   │   │   ├── app_router.dart
 │   │   │   ├── routes.dart
@@ -104,7 +106,7 @@ lib/
 │   │   │   └── font_family.dart               # 'Cairo' constant — see 03 §7
 │   │   ├── constants/                         # ← ADDED
 │   │   │   ├── app_constants.dart             # designSize, durations, gaps, radii
-│   │   │   └── firebase_constants.dart        # collection & field names
+│   │   │   └── supabase_constants.dart        # table & field names
 │   │   ├── error/                             # ← ADDED
 │   │   │   ├── failures.dart
 │   │   │   └── exceptions.dart
@@ -124,7 +126,7 @@ lib/
 │       │   │   │   ├── auth_repo.dart          # abstract
 │       │   │   │   └── auth_repo_impl.dart
 │       │   │   └── service/
-│       │   │       └── auth_service.dart       # FirebaseAuth + Google + Firestore user doc
+│       │   │       └── auth_service.dart       # Supabase Auth + Google + PostgreSQL profiles table
 │       │   └── presentation/
 │       │       ├── controller/                 # ← ONLY branch-specific folder
 │       │       ├── screens/
@@ -165,8 +167,9 @@ tool/
 
 test/
 docs/
-firestore.rules
-firestore.indexes.json
+supabase/
+├── schema.sql
+└── tests/
 build.yaml
 analysis_options.yaml
 ```
@@ -179,7 +182,7 @@ The screenshot has no `domain/`, so `01-architecture.md` now describes a two-lay
 data flow:
 
 ```
-Screen → Controller → Repo (abstract) → RepoImpl → Service → Firebase
+Screen → Controller → Repo (abstract) → RepoImpl → Service → Supabase
 ```
 
 **Trade-off, stated honestly:** we lose the use-case layer. For a portfolio project
@@ -189,7 +192,7 @@ comparison stays focused. The one exception:
 > ⚠️ **`getAvailableSlots` must still be a pure, standalone, testable function.**
 > It's the only real business logic in the app. Put it in
 > `features/availability/data/repo/slot_calculator.dart` as a top-level pure function
-> with zero Firebase imports. Do not bury it inside a controller.
+> with zero Database/Supabase imports. Do not bury it inside a controller.
 
 ---
 
@@ -242,7 +245,7 @@ features/<name>/
 ```
 
 The `settings` feature is a deliberate exception: it has no domain model or repository,
-but it does perform the Spark v1 account-deactivation write, so it keeps a minimal
+but it does perform the Supabase v1 account-deactivation RPC, so it keeps a minimal
 `data/service/settings_service.dart` and omits `models/` and `repo/`.
 
 Do not pluralize `controller/`; the canonical folder name is singular in every feature.

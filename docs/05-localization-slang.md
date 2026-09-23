@@ -256,7 +256,7 @@ Top-level namespaces mirror the features:
 `ar.i18n.json` mirrors the **exact same key tree**. CI fails if `slang analyze` reports
 missing keys.
 
-> Auth errors are mapped from `AuthFailure.code` to the generated `t.errors.auth.*`
+> Auth errors are mapped from `AuthFailure.message` to the generated `t.errors.auth.*`
 > keys with an exhaustive `switch`; there is no generic message-key contract.
 
 ---
@@ -267,7 +267,7 @@ missing keys.
 // main.dart
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Supabase.initialize(url: 'YOUR_SUPABASE_URL', anonKey: 'YOUR_ANON_KEY');
   await initCore();
 
   final saved = await sl<LocaleStorage>().read();       // 'en' | 'ar' | null
@@ -313,7 +313,7 @@ await sl<LocaleStorage>().save('ar');
 String failureMessage(Failure f) => switch (f) {
   NetworkFailure()   => t.errors.network,
   SlotTakenFailure() => t.errors.slotTaken,
-  AuthFailure(:final code) => switch (code) {
+  AuthFailure(:final message) => switch (message) {
       'invalid-credential' => t.errors.auth.invalidCredential,
       'email-already-in-use' => t.errors.auth.emailAlreadyInUse,
       _ => t.errors.auth.unknown,
@@ -363,11 +363,11 @@ extension ContextX on BuildContext {
 
 ## 6. Non-Translatable Content
 
-Doctor names, specializations, and clinic addresses come from Firestore, not slang.
+Doctor names, specializations, and clinic addresses come from PostgreSQL, not slang.
 For bilingual doctor data, store both in the document:
 
 ```jsonc
 { "name": { "en": "Dr. Ahmed Hassan", "ar": "د. أحمد حسن" } }
 ```
 and resolve with a helper `localizedField(map, context.locale)`. Document this in
-`06-firebase-and-data-model.md`.
+`06-supabase-and-data-model.md`.

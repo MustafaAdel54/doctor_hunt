@@ -241,12 +241,12 @@ consistent. `09-conventions-and-setup.md` already lists it in `pubspec.yaml` wit
 five weights.
 
 
-## Spark-plan revision
+## Supabase v1 scope revision
 
-- Firebase Storage and Cloud Functions were removed from the v1 baseline because the
-  project is constrained to the Firebase Spark plan.
+- Supabase Storage and Edge Functions were removed from the v1 baseline because the
+  project is constrained to the free tier v1 scope.
 - Profile-photo uploads are deferred; `photoUrl` is optional and may reference a
   pre-existing remote image.
 - Settings uses account deactivation in v1; full server-side account purge is deferred
-  to a future Blaze implementation.
-- All three state-management branches use the same Spark-compatible Firebase baseline.
+  to a future implementation utilizing Edge Functions.
+- All three state-management branches use the same Supabase v1 baseline.

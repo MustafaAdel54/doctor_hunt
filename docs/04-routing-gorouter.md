@@ -1,6 +1,6 @@
 # 04 — Routing with go_router
 
-The trickiest integration point in this app: **go_router + Firebase Auth + two roles**.
+The trickiest integration point in this app: **go_router + Supabase Auth + two roles**.
 Get this right once in `main` and all three branches inherit it.
 
 ---
@@ -81,7 +81,7 @@ abstract final class Paths {
 ## 2. Auth-Aware Refresh
 
 `go_router` re-evaluates `redirect` only when something tells it to. Bridge the
-Firebase stream:
+Supabase auth state stream:
 
 ```dart
 // core/router/router_refresh_stream.dart
@@ -100,8 +100,8 @@ class GoRouterRefreshStream extends ChangeNotifier {
 
 ## 3. The Session Holder
 
-`FirebaseAuth.authStateChanges()` tells you **if** someone is signed in — not their
-role. The role lives in `users/{uid}.role` in Firestore. So we need a small,
+`supabase.auth.onAuthStateChange` tells you **if** someone is signed in — not their
+role. The role lives in the `profiles` table in PostgreSQL. So we need a small,
 branch-agnostic session object the router can read **synchronously**.
 
 ```dart
@@ -128,7 +128,7 @@ class SessionState {
   bool get isDoctor => user?.role == UserRole.doctor;
   bool get isPatient => user?.role == UserRole.patient;
 
-  /// A Firebase user exists, but users/{uid} has not been created yet.
+  /// A Supabase auth user exists, but their profile row has not been created yet.
   /// This is the expected state after a first-time Google sign-in until the
   /// user completes role selection.
   bool get needsProfile => status == SessionStatus.authenticatedWithoutProfile;
@@ -146,23 +146,23 @@ fetches/streams the Firestore user doc, and exposes:
 - `ValueListenable<SessionState>` (used as the router's `refreshListenable`)
 - `SessionState get current` (read synchronously inside `redirect`)
 
-If Firebase reports a signed-in user but `users/{uid}` does not exist, the service
+If Supabase reports a signed-in user but their profile row does not exist, the service
 sets `SessionStatus.authenticatedWithoutProfile` rather than inventing a role. That
 state is required for the first Google sign-in flow and redirects only to role selection.
 
 > This is the key design choice: the **router depends on `SessionService`, not on any
 > Cubit/Notifier/Controller**, so `app_router.dart` is byte-identical across all
 > three branches. Branch-specific auth state management talks to the shared repository
-> and the Firebase stream updates `SessionService`.
+> and the Supabase stream updates `SessionService`.
 
 ---
 
-### Spark deactivated-session state
+### Supabase deactivated-session state
 
-A persisted `users/{uid}.isActive == false` must be exposed as an explicit
+A persisted `profiles.is_active == false` must be exposed as an explicit
 `SessionStatus.authenticatedInactive`. The router sends that user to a small
 `/account-inactive` screen instead of treating the session as a normal authenticated
-profile. The screen can offer **Reactivate account** by setting `isActive` back to `true`
+profile, effectively blocking them from logging in. The screen can offer **Reactivate account** by setting `isActive` back to `true`
 and then returning through the normal role-based redirect.
 
 ## 4. Router Definition
@@ -195,7 +195,7 @@ GoRouter createRouter(SessionService session) => GoRouter(
       return onAuthEntryPage ? null : Paths.roleSelection;
     }
 
-    // 3. Firebase user exists but the Firestore profile does not yet exist.
+    // 3. Supabase auth user exists but the PostgreSQL profile does not yet exist.
     //    Do not invent a role or send the user into a role home.
     if (s.status == SessionStatus.authenticatedWithoutProfile) {
       return onRoleSelection ? null : Paths.roleSelection;
@@ -353,8 +353,8 @@ GoRouter createRouter(SessionService session) => GoRouter(
    doctor is stuck forever. Make sure the wizard's final step writes it, and add a
    "sign out" action inside the wizard as an escape hatch.
 7. **Deep links / role change:** if a doctor's role is changed server-side, the
-   Firestore listener updates `SessionService` → `notifyListeners()` → redirect kicks
-   them out automatically. Make sure `SessionService` listens to the user **document**,
+   Supabase realtime listener (or profile refresh) updates `SessionService` → `notifyListeners()` → redirect kicks
+   them out automatically. Make sure `SessionService` listens to the user **profile row**,
    not just the auth state.
 
 ---

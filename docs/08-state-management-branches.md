@@ -210,5 +210,5 @@ all fair points to record honestly in the comparison.
 
 A good sanity check: `git diff main..feature/riverpod --stat` should touch **only**
 controllers, screens, `state_injector.dart`, `main.dart`, `app.dart`, and the branch-specific
-`pubspec.yaml` dependencies. Shared data/core files should not diverge. Firebase backend configuration stays Spark-compatible and is shared across all three branches.
+`pubspec.yaml` dependencies. Shared data/core files should not diverge. Supabase backend configuration stays free-tier compatible and is shared across all three branches.
 If it touches a non-branch-specific shared core/data file, something leaked.

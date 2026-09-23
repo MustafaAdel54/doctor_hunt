@@ -18,11 +18,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  # Firebase
-  firebase_core: ^3.6.0
-  firebase_auth: ^5.3.1
-  cloud_firestore: ^5.4.4
+  # Supabase & Auth
+  supabase_flutter: ^2.4.1
   google_sign_in: ^6.2.1
+  firebase_core: ^3.6.0        # TEMPORARY for v1: required by google_sign_in
 
   # Routing
   go_router: ^14.2.7
@@ -69,8 +68,7 @@ dev_dependencies:
   json_serializable: ^6.8.0
   slang_build_runner: ^4.19.0
   mocktail: ^1.0.4
-  fake_cloud_firestore: ^3.0.3
-  firebase_auth_mocks: ^0.14.1
+  mocktail: ^1.0.4
 
 flutter:
   uses-material-design: true
@@ -98,7 +96,7 @@ Per-branch additions: `flutter_bloc`+`bloc_test` / `flutter_riverpod`+`riverpod_
 `get`. Nothing else differs.
 
 > **Version note:** pin ranges, then run `flutter pub outdated` before starting.
-> Firebase packages move fast — verify these resolve together before writing code.
+> Packages move fast — verify these resolve together before writing code.
 
 ---
 
@@ -160,10 +158,9 @@ chore(deps): bump firebase_auth to 5.3.1
 
 **`.gitignore` additions:**
 ```
-# Firebase platform config (if repo is public)
+# Google Sign-in config (if repo is public)
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
-.firebase/
 
 # keep these generated files IN git:
 # !lib/i18n/strings.g.dart
@@ -199,12 +196,12 @@ clean:    ; flutter clean && flutter pub get && $(MAKE) gen
 | Layer | Tool | Target coverage |
 |---|---|---|
 | `calculateAvailableSlots()` (pure fn) | `flutter_test` | 90%+ |
-| Repositories | `mocktail` + `fake_cloud_firestore` | 80% |
+| Repositories | `mocktail` | 80% |
 | Controllers | `bloc_test` / `ProviderContainer` / `Get.put` in test | 70% |
 | Shared widgets | widget tests, both EN and AR directionality | key widgets |
 | Booking flow | integration test | 1 happy + 1 slot-conflict path |
 
-`calculateAvailableSlots()` must be a **pure function** with no Firebase dependency —
+`calculateAvailableSlots()` must be a **pure function** with no Database/Supabase dependency —
 it's the highest-value test in the codebase and the same tests must pass on all three
 branches unchanged.
 
@@ -236,34 +233,32 @@ jobs:
 
 ---
 
-## 6A. Spark-specific Firebase notes
+## 6A. Supabase v1 scope notes
 
-The project is on the **Spark** plan. Cloud Functions for Firebase require Blaze, and
-Cloud Storage for Firebase also requires Blaze. Therefore:
+The project is running on the **Supabase free tier**. Therefore:
 
-- Do not add `cloud_functions` to any branch.
-- Do not add `firebase_storage` to any branch.
-- `image_picker` is not a v1 dependency because there is no Firebase Storage target.
+- Do not attempt to use Edge Functions for server-side logic in v1.
+- Do not add `supabase_storage` (profile-photo uploads are excluded from v1).
+- `image_picker` is not a v1 dependency.
 - Doctor `photoUrl` is optional and may point to a pre-existing remote image; otherwise use
   the shared placeholder/avatar widget.
-- Account lifecycle is governed by the canonical Spark contract in `12-firebase-spark-plan.md §3`;
+- Account lifecycle is governed by the canonical contract in `12-supabase-plan.md §3`;
   the UI action is **Deactivate account** in v1.
 
 ## 7. Bootstrap Order (do it in this sequence)
 
 1. `flutter create` + set package name, min SDK 21 (Android) / iOS 13.
-2. `flutterfire configure` → `firebase_options.dart`.
+2. `flutterfire configure` → `firebase_options.dart` (Keep this for v1 Google Sign-in).
 3. Add **the product owner's `app_colors.dart` and `generate_style.dart`** (received),
    then build `app_theme.dart` on top of them.
 4. Mirror **the product owner's folder structure screenshot** exactly (received).
 5. `core/constants`, `core/extensions`, `core/error`, `core/utils`.
 6. slang setup + `en`/`ar` JSON with the full key tree from `05`.
 7. `core/widgets/` — the whole inventory in `07 §E`, built against a widgetbook/gallery page.
-8. Data layer: models, repository abstractions/impls, and Firebase-facing services.
+8. Data layer: models, repository abstractions/impls, and Supabase-facing services.
 9. `SessionService` + `app_router.dart`.
-10. Firestore rules + indexes + `tool/seed_firestore.dart`.
-11. Verify the Firebase project remains on Spark; do **not** add Cloud Functions,
-    Firebase Storage, or billing-dependent services to the v1 baseline.
+10. Apply `supabase/schema.sql` to your Supabase project.
+11. Verify the Supabase project remains on the free tier; do **not** add Edge Functions or Supabase Storage to the v1 baseline.
 12. Commit, tag `core-v1`, **then** fork the three branches.
 13. Implement auth → patient flow → doctor flow, one branch at a time.
 
@@ -277,6 +272,8 @@ Cloud Storage for Firebase also requires Blaze. Therefore:
    (`3:30`, not `٣:٣٠`) — far more readable for Egyptian users in a medical context.
    This is the only genuinely open question left, and it's a one-line change.
 
+> **Migration Note (google-services.json):** For v1, we KEEP `google-services.json` and the current Android setup as-is. Although we now pass the Google ID token to Supabase (instead of Firebase), `firebase_core` remains temporarily during the transition. The file, Gradle plugin, and `firebase_core` will be removed together in a later phase. Google Cloud Console config (Web client ID, Android SHA-1) remains unchanged.
+
 **Resolved in this revision:**
 - ✅ `warning` → amber `#F59E0B` (pending no longer looks like an error).
 - ✅ `secondary` → blue `#2E6FF2` (real accent added; design was monochrome).
@@ -289,8 +286,8 @@ Cloud Storage for Firebase also requires Blaze. Therefore:
 - ✅ Font: **Cairo** (200-900, no synthesised weights).
 - ✅ `completed` is set by the **doctor only** → dashboard nudges required (`07 §C2`).
 - ✅ Maps **deferred to v1.1**; `url_launcher` covers call + open-in-maps in v1.
-- ✅ Firebase billing plan is **Spark** for v1; Cloud Functions and Cloud Storage are explicitly excluded.
-- ✅ Account lifecycle is canonicalized in `12-firebase-spark-plan.md §3`; v1 action is **Deactivate account**.
+- ✅ Supabase free tier is the baseline for v1; Edge Functions and Storage are explicitly excluded.
+- ✅ Account lifecycle is canonicalized in `12-supabase-plan.md §3`; v1 action is **Deactivate account**.
 
 - ✅ v1 feature list confirmed (see `07 §0`).
 - ✅ Both roles self-register via a role-selection screen → security rules updated.

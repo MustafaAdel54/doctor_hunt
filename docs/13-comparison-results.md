@@ -2,7 +2,7 @@
 
 This document is intentionally a results template. Measure the three branches only after
 all branches implement the same feature set on the same device/emulator and the same
-seeded Firestore dataset.
+seeded Supabase dataset.
 
 ## 1. Environment
 
@@ -26,7 +26,7 @@ seeded Firestore dataset.
 
 ## 3. Interpretation Rules
 
-Do not change the shared architecture, Firebase schema, routing, styling, localization,
+Do not change the shared architecture, Supabase schema, routing, styling, localization,
 or widget contracts to improve one branch's score. The comparison must remain apples-to-apples.
 
 ## 4. Notes
