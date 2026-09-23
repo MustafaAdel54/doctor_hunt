@@ -117,12 +117,12 @@ enum SessionStatus {
 class SessionState {
   final SessionStatus status;
   final UserModel? user;
-  final String? firebaseUid;
+  final String? userId;
 
   const SessionState({
     required this.status,
     this.user,
-    this.firebaseUid,
+    this.userId,
   });
 
   bool get isDoctor => user?.role == UserRole.doctor;
@@ -142,7 +142,7 @@ class SessionState {
 ```
 
 A `SessionService` (shared, in `core/session/`) listens to `authStateChanges`,
-fetches/streams the Firestore user doc, and exposes:
+reads the profiles row via PostgREST keyed on the auth uid, and exposes:
 - `ValueListenable<SessionState>` (used as the router's `refreshListenable`)
 - `SessionState get current` (read synchronously inside `redirect`)
 

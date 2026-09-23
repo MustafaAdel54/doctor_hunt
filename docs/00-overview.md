@@ -24,7 +24,7 @@ Both roles authenticate through the **same** login screen. The app resolves the 
 | Concern | Decision | Notes |
 |---|---|---|
 | Framework | Flutter (stable), Dart 3.x | null-safe, records/patterns allowed |
-| Architecture | Feature-first, **two-layer** (data / presentation) — no `domain/` | Spark-compatible client-only Firebase architecture |
+| Architecture | Feature-first, **two-layer** (data / presentation) — no `domain/` | client-only Supabase architecture (PostgreSQL + RLS + RPCs) |
 | State management | **3 parallel branches**: Bloc+Cubit / Riverpod / GetX | see `08-state-management-branches.md` |
 | Routing | **go_router** | declarative, `refreshListenable` on auth stream |
 | Localization | **slang** (`slang`, `slang_flutter`, `slang_build_runner`) | EN + AR, full RTL |

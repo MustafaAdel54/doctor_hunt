@@ -206,7 +206,7 @@ Avatar, name, email, phone, links to appointments / settings / sign out.
 
 ### C2. Requests / Appointments (`doctor_appointments_screen.dart`)
 - Status filter chips, list with patient name + **phone (tap to call)**.
-- Accept / Reject on pending. Reject must also delete the `slotLock`.
+- Accept / Reject on pending. Reject automatically frees the slot as the row leaves the index.
 - Mark as **completed** after the visit — this is what unlocks the patient's review.
 
 > **Rejection** is modelled as cancellation with `cancelledBy: 'doctor'` and
@@ -346,15 +346,15 @@ window and completed-appointment gate.
       │ cancelled  │                   │ completed  │
       └────────────┘                   └────────────┘
             │                                │
-       slotLock deleted              unlocks patient review
+     frees slot in index             unlocks patient review
 ```
 
 | Transition | Who | Notes |
 |---|---|---|
-| → `pending` | patient | creates `slotLock` in a transaction |
+| → `pending` | patient | via `book_appointment` RPC; `idx_appointments_concurrent_lock` prevents double-booking |
 | `pending` → `confirmed` | doctor | |
-| `pending`/`confirmed` → `cancelled` | doctor **or** patient | **must delete `slotLock`** |
-| `confirmed` → `completed` | **doctor only** | the only gate to reviews |
+| `pending`/`confirmed` → `cancelled` | doctor **or** patient | frees the slot automatically as row leaves index |
+| `confirmed` → `completed` | **doctor only** | the only gate to reviews; frees the slot |
 
 > ⚠️ **No notifications in v1.** The patient is not told when the doctor accepts or
 > rejects — they have to open the app and look. This is precisely why the spec's

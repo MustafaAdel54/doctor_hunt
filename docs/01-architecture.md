@@ -10,7 +10,7 @@
 ```
 presentation/                        data/
 ├── controller/   ──────────────►    ├── repo/      (abstract + impl)
-├── screens/                         ├── service/   (Firebase-facing)
+├── screens/                         ├── service/   (Supabase-facing)
 └── widgets/                         └── models/
 ```
 

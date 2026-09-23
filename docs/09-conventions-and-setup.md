@@ -21,7 +21,7 @@ dependencies:
   # Supabase & Auth
   supabase_flutter: ^2.4.1
   google_sign_in: ^6.2.1
-  firebase_core: ^3.6.0        # TEMPORARY for v1: required by google_sign_in
+  firebase_core: ^3.6.0        # TEMPORARY: retained during transition; removed with google-services.json in the de-Firebase phase
 
   # Routing
   go_router: ^14.2.7
@@ -248,7 +248,7 @@ The project is running on the **Supabase free tier**. Therefore:
 ## 7. Bootstrap Order (do it in this sequence)
 
 1. `flutter create` + set package name, min SDK 21 (Android) / iOS 13.
-2. `flutterfire configure` → `firebase_options.dart` (Keep this for v1 Google Sign-in).
+2. `flutterfire configure` → `firebase_options.dart` (Keep during the transition, not permanently).
 3. Add **the product owner's `app_colors.dart` and `generate_style.dart`** (received),
    then build `app_theme.dart` on top of them.
 4. Mirror **the product owner's folder structure screenshot** exactly (received).
