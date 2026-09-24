@@ -8,24 +8,24 @@ part of 'user_model.dart';
 
 _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
     _$UserModelImpl(
-      uid: json['uid'] as String,
+      uid: json['id'] as String,
       email: json['email'] as String,
       role: json['role'] as String,
-      isVerified: json['isVerified'] as bool? ?? false,
-      isActive: json['isActive'] as bool? ?? true,
-      photoUrl: json['photoUrl'] as String?,
+      isVerified: json['is_verified'] as bool? ?? false,
+      isActive: json['is_active'] as bool? ?? true,
+      photoUrl: json['photo_url'] as String?,
       name: json['name'] as String?,
       phone: json['phone'] as String?,
     );
 
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
     <String, dynamic>{
-      'uid': instance.uid,
+      'id': instance.uid,
       'email': instance.email,
       'role': instance.role,
-      'isVerified': instance.isVerified,
-      'isActive': instance.isActive,
-      'photoUrl': instance.photoUrl,
+      'is_verified': instance.isVerified,
+      'is_active': instance.isActive,
+      'photo_url': instance.photoUrl,
       'name': instance.name,
       'phone': instance.phone,
     };

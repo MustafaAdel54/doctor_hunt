@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'doctor_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class DoctorModel {
   final Map<String, String> name;
   final String? image;

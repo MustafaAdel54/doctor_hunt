@@ -22,12 +22,17 @@ ReviewModel _$ReviewModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ReviewModel {
   String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'appointment_id')
   String get appointmentId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'patient_id')
   String get patientId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'doctor_id')
   String get doctorId => throw _privateConstructorUsedError;
   int get rating => throw _privateConstructorUsedError;
   String? get comment => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
   DateTime get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'patient_name')
   String? get patientName => throw _privateConstructorUsedError;
 
   /// Serializes this ReviewModel to a JSON map.
@@ -49,13 +54,13 @@ abstract class $ReviewModelCopyWith<$Res> {
   @useResult
   $Res call({
     String id,
-    String appointmentId,
-    String patientId,
-    String doctorId,
+    @JsonKey(name: 'appointment_id') String appointmentId,
+    @JsonKey(name: 'patient_id') String patientId,
+    @JsonKey(name: 'doctor_id') String doctorId,
     int rating,
     String? comment,
-    DateTime createdAt,
-    String? patientName,
+    @JsonKey(name: 'created_at') DateTime createdAt,
+    @JsonKey(name: 'patient_name') String? patientName,
   });
 }
 
@@ -134,13 +139,13 @@ abstract class _$$ReviewModelImplCopyWith<$Res>
   @useResult
   $Res call({
     String id,
-    String appointmentId,
-    String patientId,
-    String doctorId,
+    @JsonKey(name: 'appointment_id') String appointmentId,
+    @JsonKey(name: 'patient_id') String patientId,
+    @JsonKey(name: 'doctor_id') String doctorId,
     int rating,
     String? comment,
-    DateTime createdAt,
-    String? patientName,
+    @JsonKey(name: 'created_at') DateTime createdAt,
+    @JsonKey(name: 'patient_name') String? patientName,
   });
 }
 
@@ -211,13 +216,13 @@ class __$$ReviewModelImplCopyWithImpl<$Res>
 class _$ReviewModelImpl implements _ReviewModel {
   const _$ReviewModelImpl({
     required this.id,
-    required this.appointmentId,
-    required this.patientId,
-    required this.doctorId,
+    @JsonKey(name: 'appointment_id') required this.appointmentId,
+    @JsonKey(name: 'patient_id') required this.patientId,
+    @JsonKey(name: 'doctor_id') required this.doctorId,
     required this.rating,
     this.comment,
-    required this.createdAt,
-    this.patientName,
+    @JsonKey(name: 'created_at') required this.createdAt,
+    @JsonKey(name: 'patient_name') this.patientName,
   });
 
   factory _$ReviewModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -226,18 +231,23 @@ class _$ReviewModelImpl implements _ReviewModel {
   @override
   final String id;
   @override
+  @JsonKey(name: 'appointment_id')
   final String appointmentId;
   @override
+  @JsonKey(name: 'patient_id')
   final String patientId;
   @override
+  @JsonKey(name: 'doctor_id')
   final String doctorId;
   @override
   final int rating;
   @override
   final String? comment;
   @override
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @override
+  @JsonKey(name: 'patient_name')
   final String? patientName;
 
   @override
@@ -296,13 +306,13 @@ class _$ReviewModelImpl implements _ReviewModel {
 abstract class _ReviewModel implements ReviewModel {
   const factory _ReviewModel({
     required final String id,
-    required final String appointmentId,
-    required final String patientId,
-    required final String doctorId,
+    @JsonKey(name: 'appointment_id') required final String appointmentId,
+    @JsonKey(name: 'patient_id') required final String patientId,
+    @JsonKey(name: 'doctor_id') required final String doctorId,
     required final int rating,
     final String? comment,
-    required final DateTime createdAt,
-    final String? patientName,
+    @JsonKey(name: 'created_at') required final DateTime createdAt,
+    @JsonKey(name: 'patient_name') final String? patientName,
   }) = _$ReviewModelImpl;
 
   factory _ReviewModel.fromJson(Map<String, dynamic> json) =
@@ -311,18 +321,23 @@ abstract class _ReviewModel implements ReviewModel {
   @override
   String get id;
   @override
+  @JsonKey(name: 'appointment_id')
   String get appointmentId;
   @override
+  @JsonKey(name: 'patient_id')
   String get patientId;
   @override
+  @JsonKey(name: 'doctor_id')
   String get doctorId;
   @override
   int get rating;
   @override
   String? get comment;
   @override
+  @JsonKey(name: 'created_at')
   DateTime get createdAt;
   @override
+  @JsonKey(name: 'patient_name')
   String? get patientName;
 
   /// Create a copy of ReviewModel

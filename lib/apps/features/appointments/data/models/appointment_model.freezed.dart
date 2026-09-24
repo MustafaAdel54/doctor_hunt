@@ -22,14 +22,21 @@ AppointmentModel _$AppointmentModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AppointmentModel {
   String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'patient_id')
   String get patientId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'doctor_id')
   String get doctorId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'doctor_name')
   Map<String, String> get doctorName => throw _privateConstructorUsedError;
   String get status =>
       throw _privateConstructorUsedError; // 'pending', 'confirmed', 'cancelled', 'completed'
+  @JsonKey(name: 'start_time')
   DateTime get startTime => throw _privateConstructorUsedError;
+  @JsonKey(name: 'slot_lock_id', defaultValue: '')
   String get slotLockId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'end_time')
   DateTime? get endTime => throw _privateConstructorUsedError;
+  @JsonKey(name: 'patient_name')
   String? get patientName => throw _privateConstructorUsedError;
   String? get notes => throw _privateConstructorUsedError;
 
@@ -52,14 +59,14 @@ abstract class $AppointmentModelCopyWith<$Res> {
   @useResult
   $Res call({
     String id,
-    String patientId,
-    String doctorId,
-    Map<String, String> doctorName,
+    @JsonKey(name: 'patient_id') String patientId,
+    @JsonKey(name: 'doctor_id') String doctorId,
+    @JsonKey(name: 'doctor_name') Map<String, String> doctorName,
     String status,
-    DateTime startTime,
-    String slotLockId,
-    DateTime? endTime,
-    String? patientName,
+    @JsonKey(name: 'start_time') DateTime startTime,
+    @JsonKey(name: 'slot_lock_id', defaultValue: '') String slotLockId,
+    @JsonKey(name: 'end_time') DateTime? endTime,
+    @JsonKey(name: 'patient_name') String? patientName,
     String? notes,
   });
 }
@@ -149,14 +156,14 @@ abstract class _$$AppointmentModelImplCopyWith<$Res>
   @useResult
   $Res call({
     String id,
-    String patientId,
-    String doctorId,
-    Map<String, String> doctorName,
+    @JsonKey(name: 'patient_id') String patientId,
+    @JsonKey(name: 'doctor_id') String doctorId,
+    @JsonKey(name: 'doctor_name') Map<String, String> doctorName,
     String status,
-    DateTime startTime,
-    String slotLockId,
-    DateTime? endTime,
-    String? patientName,
+    @JsonKey(name: 'start_time') DateTime startTime,
+    @JsonKey(name: 'slot_lock_id', defaultValue: '') String slotLockId,
+    @JsonKey(name: 'end_time') DateTime? endTime,
+    @JsonKey(name: 'patient_name') String? patientName,
     String? notes,
   });
 }
@@ -238,14 +245,14 @@ class __$$AppointmentModelImplCopyWithImpl<$Res>
 class _$AppointmentModelImpl implements _AppointmentModel {
   const _$AppointmentModelImpl({
     required this.id,
-    required this.patientId,
-    required this.doctorId,
-    required final Map<String, String> doctorName,
+    @JsonKey(name: 'patient_id') required this.patientId,
+    @JsonKey(name: 'doctor_id') required this.doctorId,
+    @JsonKey(name: 'doctor_name') required final Map<String, String> doctorName,
     required this.status,
-    required this.startTime,
-    required this.slotLockId,
-    this.endTime,
-    this.patientName,
+    @JsonKey(name: 'start_time') required this.startTime,
+    @JsonKey(name: 'slot_lock_id', defaultValue: '') required this.slotLockId,
+    @JsonKey(name: 'end_time') this.endTime,
+    @JsonKey(name: 'patient_name') this.patientName,
     this.notes,
   }) : _doctorName = doctorName;
 
@@ -255,11 +262,14 @@ class _$AppointmentModelImpl implements _AppointmentModel {
   @override
   final String id;
   @override
+  @JsonKey(name: 'patient_id')
   final String patientId;
   @override
+  @JsonKey(name: 'doctor_id')
   final String doctorId;
   final Map<String, String> _doctorName;
   @override
+  @JsonKey(name: 'doctor_name')
   Map<String, String> get doctorName {
     if (_doctorName is EqualUnmodifiableMapView) return _doctorName;
     // ignore: implicit_dynamic_type
@@ -270,12 +280,16 @@ class _$AppointmentModelImpl implements _AppointmentModel {
   final String status;
   // 'pending', 'confirmed', 'cancelled', 'completed'
   @override
+  @JsonKey(name: 'start_time')
   final DateTime startTime;
   @override
+  @JsonKey(name: 'slot_lock_id', defaultValue: '')
   final String slotLockId;
   @override
+  @JsonKey(name: 'end_time')
   final DateTime? endTime;
   @override
+  @JsonKey(name: 'patient_name')
   final String? patientName;
   @override
   final String? notes;
@@ -346,14 +360,15 @@ class _$AppointmentModelImpl implements _AppointmentModel {
 abstract class _AppointmentModel implements AppointmentModel {
   const factory _AppointmentModel({
     required final String id,
-    required final String patientId,
-    required final String doctorId,
-    required final Map<String, String> doctorName,
+    @JsonKey(name: 'patient_id') required final String patientId,
+    @JsonKey(name: 'doctor_id') required final String doctorId,
+    @JsonKey(name: 'doctor_name') required final Map<String, String> doctorName,
     required final String status,
-    required final DateTime startTime,
+    @JsonKey(name: 'start_time') required final DateTime startTime,
+    @JsonKey(name: 'slot_lock_id', defaultValue: '')
     required final String slotLockId,
-    final DateTime? endTime,
-    final String? patientName,
+    @JsonKey(name: 'end_time') final DateTime? endTime,
+    @JsonKey(name: 'patient_name') final String? patientName,
     final String? notes,
   }) = _$AppointmentModelImpl;
 
@@ -363,20 +378,27 @@ abstract class _AppointmentModel implements AppointmentModel {
   @override
   String get id;
   @override
+  @JsonKey(name: 'patient_id')
   String get patientId;
   @override
+  @JsonKey(name: 'doctor_id')
   String get doctorId;
   @override
+  @JsonKey(name: 'doctor_name')
   Map<String, String> get doctorName;
   @override
   String get status; // 'pending', 'confirmed', 'cancelled', 'completed'
   @override
+  @JsonKey(name: 'start_time')
   DateTime get startTime;
   @override
+  @JsonKey(name: 'slot_lock_id', defaultValue: '')
   String get slotLockId;
   @override
+  @JsonKey(name: 'end_time')
   DateTime? get endTime;
   @override
+  @JsonKey(name: 'patient_name')
   String? get patientName;
   @override
   String? get notes;

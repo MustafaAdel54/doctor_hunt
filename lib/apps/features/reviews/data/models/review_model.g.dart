@@ -9,23 +9,23 @@ part of 'review_model.dart';
 _$ReviewModelImpl _$$ReviewModelImplFromJson(Map<String, dynamic> json) =>
     _$ReviewModelImpl(
       id: json['id'] as String,
-      appointmentId: json['appointmentId'] as String,
-      patientId: json['patientId'] as String,
-      doctorId: json['doctorId'] as String,
+      appointmentId: json['appointment_id'] as String,
+      patientId: json['patient_id'] as String,
+      doctorId: json['doctor_id'] as String,
       rating: (json['rating'] as num).toInt(),
       comment: json['comment'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      patientName: json['patientName'] as String?,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      patientName: json['patient_name'] as String?,
     );
 
 Map<String, dynamic> _$$ReviewModelImplToJson(_$ReviewModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'appointmentId': instance.appointmentId,
-      'patientId': instance.patientId,
-      'doctorId': instance.doctorId,
+      'appointment_id': instance.appointmentId,
+      'patient_id': instance.patientId,
+      'doctor_id': instance.doctorId,
       'rating': instance.rating,
       'comment': instance.comment,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'patientName': instance.patientName,
+      'created_at': instance.createdAt.toIso8601String(),
+      'patient_name': instance.patientName,
     };

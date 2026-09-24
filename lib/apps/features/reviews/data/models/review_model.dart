@@ -7,13 +7,13 @@ part 'review_model.g.dart';
 class ReviewModel with _$ReviewModel {
   const factory ReviewModel({
     required String id,
-    required String appointmentId,
-    required String patientId,
-    required String doctorId,
+    @JsonKey(name: 'appointment_id') required String appointmentId,
+    @JsonKey(name: 'patient_id') required String patientId,
+    @JsonKey(name: 'doctor_id') required String doctorId,
     required int rating,
     String? comment,
-    required DateTime createdAt,
-    String? patientName,
+    @JsonKey(name: 'created_at') required DateTime createdAt,
+    @JsonKey(name: 'patient_name') String? patientName,
   }) = _ReviewModel;
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) =>

@@ -375,7 +375,9 @@ AvailabilityModel _$AvailabilityModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AvailabilityModel {
+  @JsonKey(name: 'doctor_id')
   String get doctorId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'slot_duration_minutes')
   int get slotDurationMinutes => throw _privateConstructorUsedError;
   List<DayAvailability> get days => throw _privateConstructorUsedError;
 
@@ -397,8 +399,8 @@ abstract class $AvailabilityModelCopyWith<$Res> {
   ) = _$AvailabilityModelCopyWithImpl<$Res, AvailabilityModel>;
   @useResult
   $Res call({
-    String doctorId,
-    int slotDurationMinutes,
+    @JsonKey(name: 'doctor_id') String doctorId,
+    @JsonKey(name: 'slot_duration_minutes') int slotDurationMinutes,
     List<DayAvailability> days,
   });
 }
@@ -452,8 +454,8 @@ abstract class _$$AvailabilityModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    String doctorId,
-    int slotDurationMinutes,
+    @JsonKey(name: 'doctor_id') String doctorId,
+    @JsonKey(name: 'slot_duration_minutes') int slotDurationMinutes,
     List<DayAvailability> days,
   });
 }
@@ -499,8 +501,8 @@ class __$$AvailabilityModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AvailabilityModelImpl implements _AvailabilityModel {
   const _$AvailabilityModelImpl({
-    required this.doctorId,
-    required this.slotDurationMinutes,
+    @JsonKey(name: 'doctor_id') required this.doctorId,
+    @JsonKey(name: 'slot_duration_minutes') required this.slotDurationMinutes,
     final List<DayAvailability> days = const [],
   }) : _days = days;
 
@@ -508,8 +510,10 @@ class _$AvailabilityModelImpl implements _AvailabilityModel {
       _$$AvailabilityModelImplFromJson(json);
 
   @override
+  @JsonKey(name: 'doctor_id')
   final String doctorId;
   @override
+  @JsonKey(name: 'slot_duration_minutes')
   final int slotDurationMinutes;
   final List<DayAvailability> _days;
   @override
@@ -565,7 +569,8 @@ class _$AvailabilityModelImpl implements _AvailabilityModel {
 
 abstract class _AvailabilityModel implements AvailabilityModel {
   const factory _AvailabilityModel({
-    required final String doctorId,
+    @JsonKey(name: 'doctor_id') required final String doctorId,
+    @JsonKey(name: 'slot_duration_minutes')
     required final int slotDurationMinutes,
     final List<DayAvailability> days,
   }) = _$AvailabilityModelImpl;
@@ -574,8 +579,10 @@ abstract class _AvailabilityModel implements AvailabilityModel {
       _$AvailabilityModelImpl.fromJson;
 
   @override
+  @JsonKey(name: 'doctor_id')
   String get doctorId;
   @override
+  @JsonKey(name: 'slot_duration_minutes')
   int get slotDurationMinutes;
   @override
   List<DayAvailability> get days;

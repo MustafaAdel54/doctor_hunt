@@ -30,8 +30,8 @@ Map<String, dynamic> _$$DayAvailabilityImplToJson(
 _$AvailabilityModelImpl _$$AvailabilityModelImplFromJson(
   Map<String, dynamic> json,
 ) => _$AvailabilityModelImpl(
-  doctorId: json['doctorId'] as String,
-  slotDurationMinutes: (json['slotDurationMinutes'] as num).toInt(),
+  doctorId: json['doctor_id'] as String,
+  slotDurationMinutes: (json['slot_duration_minutes'] as num).toInt(),
   days:
       (json['days'] as List<dynamic>?)
           ?.map((e) => DayAvailability.fromJson(e as Map<String, dynamic>))
@@ -42,7 +42,7 @@ _$AvailabilityModelImpl _$$AvailabilityModelImplFromJson(
 Map<String, dynamic> _$$AvailabilityModelImplToJson(
   _$AvailabilityModelImpl instance,
 ) => <String, dynamic>{
-  'doctorId': instance.doctorId,
-  'slotDurationMinutes': instance.slotDurationMinutes,
+  'doctor_id': instance.doctorId,
+  'slot_duration_minutes': instance.slotDurationMinutes,
   'days': instance.days,
 };

@@ -28,8 +28,8 @@ class DayAvailability with _$DayAvailability {
 @freezed
 class AvailabilityModel with _$AvailabilityModel {
   const factory AvailabilityModel({
-    required String doctorId,
-    required int slotDurationMinutes,
+    @JsonKey(name: 'doctor_id') required String doctorId,
+    @JsonKey(name: 'slot_duration_minutes') required int slotDurationMinutes,
     @Default([]) List<DayAvailability> days,
   }) = _AvailabilityModel;
 

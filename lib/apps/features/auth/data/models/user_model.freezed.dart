@@ -21,11 +21,15 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserModel {
+  @JsonKey(name: 'id')
   String get uid => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get role => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_verified')
   bool get isVerified => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_active')
   bool get isActive => throw _privateConstructorUsedError;
+  @JsonKey(name: 'photo_url')
   String? get photoUrl => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
@@ -46,12 +50,12 @@ abstract class $UserModelCopyWith<$Res> {
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
   $Res call({
-    String uid,
+    @JsonKey(name: 'id') String uid,
     String email,
     String role,
-    bool isVerified,
-    bool isActive,
-    String? photoUrl,
+    @JsonKey(name: 'is_verified') bool isVerified,
+    @JsonKey(name: 'is_active') bool isActive,
+    @JsonKey(name: 'photo_url') String? photoUrl,
     String? name,
     String? phone,
   });
@@ -131,12 +135,12 @@ abstract class _$$UserModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    String uid,
+    @JsonKey(name: 'id') String uid,
     String email,
     String role,
-    bool isVerified,
-    bool isActive,
-    String? photoUrl,
+    @JsonKey(name: 'is_verified') bool isVerified,
+    @JsonKey(name: 'is_active') bool isActive,
+    @JsonKey(name: 'photo_url') String? photoUrl,
     String? name,
     String? phone,
   });
@@ -208,12 +212,12 @@ class __$$UserModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserModelImpl implements _UserModel {
   const _$UserModelImpl({
-    required this.uid,
+    @JsonKey(name: 'id') required this.uid,
     required this.email,
     required this.role,
-    this.isVerified = false,
-    this.isActive = true,
-    this.photoUrl,
+    @JsonKey(name: 'is_verified') this.isVerified = false,
+    @JsonKey(name: 'is_active') this.isActive = true,
+    @JsonKey(name: 'photo_url') this.photoUrl,
     this.name,
     this.phone,
   });
@@ -222,18 +226,20 @@ class _$UserModelImpl implements _UserModel {
       _$$UserModelImplFromJson(json);
 
   @override
+  @JsonKey(name: 'id')
   final String uid;
   @override
   final String email;
   @override
   final String role;
   @override
-  @JsonKey()
+  @JsonKey(name: 'is_verified')
   final bool isVerified;
   @override
-  @JsonKey()
+  @JsonKey(name: 'is_active')
   final bool isActive;
   @override
+  @JsonKey(name: 'photo_url')
   final String? photoUrl;
   @override
   final String? name;
@@ -293,12 +299,12 @@ class _$UserModelImpl implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   const factory _UserModel({
-    required final String uid,
+    @JsonKey(name: 'id') required final String uid,
     required final String email,
     required final String role,
-    final bool isVerified,
-    final bool isActive,
-    final String? photoUrl,
+    @JsonKey(name: 'is_verified') final bool isVerified,
+    @JsonKey(name: 'is_active') final bool isActive,
+    @JsonKey(name: 'photo_url') final String? photoUrl,
     final String? name,
     final String? phone,
   }) = _$UserModelImpl;
@@ -307,16 +313,20 @@ abstract class _UserModel implements UserModel {
       _$UserModelImpl.fromJson;
 
   @override
+  @JsonKey(name: 'id')
   String get uid;
   @override
   String get email;
   @override
   String get role;
   @override
+  @JsonKey(name: 'is_verified')
   bool get isVerified;
   @override
+  @JsonKey(name: 'is_active')
   bool get isActive;
   @override
+  @JsonKey(name: 'photo_url')
   String? get photoUrl;
   @override
   String? get name;
