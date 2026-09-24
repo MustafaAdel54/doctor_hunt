@@ -272,7 +272,21 @@ The project is running on the **Supabase free tier**. Therefore:
    (`3:30`, not `٣:٣٠`) — far more readable for Egyptian users in a medical context.
    This is the only genuinely open question left, and it's a one-line change.
 
-> **Migration Note (google-services.json):** For v1, we KEEP `google-services.json` and the current Android setup as-is. Although we now pass the Google ID token to Supabase (instead of Firebase), `firebase_core` remains temporarily during the transition. The file, Gradle plugin, and `firebase_core` will be removed together in a later phase. Google Cloud Console config (Web client ID, Android SHA-1) remains unchanged.
+> **Migration Note (google-services.json):** `google-services.json`, the Gradle plugin, and `firebase_core` are REMOVED in the Supabase backend migration. Google Cloud Console config (Web client ID, Android SHA-1) remains unchanged, and Google Sign-in uses `serverClientId`.
+
+## 9. Runbook
+
+The application requires Supabase credentials to be passed at compile/run time via `--dart-define`.
+
+**Run locally:**
+```bash
+flutter run --dart-define=SUPABASE_URL="https://YOUR-URL.supabase.co" --dart-define=SUPABASE_ANON_KEY="YOUR-ANON-KEY"
+```
+
+**Build APK:**
+```bash
+flutter build apk --dart-define=SUPABASE_URL="https://YOUR-URL.supabase.co" --dart-define=SUPABASE_ANON_KEY="YOUR-ANON-KEY"
+```
 
 **Resolved in this revision:**
 - ✅ `warning` → amber `#F59E0B` (pending no longer looks like an error).

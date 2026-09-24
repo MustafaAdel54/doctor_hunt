@@ -19,7 +19,7 @@ Thin wrappers over Supabase. **Throws** exceptions, returns raw models.
 Knows about `SupabaseClient`. Nothing else does.
 The v1 scope intentionally does not include Supabase Storage or Edge Functions.
 
-> **Migration Note (google-services.json):** For v1, we KEEP `google-services.json` and the current Android setup as-is. Although we now pass the Google ID token to Supabase (instead of Firebase), `firebase_core` remains temporarily during the transition. `serverClientId` is explicitly passed in `injector.dart`. The file, Gradle plugin, and `firebase_core` will be removed together in a later phase. Google Cloud Console config (Web client ID, Android SHA-1) remains unchanged.
+> **Migration Note (google-services.json):** `google-services.json`, the Gradle plugin, and `firebase_core` are REMOVED in the Supabase backend migration. Google Cloud Console config (Web client ID, Android SHA-1) remains unchanged, and Google Sign-in uses `serverClientId`.
 
 ```dart
 class AuthService {
