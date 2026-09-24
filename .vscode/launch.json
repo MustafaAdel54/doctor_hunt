@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "doctor_hunt (Supabase)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define=SUPABASE_URL=https://spvsllxjtbwyfpdvfqgg.supabase.co",
+        "--dart-define=SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwdnNsbHhqdGJ3eWZwZHZmcWdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwNTA5MzYsImV4cCI6MjEwNTYyNjkzNn0.uCvl8rImq1UjBvcs1eAfB0otGOsGNyT_t0yhbkr-3Us"
+      ]
+    }
+  ]
+}
