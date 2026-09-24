@@ -1,15 +1,22 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/failures.dart';
-import '../../../../core/network/firebase_error_mapper.dart';
+import '../../../../core/network/supabase_error_mapper.dart';
 import '../../../../core/network/network_info.dart';
 import '../models/user_model.dart';
 import 'auth_repo.dart';
 import '../service/auth_service.dart';
 
+import '../../profile/data/service/profile_service.dart';
+
 class AuthRepoImpl implements AuthRepo {
-  const AuthRepoImpl({required this.service, required this.networkInfo});
+  const AuthRepoImpl({
+    required this.service,
+    required this.profileService,
+    required this.networkInfo,
+  });
 
   final AuthService service;
+  final ProfileService profileService;
   final NetworkInfo networkInfo;
 
   @override
@@ -22,7 +29,7 @@ class AuthRepoImpl implements AuthRepo {
       final user = await service.loginWithEmail(email, password);
       return Right(user);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 
@@ -37,7 +44,7 @@ class AuthRepoImpl implements AuthRepo {
       await service.registerWithEmailOnly(email, password, name);
       return const Right(null);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 
@@ -53,18 +60,15 @@ class AuthRepoImpl implements AuthRepo {
   }) async {
     if (!await networkInfo.isConnected) return const Left(NetworkFailure());
     try {
-      final user = await service.createUserProfile(
-        uid: uid,
-        email: email,
+      final user = await profileService.createProfile(
         role: role,
         name: name,
+        phone: (phone != null && phone.isEmpty) ? null : phone,
         photoUrl: photoUrl,
-        phone: phone,
-        isVerified: isVerified,
       );
       return Right(user);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 
@@ -75,7 +79,7 @@ class AuthRepoImpl implements AuthRepo {
       await service.loginWithGoogle();
       return const Right(null);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 
@@ -86,7 +90,7 @@ class AuthRepoImpl implements AuthRepo {
       await service.resetPassword(email);
       return const Right(null);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 
@@ -97,7 +101,7 @@ class AuthRepoImpl implements AuthRepo {
       await service.logout();
       return const Right(null);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 }

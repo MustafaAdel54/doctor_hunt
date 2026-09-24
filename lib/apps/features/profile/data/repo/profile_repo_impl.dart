@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/failures.dart';
-import '../../../../core/network/firebase_error_mapper.dart';
+import '../../../../core/network/supabase_error_mapper.dart';
 import '../../../../core/network/network_info.dart';
 import '../../../auth/data/models/user_model.dart';
 import 'profile_repo.dart';
@@ -19,7 +19,7 @@ class ProfileRepoImpl implements ProfileRepo {
       final profile = await service.getProfile(uid);
       return Right(profile);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 
@@ -30,7 +30,7 @@ class ProfileRepoImpl implements ProfileRepo {
       await service.updateProfile(user);
       return const Right(null);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 
@@ -41,10 +41,15 @@ class ProfileRepoImpl implements ProfileRepo {
   ) async {
     if (!await networkInfo.isConnected) return const Left(NetworkFailure());
     try {
-      await service.updateActiveStatus(uid, isActive);
+      if (!isActive) {
+        await service.deactivateAccount();
+      } else {
+        // We only support deactivation per the Supabase migration
+        throw UnimplementedError('Activation is not supported');
+      }
       return const Right(null);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 }

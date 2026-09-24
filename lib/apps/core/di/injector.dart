@@ -57,7 +57,7 @@ Future<void> initCore() async {
     () => AuthService(supabase: sl(), googleSignIn: sl()),
   );
   sl.registerLazySingleton<AuthRepo>(
-    () => AuthRepoImpl(service: sl(), networkInfo: sl()),
+    () => AuthRepoImpl(service: sl(), profileService: sl(), networkInfo: sl()),
   );
 
   // Features - Doctors
@@ -85,7 +85,7 @@ Future<void> initCore() async {
   );
 
   // Features - Profile
-  sl.registerLazySingleton(() => ProfileService(firestore: sl())); // Will update in later phases
+  sl.registerLazySingleton(() => ProfileService(supabase: sl())); // Updated in Phase 3
   sl.registerLazySingleton<ProfileRepo>(
     () => ProfileRepoImpl(service: sl(), networkInfo: sl()),
   );

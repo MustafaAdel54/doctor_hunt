@@ -48,19 +48,7 @@ class AuthService {
     return user;
   }
 
-  Future<UserModel> createUserProfile({
-    required String uid,
-    required String email,
-    required String role,
-    String? name,
-    String? photoUrl,
-    String? phone,
-    bool isVerified = false,
-  }) async {
-    // Phase 2 boundary: Profile creation is migrating to ProfileService (Phase 3).
-    // No profile write happens in AuthService in Phase 2.
-    throw UnimplementedError('create_profile migrated to ProfileService in Phase 3');
-  }
+
 
   Future<User> loginWithGoogle() async {
     final googleUser = await googleSignIn.signIn();

@@ -6,7 +6,16 @@ abstract final class SupabaseErrorMapper {
   static Failure map(Object e) {
     if (e is AuthException) {
       Log.e('AuthException: ${e.message}', e);
-      return AuthFailure(code: e.message); // Note: using message as code for mapping
+      String code = 'unknown';
+      final msg = e.message.toLowerCase();
+      if (msg.contains('invalid login credentials')) {
+        code = 'invalid-credential';
+      } else if (msg.contains('user already registered')) {
+        code = 'email-already-in-use';
+      } else if (msg.contains('disabled')) {
+        code = 'user-disabled';
+      }
+      return AuthFailure(code: code);
     }
     
     if (e is PostgrestException) {
