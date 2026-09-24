@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -48,28 +48,28 @@ class _RoleSelectionViewState extends State<_RoleSelectionView> {
     final role = _selectedRole;
     if (role == null) return;
 
-    // The currently signed-in Firebase user is the source of truth.
     // Both email-registered and Google users land here via
-    // authenticatedWithoutProfile, so FirebaseAuth.instance.currentUser is
+    // authenticatedWithoutProfile, so Supabase currentUser is
     // always non-null when this screen is shown.
-    final firebaseUser = FirebaseAuth.instance.currentUser;
+    final supabaseUser = Supabase.instance.client.auth.currentUser;
     final sessionUid = sl<SessionService>().value.userId;
 
-    final uid = sessionUid ?? firebaseUser?.uid;
-    final email = firebaseUser?.email ?? '';
+    final uid = sessionUid ?? supabaseUser?.id;
+    final email = supabaseUser?.email ?? '';
 
     if (uid == null) return; // Guard: should never happen
+
+    final metadata = supabaseUser?.userMetadata;
+    final isGoogle = supabaseUser?.appMetadata['provider'] == 'google';
 
     context.read<AuthCubit>().createUserProfile(
       uid: uid,
       email: email,
       role: role,
-      name: firebaseUser?.displayName,
-      photoUrl: firebaseUser?.photoURL,
+      name: metadata?['name'] as String?,
+      photoUrl: metadata?['photoUrl'] as String?,
       phone: null, // Phone is collected later in the profile
-      isVerified:
-          firebaseUser?.providerData.any((p) => p.providerId == 'google.com') ??
-          false,
+      isVerified: isGoogle,
     );
 
     // No explicit navigation needed. After createUserProfile writes users/{uid},

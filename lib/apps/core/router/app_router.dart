@@ -40,10 +40,16 @@ GoRouter createRouter(SessionService session) => GoRouter(
       return onAuthEntryPage ? null : Paths.onboarding;
     }
 
-    // 3. Firebase user authenticated but no Firestore application profile.
+    // 3. Supabase user authenticated but no PostgreSQL application profile.
     //    Must go through Role Selection before reaching any home screen.
     if (s.status == SessionStatus.authenticatedWithoutProfile) {
       return onRoleSelection ? null : Paths.roleSelection;
+    }
+
+    // 3.5. Profile exists but is marked inactive
+    if (s.status == SessionStatus.authenticatedInactive) {
+      final onInactivePage = loc == Paths.accountInactive;
+      return onInactivePage ? null : Paths.accountInactive;
     }
 
     // 4. Fully authenticated with a role.

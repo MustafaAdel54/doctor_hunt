@@ -5,6 +5,7 @@ enum SessionStatus {
   unauthenticated,
   authenticatedWithoutProfile,
   authenticated,
+  authenticatedInactive,
 }
 
 class SessionState extends Equatable {
@@ -20,7 +21,7 @@ class SessionState extends Equatable {
       userId = null,
       role = null;
 
-  /// Firebase user exists but no Firestore application profile yet.
+  /// Supabase user exists but no PostgreSQL application profile yet.
   const SessionState.authenticatedWithoutProfile({required String userId})
     : status = SessionStatus.authenticatedWithoutProfile,
       userId = userId,
@@ -28,6 +29,11 @@ class SessionState extends Equatable {
 
   const SessionState.authenticated({required this.userId, required this.role})
     : status = SessionStatus.authenticated;
+
+  const SessionState.authenticatedInactive({required String userId})
+    : status = SessionStatus.authenticatedInactive,
+      userId = userId,
+      role = null;
 
   final SessionStatus status;
   final String? userId;

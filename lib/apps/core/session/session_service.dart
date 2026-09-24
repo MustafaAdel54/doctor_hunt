@@ -1,92 +1,84 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import '../constants/firebase_constants.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../constants/supabase_constants.dart';
 import '../utils/logger.dart';
 import 'session_state.dart';
 
 class SessionService extends ChangeNotifier
     implements ValueListenable<SessionState> {
   SessionService({
-    required FirebaseAuth auth,
-    required FirebaseFirestore firestore,
-  }) : _auth = auth,
-       _firestore = firestore {
+    required SupabaseClient supabase,
+  }) : _supabase = supabase {
     _init();
   }
 
-  final FirebaseAuth _auth;
-  final FirebaseFirestore _firestore;
+  final SupabaseClient _supabase;
 
   SessionState _state = const SessionState.initial();
-  StreamSubscription<User?>? _authSub;
-  StreamSubscription<DocumentSnapshot>? _userDocSub;
+  StreamSubscription<AuthState>? _authSub;
 
   @override
   SessionState get value => _state;
 
   void _init() {
-    _authSub = _auth.authStateChanges().listen((user) {
-      _userDocSub?.cancel();
-      _userDocSub = null;
+    _authSub = _supabase.auth.onAuthStateChange.listen((data) {
+      _handleAuthChange(data.session?.user);
+    });
+  }
 
-      if (user == null) {
-        _updateState(const SessionState.unauthenticated());
+  Future<void> _handleAuthChange(User? user) async {
+    if (user == null) {
+      _updateState(const SessionState.unauthenticated());
+      return;
+    }
+
+    try {
+      final doc = await _supabase
+          .from(SbC.profiles)
+          .select()
+          .eq('id', user.id)
+          .maybeSingle();
+
+      if (doc == null) {
+        // Supabase user exists but no application profile yet.
+        _updateState(
+          SessionState.authenticatedWithoutProfile(userId: user.id),
+        );
         return;
       }
 
-      // Listen to the Firestore user document for role and active status.
-      // This stream fires immediately with the current document state, and
-      // again whenever the document is created, updated, or deleted.
-      _userDocSub = _firestore
-          .collection(FbC.users)
-          .doc(user.uid)
-          .snapshots()
-          .listen(
-            (doc) {
-              if (!doc.exists) {
-                // Firebase user exists but no application profile yet.
-                // This is the normal state for a brand-new Google Sign-In user
-                // before they complete Role Selection.
-                _updateState(
-                  SessionState.authenticatedWithoutProfile(userId: user.uid),
-                );
-                return;
-              }
+      final isActive = doc[SbC.isActive] as bool? ?? true;
+      if (!isActive) {
+        Log.d('User ${user.id} is deactivated.');
+        _updateState(SessionState.authenticatedInactive(userId: user.id));
+        return;
+      }
 
-              final data = doc.data();
-              if (data == null) {
-                _updateState(
-                  SessionState.authenticatedWithoutProfile(userId: user.uid),
-                );
-                return;
-              }
+      final role = doc[SbC.role] as String?;
+      if (role != null) {
+        _updateState(
+          SessionState.authenticated(userId: user.id, role: role),
+        );
+      } else {
+        // Document exists but role field is missing — treat as no profile.
+        _updateState(
+          SessionState.authenticatedWithoutProfile(userId: user.id),
+        );
+      }
+    } catch (e) {
+      Log.e('Error fetching user profile', e);
+      _updateState(
+        SessionState.authenticatedWithoutProfile(userId: user.id),
+      );
+    }
+  }
 
-              final isActive = data[FbC.isActive] as bool? ?? true;
-              if (!isActive) {
-                Log.d('User ${user.uid} is deactivated. Signing out.');
-                _auth.signOut();
-                return;
-              }
-
-              final role = data[FbC.role] as String?;
-              if (role != null) {
-                _updateState(
-                  SessionState.authenticated(userId: user.uid, role: role),
-                );
-              } else {
-                // Document exists but role field is missing — treat as no profile.
-                _updateState(
-                  SessionState.authenticatedWithoutProfile(userId: user.uid),
-                );
-              }
-            },
-            onError: (Object e) {
-              Log.e('Error listening to user document', e);
-            },
-          );
-    });
+  /// Forces a re-evaluation of the session state.
+  /// Called manually after creating a profile, since Supabase does not 
+  /// stream table changes globally by default.
+  Future<void> refreshProfile() async {
+    await _handleAuthChange(_supabase.auth.currentUser);
   }
 
   void _updateState(SessionState newState) {
@@ -99,7 +91,6 @@ class SessionService extends ChangeNotifier
   @override
   void dispose() {
     _authSub?.cancel();
-    _userDocSub?.cancel();
     super.dispose();
   }
 }
