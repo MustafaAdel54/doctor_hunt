@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../../core/constants/firebase_constants.dart';
+import '../../../../core/constants/supabase_constants.dart';
 import '../../../../core/error/exceptions.dart';
 import '../models/doctor_model.dart';
 
@@ -12,7 +12,7 @@ class DoctorService {
     int limit = 20,
     String? specialization,
   }) async {
-    Query query = firestore.collection(FbC.doctors);
+    Query query = firestore.collection(SbC.doctors);
 
     if (specialization != null) {
       query = query.where('specialization', isEqualTo: specialization);
@@ -31,7 +31,7 @@ class DoctorService {
     // For demo purposes, we do a basic prefix on a specific field or just
     // fetch a limited set.
     final snap = await firestore
-        .collection(FbC.doctors)
+        .collection(SbC.doctors)
         .where('specialization', isGreaterThanOrEqualTo: query)
         .where('specialization', isLessThanOrEqualTo: '$query\uf8ff')
         .limit(20)
@@ -43,7 +43,7 @@ class DoctorService {
   }
 
   Future<DoctorModel> getDoctorById(String doctorId) async {
-    final doc = await firestore.collection(FbC.doctors).doc(doctorId).get();
+    final doc = await firestore.collection(SbC.doctors).doc(doctorId).get();
     if (!doc.exists) throw const ServerException('Doctor not found');
 
     return DoctorModel.fromJson(doc.data()!);

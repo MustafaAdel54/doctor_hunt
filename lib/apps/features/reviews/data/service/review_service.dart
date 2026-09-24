@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../../core/constants/firebase_constants.dart';
+import '../../../../core/constants/supabase_constants.dart';
 import '../models/review_model.dart';
 
 class ReviewService {
@@ -9,9 +9,9 @@ class ReviewService {
 
   Future<List<ReviewModel>> getDoctorReviews(String doctorId) async {
     final snap = await firestore
-        .collection(FbC.doctors)
+        .collection(SbC.doctors)
         .doc(doctorId)
-        .collection(FbC.reviews)
+        .collection(SbC.reviews)
         .orderBy('createdAt', descending: true)
         .get();
 
@@ -19,8 +19,8 @@ class ReviewService {
   }
 
   Future<ReviewModel> addReview(ReviewModel review) async {
-    final doctorRef = firestore.collection(FbC.doctors).doc(review.doctorId);
-    final reviewRef = doctorRef.collection(FbC.reviews).doc();
+    final doctorRef = firestore.collection(SbC.doctors).doc(review.doctorId);
+    final reviewRef = doctorRef.collection(SbC.reviews).doc();
 
     final finalReview = review.copyWith(id: reviewRef.id);
 
@@ -29,13 +29,13 @@ class ReviewService {
       if (!doc.exists) return; // or throw
 
       final data = doc.data()!;
-      final currentSum = (data[FbC.ratingSum] as num?)?.toDouble() ?? 0.0;
-      final currentCount = (data[FbC.ratingCount] as num?)?.toInt() ?? 0;
+      final currentSum = (data[SbC.ratingSum] as num?)?.toDouble() ?? 0.0;
+      final currentCount = (data[SbC.ratingCount] as num?)?.toInt() ?? 0;
 
       tx.set(reviewRef, finalReview.toJson());
       tx.update(doctorRef, {
-        FbC.ratingSum: currentSum + review.rating,
-        FbC.ratingCount: currentCount + 1,
+        SbC.ratingSum: currentSum + review.rating,
+        SbC.ratingCount: currentCount + 1,
       });
     });
 

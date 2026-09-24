@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../../core/constants/firebase_constants.dart';
+import '../../../../core/constants/supabase_constants.dart';
 import '../models/availability_model.dart';
 
 class AvailabilityService {
@@ -9,7 +9,7 @@ class AvailabilityService {
 
   Future<AvailabilityModel> getDoctorAvailability(String doctorId) async {
     final doc = await firestore
-        .collection(FbC.availability)
+        .collection(SbC.availability)
         .doc(doctorId)
         .get();
     if (!doc.exists) {
@@ -26,7 +26,7 @@ class AvailabilityService {
 
   Future<void> updateDoctorAvailability(AvailabilityModel availability) async {
     await firestore
-        .collection(FbC.availability)
+        .collection(SbC.availability)
         .doc(availability.doctorId)
         .set(availability.toJson(), SetOptions(merge: true));
   }

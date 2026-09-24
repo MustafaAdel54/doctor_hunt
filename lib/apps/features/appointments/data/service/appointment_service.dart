@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../../core/constants/firebase_constants.dart';
+import '../../../../core/constants/supabase_constants.dart';
 import '../../../../core/error/exceptions.dart';
 import '../models/appointment_model.dart';
 
@@ -12,9 +12,9 @@ class AppointmentService {
     String patientId,
   ) async {
     final snap = await firestore
-        .collection(FbC.appointments)
-        .where(FbC.patientId, isEqualTo: patientId)
-        .orderBy(FbC.startTime, descending: true)
+        .collection(SbC.appointments)
+        .where(SbC.patientId, isEqualTo: patientId)
+        .orderBy(SbC.startTime, descending: true)
         .get();
 
     return snap.docs
@@ -24,9 +24,9 @@ class AppointmentService {
 
   Future<List<AppointmentModel>> getDoctorAppointments(String doctorId) async {
     final snap = await firestore
-        .collection(FbC.appointments)
-        .where(FbC.doctorId, isEqualTo: doctorId)
-        .orderBy(FbC.startTime, descending: true)
+        .collection(SbC.appointments)
+        .where(SbC.doctorId, isEqualTo: doctorId)
+        .orderBy(SbC.startTime, descending: true)
         .get();
 
     return snap.docs
@@ -36,9 +36,9 @@ class AppointmentService {
 
   Future<AppointmentModel> bookAppointment(AppointmentModel appointment) async {
     final lockRef = firestore
-        .collection(FbC.slotLocks)
+        .collection(SbC.slotLocks)
         .doc(appointment.slotLockId);
-    final apptRef = firestore.collection(FbC.appointments).doc();
+    final apptRef = firestore.collection(SbC.appointments).doc();
 
     final finalAppointment = appointment.copyWith(id: apptRef.id);
 
@@ -70,8 +70,8 @@ class AppointmentService {
   }
 
   Future<void> updateStatus(String appointmentId, String status) async {
-    await firestore.collection(FbC.appointments).doc(appointmentId).update({
-      FbC.status: status,
+    await firestore.collection(SbC.appointments).doc(appointmentId).update({
+      SbC.status: status,
     });
   }
 }
