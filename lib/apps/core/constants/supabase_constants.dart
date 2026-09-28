@@ -1,12 +1,12 @@
 abstract final class SupabaseConfig {
   static const String url = String.fromEnvironment(
     'SUPABASE_URL',
-    defaultValue: 'https://YOUR_SUPABASE_PROJECT.supabase.co',
+    defaultValue: 'https://spvsllxjtbwyfpdvfqgg.supabase.co',
   );
   
   static const String anonKey = String.fromEnvironment(
     'SUPABASE_ANON_KEY',
-    defaultValue: 'eyJhbGci...',
+    defaultValue: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwdnNsbHhqdGJ3eWZwZHZmcWdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwNTA5MzYsImV4cCI6MjEwNTYyNjkzNn0.uCvl8rImq1UjBvcs1eAfB0otGOsGNyT_t0yhbkr-3Us',
   );
 }
 

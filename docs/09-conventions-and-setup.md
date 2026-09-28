@@ -276,16 +276,22 @@ The project is running on the **Supabase free tier**. Therefore:
 
 ## 9. Runbook
 
-The application requires Supabase credentials to be passed at compile/run time via `--dart-define`.
+The application uses baked-in Supabase credentials by default. You can run or build the app directly:
 
 **Run locally:**
 ```bash
-flutter run --dart-define=SUPABASE_URL="https://YOUR-URL.supabase.co" --dart-define=SUPABASE_ANON_KEY="YOUR-ANON-KEY"
+flutter run
 ```
 
 **Build APK:**
 ```bash
-flutter build apk --dart-define=SUPABASE_URL="https://YOUR-URL.supabase.co" --dart-define=SUPABASE_ANON_KEY="YOUR-ANON-KEY"
+flutter build apk
+```
+
+*(Optional Override)* If you need to point the app to a different Supabase project (e.g. for testing), you can override the defaults using `--dart-define`:
+
+```bash
+flutter run --dart-define=SUPABASE_URL="https://YOUR-URL.supabase.co" --dart-define=SUPABASE_ANON_KEY="YOUR-ANON-KEY"
 ```
 
 **Resolved in this revision:**
