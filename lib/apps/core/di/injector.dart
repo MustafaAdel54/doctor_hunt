@@ -73,7 +73,7 @@ Future<void> initCore() async {
   );
 
   // Features - Availability
-  sl.registerLazySingleton(() => AvailabilityService(firestore: sl())); // Will update in later phases
+  sl.registerLazySingleton(() => AvailabilityService(supabase: sl()));
   sl.registerLazySingleton<AvailabilityRepo>(
     () => AvailabilityRepoImpl(service: sl(), networkInfo: sl()),
   );
