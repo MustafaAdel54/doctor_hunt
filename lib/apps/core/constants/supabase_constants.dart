@@ -21,14 +21,12 @@ abstract final class SbC {
 
   // Legacy Fields for compilation until services are migrated
   static const String users = 'profiles'; // Mapped to profiles
-  static const String slotLocks = 'slotLocks';
   static const String role = 'role';
   static const String isVerified = 'is_verified';
   static const String isActive = 'is_active';
   static const String email = 'email';
   static const String patientId = 'patient_id';
   static const String doctorId = 'doctor_id';
-  static const String slotLockId = 'slot_lock_id';
   static const String status = 'status';
   static const String startTime = 'start_time';
   static const String rating = 'rating';

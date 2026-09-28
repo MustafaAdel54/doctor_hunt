@@ -15,7 +15,6 @@ _$AppointmentModelImpl _$$AppointmentModelImplFromJson(
   doctorName: Map<String, String>.from(json['doctor_name'] as Map),
   status: json['status'] as String,
   startTime: DateTime.parse(json['start_time'] as String),
-  slotLockId: json['slot_lock_id'] as String? ?? '',
   endTime: json['end_time'] == null
       ? null
       : DateTime.parse(json['end_time'] as String),
@@ -32,7 +31,6 @@ Map<String, dynamic> _$$AppointmentModelImplToJson(
   'doctor_name': instance.doctorName,
   'status': instance.status,
   'start_time': instance.startTime.toIso8601String(),
-  'slot_lock_id': instance.slotLockId,
   'end_time': instance.endTime?.toIso8601String(),
   'patient_name': instance.patientName,
   'notes': instance.notes,

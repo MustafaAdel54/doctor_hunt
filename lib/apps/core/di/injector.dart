@@ -67,7 +67,7 @@ Future<void> initCore() async {
   );
 
   // Features - Appointments
-  sl.registerLazySingleton(() => AppointmentService(firestore: sl())); // Will update in later phases
+  sl.registerLazySingleton(() => AppointmentService(supabase: sl()));
   sl.registerLazySingleton<AppointmentRepo>(
     () => AppointmentRepoImpl(service: sl(), networkInfo: sl()),
   );

@@ -12,7 +12,6 @@ class AppointmentModel with _$AppointmentModel {
     @JsonKey(name: 'doctor_name') required Map<String, String> doctorName,
     required String status, // 'pending', 'confirmed', 'cancelled', 'completed'
     @JsonKey(name: 'start_time') required DateTime startTime,
-    @JsonKey(name: 'slot_lock_id', defaultValue: '') required String slotLockId,
     @JsonKey(name: 'end_time') DateTime? endTime,
     @JsonKey(name: 'patient_name') String? patientName,
     String? notes,

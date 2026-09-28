@@ -32,8 +32,6 @@ mixin _$AppointmentModel {
       throw _privateConstructorUsedError; // 'pending', 'confirmed', 'cancelled', 'completed'
   @JsonKey(name: 'start_time')
   DateTime get startTime => throw _privateConstructorUsedError;
-  @JsonKey(name: 'slot_lock_id', defaultValue: '')
-  String get slotLockId => throw _privateConstructorUsedError;
   @JsonKey(name: 'end_time')
   DateTime? get endTime => throw _privateConstructorUsedError;
   @JsonKey(name: 'patient_name')
@@ -64,7 +62,6 @@ abstract class $AppointmentModelCopyWith<$Res> {
     @JsonKey(name: 'doctor_name') Map<String, String> doctorName,
     String status,
     @JsonKey(name: 'start_time') DateTime startTime,
-    @JsonKey(name: 'slot_lock_id', defaultValue: '') String slotLockId,
     @JsonKey(name: 'end_time') DateTime? endTime,
     @JsonKey(name: 'patient_name') String? patientName,
     String? notes,
@@ -92,7 +89,6 @@ class _$AppointmentModelCopyWithImpl<$Res, $Val extends AppointmentModel>
     Object? doctorName = null,
     Object? status = null,
     Object? startTime = null,
-    Object? slotLockId = null,
     Object? endTime = freezed,
     Object? patientName = freezed,
     Object? notes = freezed,
@@ -123,10 +119,6 @@ class _$AppointmentModelCopyWithImpl<$Res, $Val extends AppointmentModel>
                 ? _value.startTime
                 : startTime // ignore: cast_nullable_to_non_nullable
                       as DateTime,
-            slotLockId: null == slotLockId
-                ? _value.slotLockId
-                : slotLockId // ignore: cast_nullable_to_non_nullable
-                      as String,
             endTime: freezed == endTime
                 ? _value.endTime
                 : endTime // ignore: cast_nullable_to_non_nullable
@@ -161,7 +153,6 @@ abstract class _$$AppointmentModelImplCopyWith<$Res>
     @JsonKey(name: 'doctor_name') Map<String, String> doctorName,
     String status,
     @JsonKey(name: 'start_time') DateTime startTime,
-    @JsonKey(name: 'slot_lock_id', defaultValue: '') String slotLockId,
     @JsonKey(name: 'end_time') DateTime? endTime,
     @JsonKey(name: 'patient_name') String? patientName,
     String? notes,
@@ -188,7 +179,6 @@ class __$$AppointmentModelImplCopyWithImpl<$Res>
     Object? doctorName = null,
     Object? status = null,
     Object? startTime = null,
-    Object? slotLockId = null,
     Object? endTime = freezed,
     Object? patientName = freezed,
     Object? notes = freezed,
@@ -219,10 +209,6 @@ class __$$AppointmentModelImplCopyWithImpl<$Res>
             ? _value.startTime
             : startTime // ignore: cast_nullable_to_non_nullable
                   as DateTime,
-        slotLockId: null == slotLockId
-            ? _value.slotLockId
-            : slotLockId // ignore: cast_nullable_to_non_nullable
-                  as String,
         endTime: freezed == endTime
             ? _value.endTime
             : endTime // ignore: cast_nullable_to_non_nullable
@@ -250,7 +236,6 @@ class _$AppointmentModelImpl implements _AppointmentModel {
     @JsonKey(name: 'doctor_name') required final Map<String, String> doctorName,
     required this.status,
     @JsonKey(name: 'start_time') required this.startTime,
-    @JsonKey(name: 'slot_lock_id', defaultValue: '') required this.slotLockId,
     @JsonKey(name: 'end_time') this.endTime,
     @JsonKey(name: 'patient_name') this.patientName,
     this.notes,
@@ -283,9 +268,6 @@ class _$AppointmentModelImpl implements _AppointmentModel {
   @JsonKey(name: 'start_time')
   final DateTime startTime;
   @override
-  @JsonKey(name: 'slot_lock_id', defaultValue: '')
-  final String slotLockId;
-  @override
   @JsonKey(name: 'end_time')
   final DateTime? endTime;
   @override
@@ -296,7 +278,7 @@ class _$AppointmentModelImpl implements _AppointmentModel {
 
   @override
   String toString() {
-    return 'AppointmentModel(id: $id, patientId: $patientId, doctorId: $doctorId, doctorName: $doctorName, status: $status, startTime: $startTime, slotLockId: $slotLockId, endTime: $endTime, patientName: $patientName, notes: $notes)';
+    return 'AppointmentModel(id: $id, patientId: $patientId, doctorId: $doctorId, doctorName: $doctorName, status: $status, startTime: $startTime, endTime: $endTime, patientName: $patientName, notes: $notes)';
   }
 
   @override
@@ -316,8 +298,6 @@ class _$AppointmentModelImpl implements _AppointmentModel {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.startTime, startTime) ||
                 other.startTime == startTime) &&
-            (identical(other.slotLockId, slotLockId) ||
-                other.slotLockId == slotLockId) &&
             (identical(other.endTime, endTime) || other.endTime == endTime) &&
             (identical(other.patientName, patientName) ||
                 other.patientName == patientName) &&
@@ -334,7 +314,6 @@ class _$AppointmentModelImpl implements _AppointmentModel {
     const DeepCollectionEquality().hash(_doctorName),
     status,
     startTime,
-    slotLockId,
     endTime,
     patientName,
     notes,
@@ -365,8 +344,6 @@ abstract class _AppointmentModel implements AppointmentModel {
     @JsonKey(name: 'doctor_name') required final Map<String, String> doctorName,
     required final String status,
     @JsonKey(name: 'start_time') required final DateTime startTime,
-    @JsonKey(name: 'slot_lock_id', defaultValue: '')
-    required final String slotLockId,
     @JsonKey(name: 'end_time') final DateTime? endTime,
     @JsonKey(name: 'patient_name') final String? patientName,
     final String? notes,
@@ -391,9 +368,6 @@ abstract class _AppointmentModel implements AppointmentModel {
   @override
   @JsonKey(name: 'start_time')
   DateTime get startTime;
-  @override
-  @JsonKey(name: 'slot_lock_id', defaultValue: '')
-  String get slotLockId;
   @override
   @JsonKey(name: 'end_time')
   DateTime? get endTime;
