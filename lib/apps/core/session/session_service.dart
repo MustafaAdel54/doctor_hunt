@@ -27,50 +27,83 @@ class SessionService extends ChangeNotifier
     });
   }
 
+  bool _isEvaluating = false;
+  User? _pendingUser;
+  bool _hasPending = false;
+
   Future<void> _handleAuthChange(User? user) async {
     if (user == null) {
       _updateState(const SessionState.unauthenticated());
+      _hasPending = false;
       return;
     }
 
+    _pendingUser = user;
+    _hasPending = true;
+
+    if (_isEvaluating) return;
+
+    _isEvaluating = true;
     try {
-      final doc = await _supabase
-          .from(SbC.profiles)
-          .select()
-          .eq('id', user.id)
-          .maybeSingle();
+      while (_hasPending) {
+        final currentUserToEvaluate = _pendingUser;
+        _hasPending = false;
 
-      if (doc == null) {
-        // Supabase user exists but no application profile yet.
-        _updateState(
-          SessionState.authenticatedWithoutProfile(userId: user.id),
-        );
-        return;
-      }
+        if (currentUserToEvaluate == null) {
+          _updateState(const SessionState.unauthenticated());
+          continue;
+        }
 
-      final isActive = doc[SbC.isActive] as bool? ?? true;
-      if (!isActive) {
-        Log.d('User ${user.id} is deactivated.');
-        _updateState(SessionState.authenticatedInactive(userId: user.id));
-        return;
-      }
+        bool success = false;
+        for (int attempt = 1; attempt <= 3; attempt++) {
+          try {
+            final doc = await _supabase
+                .from(SbC.profiles)
+                .select()
+                .eq('id', currentUserToEvaluate.id)
+                .maybeSingle();
 
-      final role = doc[SbC.role] as String?;
-      if (role != null) {
-        _updateState(
-          SessionState.authenticated(userId: user.id, role: role),
-        );
-      } else {
-        // Document exists but role field is missing — treat as no profile.
-        _updateState(
-          SessionState.authenticatedWithoutProfile(userId: user.id),
-        );
+            if (doc == null) {
+              // Supabase user exists but no application profile yet.
+              _updateState(
+                SessionState.authenticatedWithoutProfile(userId: currentUserToEvaluate.id),
+              );
+            } else {
+              final isActive = doc[SbC.isActive] as bool? ?? true;
+              if (!isActive) {
+                Log.d('User ${currentUserToEvaluate.id} is deactivated.');
+                _updateState(SessionState.authenticatedInactive(userId: currentUserToEvaluate.id));
+              } else {
+                final role = doc[SbC.role] as String?;
+                if (role != null) {
+                  _updateState(
+                    SessionState.authenticated(userId: currentUserToEvaluate.id, role: role),
+                  );
+                } else {
+                  // Document exists but role field is missing — treat as no profile.
+                  _updateState(
+                    SessionState.authenticatedWithoutProfile(userId: currentUserToEvaluate.id),
+                  );
+                }
+              }
+            }
+            success = true;
+            break; // Break retry loop on success
+          } catch (e) {
+            Log.e('Error fetching user profile (attempt $attempt)', e);
+            if (attempt == 3) {
+              _updateState(
+                const SessionState.error('Failed to load profile. Please check your connection.'),
+              );
+            } else {
+              // Short backoff
+              await Future.delayed(Duration(seconds: 1));
+            }
+          }
+        }
       }
-    } catch (e) {
-      Log.e('Error fetching user profile', e);
-      _updateState(
-        SessionState.authenticatedWithoutProfile(userId: user.id),
-      );
+    } finally {
+      _isEvaluating = false;
     }
   }
 

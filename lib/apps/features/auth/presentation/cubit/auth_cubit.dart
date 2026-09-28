@@ -43,6 +43,8 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
+  bool _isCreatingProfile = false;
+
   /// Creates the Firestore application profile after role selection.
   /// Used for both email-registered and Google Sign-In users.
   Future<void> createUserProfile({
@@ -54,26 +56,33 @@ class AuthCubit extends Cubit<AuthState> {
     String? phone,
     bool isVerified = false,
   }) async {
-    emit(const AuthState.loading());
-    final result = await repo.createUserProfile(
-      uid: uid,
-      email: email,
-      role: role,
-      name: name,
-      photoUrl: photoUrl,
-      phone: phone,
-      isVerified: isVerified,
-    );
-    result.fold(
-      (failure) {
-        if (!isClosed) emit(AuthState.error(_mapFailureToMessage(failure)));
-      },
-      (user) {
-        // Profile created. SessionService Firestore stream fires automatically,
-        // transitions to authenticated(role: ...), GoRouter redirects to home.
-        if (!isClosed) emit(const AuthState.success());
-      },
-    );
+    if (_isCreatingProfile) return;
+    _isCreatingProfile = true;
+
+    try {
+      emit(const AuthState.loading());
+      final result = await repo.createUserProfile(
+        uid: uid,
+        email: email,
+        role: role,
+        name: name,
+        photoUrl: photoUrl,
+        phone: phone,
+        isVerified: isVerified,
+      );
+      result.fold(
+        (failure) {
+          if (!isClosed) emit(AuthState.error(_mapFailureToMessage(failure)));
+        },
+        (user) {
+          // Profile created. SessionService Firestore stream fires automatically,
+          // transitions to authenticated(role: ...), GoRouter redirects to home.
+          if (!isClosed) emit(const AuthState.success());
+        },
+      );
+    } finally {
+      _isCreatingProfile = false;
+    }
   }
 
   /// Performs Google OAuth + Firebase sign-in only.
