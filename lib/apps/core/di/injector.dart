@@ -79,7 +79,7 @@ Future<void> initCore() async {
   );
 
   // Features - Reviews
-  sl.registerLazySingleton(() => ReviewService(firestore: sl())); // Will update in later phases
+  sl.registerLazySingleton(() => ReviewService(supabase: sl()));
   sl.registerLazySingleton<ReviewRepo>(
     () => ReviewRepoImpl(service: sl(), networkInfo: sl()),
   );
