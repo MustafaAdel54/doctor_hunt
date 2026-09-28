@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,7 +35,6 @@ Future<void> initCore() async {
   final prefs = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => prefs);
   sl.registerLazySingleton(() => Supabase.instance.client);
-  sl.registerLazySingleton(() => FirebaseFirestore.instance); // Legacy services
   sl.registerLazySingleton(
     () => GoogleSignIn(
       // Web OAuth client (client_type: 3) from google-services.json.

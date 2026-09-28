@@ -15,8 +15,8 @@ import 'widgets/role_selection_header.dart';
 
 /// Role Selection screen.
 ///
-/// This screen is shown ONLY when a Firebase-authenticated user has no
-/// Firestore application profile ([SessionStatus.authenticatedWithoutProfile]).
+/// This screen is shown ONLY when a Supabase-authenticated user has no
+/// database application profile ([SessionStatus.authenticatedWithoutProfile]).
 ///
 /// It is reached after:
 /// - Email + password sign-up  (new email user, no profile yet)

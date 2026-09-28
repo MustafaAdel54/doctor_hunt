@@ -23,7 +23,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  /// Creates the Firebase Auth account only (no Firestore profile).
+  /// Creates the Supabase Auth account only (no database profile).
   /// After success, [SessionService] emits [authenticatedWithoutProfile]
   /// and GoRouter redirects to Role Selection automatically.
   Future<void> registerWithEmailOnly(
@@ -38,7 +38,7 @@ class AuthCubit extends Cubit<AuthState> {
         if (!isClosed) emit(AuthState.error(_mapFailureToMessage(failure)));
       },
       (_) {
-        // Firebase Auth user created. SessionService detects no Firestore
+        // Supabase Auth user created. SessionService detects no database
         // profile and emits authenticatedWithoutProfile → Role Selection.
         if (!isClosed) emit(const AuthState.success());
       },
@@ -47,7 +47,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   bool _isCreatingProfile = false;
 
-  /// Creates the Firestore application profile after role selection.
+  /// Creates the database application profile after role selection.
   /// Used for both email-registered and Google Sign-In users.
   Future<void> createUserProfile({
     required String uid,
@@ -93,8 +93,8 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  /// Performs Google OAuth + Firebase sign-in only.
-  /// Does NOT create a Firestore profile. Does NOT accept a role.
+  /// Performs Google OAuth + Supabase sign-in only.
+  /// Does NOT create a database profile. Does NOT accept a role.
   Future<void> loginWithGoogle() async {
     emit(const AuthState.loading());
     final result = await repo.loginWithGoogle();

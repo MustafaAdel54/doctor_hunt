@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -72,7 +72,7 @@ class DoctorHomeScreen extends StatelessWidget {
           const Text('DoctorHome'),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () => FirebaseAuth.instance.signOut(),
+            onPressed: () => Supabase.instance.client.auth.signOut(),
             child: const Text('Logout'),
           ),
         ],

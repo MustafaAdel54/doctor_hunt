@@ -8,8 +8,8 @@ abstract interface class AuthRepo {
     String password,
   );
 
-  /// Creates a Firebase Auth account with email + password only.
-  /// Does NOT create a Firestore profile. After success the session
+  /// Creates a Supabase Auth account with email + password only.
+  /// Does NOT create a database profile. After success the session
   /// transitions to [authenticatedWithoutProfile] → Role Selection.
   Future<Either<Failure, void>> registerWithEmailOnly(
     String email,
@@ -17,7 +17,7 @@ abstract interface class AuthRepo {
     String name,
   );
 
-  /// Creates the Firestore application profile for any authenticated user.
+  /// Creates the database application profile for any authenticated user.
   /// Called from Role Selection for both email-registered and Google users.
   Future<Either<Failure, UserModel>> createUserProfile({
     required String uid,
@@ -29,8 +29,8 @@ abstract interface class AuthRepo {
     bool isVerified,
   });
 
-  /// Performs Google OAuth + Firebase credential sign-in only.
-  /// Does NOT create a Firestore application profile.
+  /// Performs Google OAuth + Supabase credential sign-in only.
+  /// Does NOT create a database application profile.
   Future<Either<Failure, void>> loginWithGoogle();
 
   Future<Either<Failure, void>> resetPassword(String email);
