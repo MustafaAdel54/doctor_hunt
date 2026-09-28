@@ -61,7 +61,7 @@ Future<void> initCore() async {
   );
 
   // Features - Doctors
-  sl.registerLazySingleton(() => DoctorService(firestore: sl())); // Will update in later phases
+  sl.registerLazySingleton(() => DoctorService(supabase: sl()));
   sl.registerLazySingleton<DoctorRepo>(
     () => DoctorRepoImpl(service: sl(), networkInfo: sl()),
   );

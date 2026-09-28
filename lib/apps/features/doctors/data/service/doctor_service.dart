@@ -1,51 +1,51 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/constants/supabase_constants.dart';
 import '../../../../core/error/exceptions.dart';
 import '../models/doctor_model.dart';
 
 class DoctorService {
-  const DoctorService({required this.firestore});
+  const DoctorService({required this.supabase});
 
-  final FirebaseFirestore firestore;
+  final SupabaseClient supabase;
 
   Future<List<DoctorModel>> getDoctors({
     int limit = 20,
     String? specialization,
   }) async {
-    Query query = firestore.collection(SbC.doctors);
+    var query = supabase.from(SbC.doctors).select();
 
     if (specialization != null) {
-      query = query.where('specialization', isEqualTo: specialization);
+      query = query.eq('specialization', specialization);
     }
 
-    final snap = await query.limit(limit).get();
+    final data = await query.limit(limit);
 
-    return snap.docs
-        .map((doc) => DoctorModel.fromJson(doc.data() as Map<String, dynamic>))
+    return data
+        .map((doc) => DoctorModel.fromJson(doc))
         .toList();
   }
 
   Future<List<DoctorModel>> searchDoctors(String query) async {
-    // For v1 Spark plan without Algolia/Elasticsearch, we'll do a simple
-    // prefix search or just fetch all and filter in memory if the dataset is small.
-    // For demo purposes, we do a basic prefix on a specific field or just
-    // fetch a limited set.
-    final snap = await firestore
-        .collection(SbC.doctors)
-        .where('specialization', isGreaterThanOrEqualTo: query)
-        .where('specialization', isLessThanOrEqualTo: '$query\uf8ff')
-        .limit(20)
-        .get();
+    final data = await supabase
+        .from(SbC.doctors)
+        .select()
+        .ilike('specialization', '%$query%')
+        .limit(20);
 
-    return snap.docs
-        .map((doc) => DoctorModel.fromJson(doc.data()))
+    return data
+        .map((doc) => DoctorModel.fromJson(doc))
         .toList();
   }
 
   Future<DoctorModel> getDoctorById(String doctorId) async {
-    final doc = await firestore.collection(SbC.doctors).doc(doctorId).get();
-    if (!doc.exists) throw const ServerException('Doctor not found');
+    final doc = await supabase
+        .from(SbC.doctors)
+        .select()
+        .eq('id', doctorId)
+        .maybeSingle();
+        
+    if (doc == null) throw const ServerException('Doctor not found');
 
-    return DoctorModel.fromJson(doc.data()!);
+    return DoctorModel.fromJson(doc);
   }
 }
