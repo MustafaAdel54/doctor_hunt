@@ -6,7 +6,7 @@ import '../models/user_model.dart';
 import 'auth_repo.dart';
 import '../service/auth_service.dart';
 
-import '../../profile/data/service/profile_service.dart';
+import '../../../profile/data/service/profile_service.dart';
 
 class AuthRepoImpl implements AuthRepo {
   const AuthRepoImpl({

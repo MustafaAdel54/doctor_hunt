@@ -38,7 +38,7 @@ class DoctorService {
         .get();
 
     return snap.docs
-        .map((doc) => DoctorModel.fromJson(doc.data() as Map<String, dynamic>))
+        .map((doc) => DoctorModel.fromJson(doc.data()))
         .toList();
   }
 
