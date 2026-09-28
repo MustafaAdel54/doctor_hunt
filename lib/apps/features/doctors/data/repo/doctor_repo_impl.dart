@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/failures.dart';
-import '../../../../core/network/firebase_error_mapper.dart';
+import '../../../../core/network/supabase_error_mapper.dart';
 import '../../../../core/network/network_info.dart';
 import '../models/doctor_model.dart';
 import 'doctor_repo.dart';
@@ -25,7 +25,7 @@ class DoctorRepoImpl implements DoctorRepo {
       );
       return Right(doctors);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 
@@ -36,7 +36,7 @@ class DoctorRepoImpl implements DoctorRepo {
       final doctors = await service.searchDoctors(query);
       return Right(doctors);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 
@@ -47,7 +47,7 @@ class DoctorRepoImpl implements DoctorRepo {
       final doctor = await service.getDoctorById(doctorId);
       return Right(doctor);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 }

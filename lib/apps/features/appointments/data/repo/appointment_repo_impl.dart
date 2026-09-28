@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/failures.dart';
-import '../../../../core/network/firebase_error_mapper.dart';
+import '../../../../core/network/supabase_error_mapper.dart';
 import '../../../../core/network/network_info.dart';
 import '../models/appointment_model.dart';
 import 'appointment_repo.dart';
@@ -22,7 +22,7 @@ class AppointmentRepoImpl implements AppointmentRepo {
       final appointments = await service.getPatientAppointments(patientId);
       return Right(appointments);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 
@@ -35,7 +35,7 @@ class AppointmentRepoImpl implements AppointmentRepo {
       final appointments = await service.getDoctorAppointments(doctorId);
       return Right(appointments);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 
@@ -50,7 +50,7 @@ class AppointmentRepoImpl implements AppointmentRepo {
     } on SlotTakenException {
       return const Left(SlotTakenFailure());
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 
@@ -64,7 +64,7 @@ class AppointmentRepoImpl implements AppointmentRepo {
       await service.updateStatus(appointmentId, status);
       return const Right(null);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 }

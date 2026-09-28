@@ -1,12 +1,13 @@
-import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
+import 'package:doctor_hunt/apps/core/di/injector.dart';
+import 'package:doctor_hunt/apps/core/session/session_service.dart';
+import 'package:doctor_hunt/apps/core/widgets/primary_button.dart';
+import 'package:doctor_hunt/generated/style_atoms.dart';
+import 'package:doctor_hunt/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:doctor_hunt/apps/core/di/injector.dart';
-import 'package:doctor_hunt/apps/core/session/session_service.dart';
-import 'package:doctor_hunt/generated/style_atoms.dart';
-import 'package:doctor_hunt/apps/core/widgets/primary_button.dart';
-import 'package:doctor_hunt/i18n/strings.g.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
+
 import '../../cubit/auth_cubit.dart';
 import '../../cubit/auth_state.dart';
 import 'widgets/role_option_card.dart';

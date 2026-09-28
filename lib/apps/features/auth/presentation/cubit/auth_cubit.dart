@@ -1,12 +1,14 @@
 import 'package:doctor_hunt/apps/core/error/failures.dart';
+import 'package:doctor_hunt/apps/core/session/session_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/repo/auth_repo.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit({required this.repo}) : super(const AuthState.initial());
+  AuthCubit({required this.repo, required this.sessionService}) : super(const AuthState.initial());
 
   final AuthRepo repo;
+  final SessionService sessionService;
 
   Future<void> loginWithEmail(String email, String password) async {
     emit(const AuthState.loading());
@@ -72,11 +74,17 @@ class AuthCubit extends Cubit<AuthState> {
       );
       result.fold(
         (failure) {
-          if (!isClosed) emit(AuthState.error(_mapFailureToMessage(failure)));
+          if (failure is AuthFailure && failure.code == 'account-already-setup') {
+            // Self-healing: profile already exists, re-evaluate session so router redirects home
+            sessionService.refreshProfile();
+            if (!isClosed) emit(const AuthState.success());
+          } else {
+            if (!isClosed) emit(AuthState.error(_mapFailureToMessage(failure)));
+          }
         },
         (user) {
-          // Profile created. SessionService Firestore stream fires automatically,
-          // transitions to authenticated(role: ...), GoRouter redirects to home.
+          // Profile created. Re-evaluate session so router redirects to home.
+          sessionService.refreshProfile();
           if (!isClosed) emit(const AuthState.success());
         },
       );

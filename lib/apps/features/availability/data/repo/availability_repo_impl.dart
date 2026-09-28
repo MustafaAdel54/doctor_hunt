@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/failures.dart';
-import '../../../../core/network/firebase_error_mapper.dart';
+import '../../../../core/network/supabase_error_mapper.dart';
 import '../../../../core/network/network_info.dart';
 import '../models/availability_model.dart';
 import '../../../appointments/data/models/appointment_model.dart';
@@ -26,7 +26,7 @@ class AvailabilityRepoImpl implements AvailabilityRepo {
       final availability = await service.getDoctorAvailability(doctorId);
       return Right(availability);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 
@@ -39,7 +39,7 @@ class AvailabilityRepoImpl implements AvailabilityRepo {
       await service.updateDoctorAvailability(availability);
       return const Right(null);
     } catch (e) {
-      return Left(FirebaseErrorMapper.map(e));
+      return Left(SupabaseErrorMapper.map(e));
     }
   }
 

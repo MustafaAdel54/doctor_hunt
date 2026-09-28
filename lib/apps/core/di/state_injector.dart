@@ -4,5 +4,5 @@ import '../../features/auth/presentation/cubit/auth_cubit.dart';
 final sl = GetIt.instance;
 
 void initState() {
-  sl.registerFactory(() => AuthCubit(repo: sl()));
+  sl.registerFactory(() => AuthCubit(repo: sl(), sessionService: sl()));
 }

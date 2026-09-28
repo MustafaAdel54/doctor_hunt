@@ -20,6 +20,9 @@ abstract final class SupabaseErrorMapper {
     
     if (e is PostgrestException) {
       Log.e('PostgrestException: ${e.message}', e);
+      if (e.code == '23505') {
+        return const AuthFailure(code: 'account-already-setup');
+      }
       return const ServerFailure();
     }
 
