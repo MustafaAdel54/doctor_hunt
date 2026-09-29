@@ -147,10 +147,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   onPressed: () => _onSkip(context),
                                   child: Text(
                                     t.onboarding.skip,
-                                    style: context.regular.copyWith(
-                                      color: palette.textSub,
-                                      fontSize: 14.sp,
-                                    ),
+                                    style: context.regular14TextSub,
                                   ),
                                 ),
                               ],

@@ -16,20 +16,13 @@ class SignupHeader extends StatelessWidget {
         SizedBox(height: 60.h),
         Text(
           t.auth.joinUsTitle,
-          style: context.bold.copyWith(
-            color: palette.textMain,
-            fontSize: 28.sp,
-          ),
+          style: context.bold28TextMain,
           textAlign: TextAlign.center,
         ),
         SizedBox(height: 12.h),
         Text(
           t.auth.loginSubtitle,
-          style: context.regular.copyWith(
-            color: palette.textSub,
-            fontSize: 14.sp,
-            height: 1.5,
-          ),
+          style: context.regular14TextSub.copyWith(height: 1.5),
           textAlign: TextAlign.center,
         ),
       ],

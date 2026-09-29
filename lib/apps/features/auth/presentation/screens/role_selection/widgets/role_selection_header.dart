@@ -25,20 +25,13 @@ class RoleSelectionHeader extends StatelessWidget {
         SizedBox(height: 48.h),
         Text(
           t.auth.chooseRole,
-          style: context.bold.copyWith(
-            color: palette.textMain,
-            fontSize: 24.sp,
-          ),
+          style: context.bold24TextMain,
           textAlign: TextAlign.center,
         ),
         SizedBox(height: 12.h),
         Text(
           t.auth.roleSubtitle,
-          style: context.regular.copyWith(
-            color: palette.textSub,
-            fontSize: 14.sp,
-            height: 1.5,
-          ),
+          style: context.regular14TextSub.copyWith(height: 1.5),
           textAlign: TextAlign.center,
         ),
       ],

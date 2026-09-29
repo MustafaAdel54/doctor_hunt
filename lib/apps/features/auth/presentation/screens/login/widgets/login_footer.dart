@@ -19,10 +19,7 @@ class LoginFooter extends StatelessWidget {
             onPressed: () => context.push(Paths.forgotPassword),
             child: Text(
               t.auth.forgotPassword,
-              style: context.semiBold.copyWith(
-                color: palette.primary,
-                fontSize: 14.sp,
-              ),
+              style: context.semiBold14Primary,
             ),
           ),
           const Spacer(),
@@ -30,10 +27,7 @@ class LoginFooter extends StatelessWidget {
             onPressed: () => context.push(Paths.register),
             child: Text(
               "${t.auth.noAccount} Join us",
-              style: context.semiBold.copyWith(
-                color: palette.primary,
-                fontSize: 14.sp,
-              ),
+              style: context.semiBold14Primary,
             ),
           ),
           SizedBox(height: 24.h),

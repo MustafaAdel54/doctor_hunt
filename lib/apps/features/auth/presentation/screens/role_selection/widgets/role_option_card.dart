@@ -84,19 +84,12 @@ class RoleOptionCard extends StatelessWidget {
                       SizedBox(height: 8.h),
                       Text(
                         title,
-                        style: context.semiBold.copyWith(
-                          color: palette.textMain,
-                          fontSize: 18.sp,
-                        ),
+                        style: context.semiBold18TextMain,
                       ),
                       SizedBox(height: 8.h),
                       Text(
                         description,
-                        style: context.regular.copyWith(
-                          color: palette.textSub,
-                          fontSize: 14.sp,
-                          height: 1.4,
-                        ),
+                        style: context.regular14TextSub.copyWith(height: 1.4),
                       ),
                     ],
                   ),

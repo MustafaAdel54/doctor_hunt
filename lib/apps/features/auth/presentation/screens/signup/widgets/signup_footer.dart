@@ -21,10 +21,7 @@ class SignupFooter extends StatelessWidget {
             onPressed: () => context.go(Paths.login),
             child: Text(
               "${t.auth.haveAccount} ${t.auth.login}",
-              style: context.semiBold.copyWith(
-                color: palette.primary,
-                fontSize: 14.sp,
-              ),
+              style: context.semiBold14Primary,
             ),
           ),
         ),

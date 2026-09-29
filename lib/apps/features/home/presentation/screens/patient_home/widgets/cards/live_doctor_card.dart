@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:doctor_hunt/generated/style_atoms.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../models/home_mock_data.dart';
 
 class LiveDoctorCard extends StatelessWidget {
@@ -79,10 +80,7 @@ class LiveDoctorCard extends StatelessWidget {
                       const SizedBox(width: 4),
                       Text(
                         'LIVE',
-                        style: context.medium8.copyWith(
-                          color: palette.white,
-                          fontSize: 7,
-                        ),
+                        style: context.medium8White.copyWith(fontSize: 7.sp),
                       ),
                     ],
                   ),

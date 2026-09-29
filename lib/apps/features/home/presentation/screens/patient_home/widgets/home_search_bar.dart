@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:doctor_hunt/generated/style_atoms.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeSearchBar extends StatelessWidget {
   const HomeSearchBar({super.key});
@@ -31,10 +32,7 @@ class HomeSearchBar extends StatelessWidget {
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search.....',
-                hintStyle: context.regular14.copyWith(
-                  color: palette.textSub,
-                  fontSize: 15,
-                ),
+                hintStyle: context.regular14TextSub.copyWith(fontSize: 15.sp),
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
