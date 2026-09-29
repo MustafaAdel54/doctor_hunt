@@ -91,7 +91,7 @@ class PopularDoctorCard extends StatelessWidget {
                     RatingBarIndicator(
                       rating: doctor.rating,
                       itemBuilder: (context, index) =>
-                          const Icon(Icons.star, color: Colors.amber),
+                          Icon(Icons.star, color: context.palette.warning),
                       itemCount: 5,
                       itemSize: 12.0,
                       direction: Axis.horizontal,

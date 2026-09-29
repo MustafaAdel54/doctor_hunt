@@ -17,7 +17,7 @@ class HomeSearchBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
+            color: palette.black.withValues(alpha: 0.08),
             blurRadius: 20,
             offset: const Offset(0, 0),
           ),
@@ -25,14 +25,14 @@ class HomeSearchBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.search, color: Color(0xFF677294), size: 20),
+          Icon(Icons.search, color: palette.textSub, size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search.....',
                 hintStyle: context.regular14.copyWith(
-                  color: const Color(0xFF677294),
+                  color: palette.textSub,
                   fontSize: 15,
                 ),
                 border: InputBorder.none,
@@ -44,7 +44,7 @@ class HomeSearchBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          const Icon(Icons.close, color: Color(0xFF677294), size: 16),
+          Icon(Icons.close, color: palette.textSub, size: 16),
         ],
       ),
     );

@@ -25,11 +25,11 @@ class DoctorProfileCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: palette.shadowSoft,
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -85,7 +85,7 @@ class DoctorProfileCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const Icon(Icons.favorite, color: Colors.red, size: 24),
+                    Icon(Icons.favorite, color: palette.danger, size: 24),
                   ],
                 ),
                 Gaps.h4,
@@ -105,13 +105,7 @@ class DoctorProfileCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const Icon(
-                          Icons.star_border,
-                          color: Colors.black12,
+                          color: palette.textBorders,
                           size: 16,
                         ),
                       ],
@@ -146,7 +140,7 @@ class DoctorProfileCard extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: palette.primary,
-                      foregroundColor: Colors.white,
+                      foregroundColor: palette.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
@@ -155,7 +149,7 @@ class DoctorProfileCard extends StatelessWidget {
                     ),
                     child: Text(
                       'Book Now',
-                      style: context.medium14.copyWith(color: Colors.white),
+                      style: context.medium14.copyWith(color: palette.white),
                     ),
                   ),
                 ),

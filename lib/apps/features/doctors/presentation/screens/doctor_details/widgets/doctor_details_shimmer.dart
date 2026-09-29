@@ -7,7 +7,7 @@ class DoctorDetailsShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey.shade300,
+      baseColor: Colors.grey.shade300, // shimmer base/highlight — structural, not brand
       highlightColor: Colors.grey.shade100,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,16 +22,16 @@ class DoctorDetailsShimmer extends StatelessWidget {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                Container(width: 120, height: 20, color: Colors.white),
+                Container(width: 120, height: 20, color: Theme.of(context).cardColor),
                 Container(
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
@@ -45,7 +45,7 @@ class DoctorDetailsShimmer extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 20),
             height: 140,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(16),
             ),
           ),
@@ -56,7 +56,7 @@ class DoctorDetailsShimmer extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 20),
             height: 90,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(16),
             ),
           ),
@@ -68,24 +68,24 @@ class DoctorDetailsShimmer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(width: 100, height: 24, color: Colors.white),
+                Container(width: 100, height: 24, color: Theme.of(context).cardColor),
                 const SizedBox(height: 16),
                 Container(
                   width: double.infinity,
                   height: 20,
-                  color: Colors.white,
+                  color: Theme.of(context).cardColor,
                 ),
                 const SizedBox(height: 16),
                 Container(
                   width: double.infinity,
                   height: 20,
-                  color: Colors.white,
+                  color: Theme.of(context).cardColor,
                 ),
                 const SizedBox(height: 16),
                 Container(
                   width: double.infinity,
                   height: 20,
-                  color: Colors.white,
+                  color: Theme.of(context).cardColor,
                 ),
               ],
             ),
@@ -97,7 +97,7 @@ class DoctorDetailsShimmer extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 20),
             height: 200,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(16),
             ),
           ),

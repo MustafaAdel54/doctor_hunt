@@ -47,7 +47,7 @@ class LiveDoctorCard extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: Colors.black.withValues(alpha: 0.2),
+                color: palette.black.withValues(alpha: 0.2),
               ),
             ),
 
@@ -72,7 +72,7 @@ class LiveDoctorCard extends StatelessWidget {
                         width: 6,
                         height: 6,
                         decoration: const BoxDecoration(
-                          color: Colors.white,
+                          color: palette.white,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -80,7 +80,7 @@ class LiveDoctorCard extends StatelessWidget {
                       Text(
                         'LIVE',
                         style: context.medium8.copyWith(
-                          color: Colors.white,
+                          color: palette.white,
                           fontSize: 7,
                         ),
                       ),
@@ -95,7 +95,7 @@ class LiveDoctorCard extends StatelessWidget {
                 width: 30,
                 height: 30,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: palette.white,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(

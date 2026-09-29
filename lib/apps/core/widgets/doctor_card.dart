@@ -81,7 +81,7 @@ class DoctorCard extends StatelessWidget {
                   Gaps.h8,
                   Row(
                     children: [
-                      const Icon(Icons.star, color: Colors.amber, size: 16),
+                      Icon(Icons.star, color: palette.warning, size: 16),
                       Gaps.w4,
                       Text(
                         doctor.rating.toStringAsFixed(1),

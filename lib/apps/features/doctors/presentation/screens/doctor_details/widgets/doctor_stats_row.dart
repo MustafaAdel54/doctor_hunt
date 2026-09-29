@@ -14,11 +14,11 @@ class DoctorStatsRow extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.palette.surface,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
+              color: context.palette.black.withValues(alpha: 0.03),
               blurRadius: 20,
               offset: const Offset(0, 4),
             ),
@@ -28,9 +28,9 @@ class DoctorStatsRow extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _StatItem(value: doctor.runningCount.toString(), label: 'Runing'),
-            Container(width: 1, height: 40, color: Colors.grey.shade200),
+            Container(width: 1, height: 40, color: context.palette.textBorders),
             _StatItem(value: doctor.ongoingCount.toString(), label: 'Ongoing'),
-            Container(width: 1, height: 40, color: Colors.grey.shade200),
+            Container(width: 1, height: 40, color: context.palette.textBorders),
             _StatItem(value: doctor.patientsCount.toString(), label: 'Patient'),
           ],
         ),
@@ -51,7 +51,7 @@ class _StatItem extends StatelessWidget {
       width: 80,
       padding: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xFFFBFBFB),
+        color: context.palette.surface,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(

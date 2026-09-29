@@ -37,7 +37,7 @@ class HomeHeader extends StatelessWidget {
               height: 216,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.05),
+                color: palette.white.withValues(alpha: 0.05),
               ),
             ),
           ),
@@ -49,7 +49,7 @@ class HomeHeader extends StatelessWidget {
               height: 242,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.05),
+                color: palette.white.withValues(alpha: 0.05),
               ),
             ),
           ),
@@ -67,12 +67,12 @@ class HomeHeader extends StatelessWidget {
                   children: [
                     Text(
                       'Hi Handwerker!',
-                      style: context.regular20.copyWith(color: Colors.white70),
+                      style: context.regular20.copyWith(color: palette.white.withValues(alpha: 0.7)),
                     ),
                     Gaps.h4,
                     Text(
                       'Find Your Doctor',
-                      style: context.bold24.copyWith(color: Colors.white),
+                      style: context.bold24.copyWith(color: palette.white),
                     ),
                   ],
                 ),
@@ -85,10 +85,10 @@ class HomeHeader extends StatelessWidget {
                     errorBuilder: (context, error, stackTrace) => Container(
                       width: 60,
                       height: 60,
-                      color: Colors.white24,
+                      color: palette.white.withValues(alpha: 0.24),
                       child: const Icon(
                         Icons.person,
-                        color: Colors.white,
+                        color: palette.white,
                         size: 30,
                       ),
                     ),

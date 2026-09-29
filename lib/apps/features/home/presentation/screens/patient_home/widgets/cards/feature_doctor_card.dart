@@ -93,7 +93,7 @@ class FeatureDoctorCard extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Icon(Icons.star, color: Colors.amber, size: 10),
+                  Icon(Icons.star, color: palette.warning, size: 10),
                   const SizedBox(width: 2),
                   Text(
                     doctor.rating.toStringAsFixed(1),

@@ -68,7 +68,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen>
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              const Color(0xFFE2F4F2), // Light cyan
+              context.palette.primaryLight, // Light cyan
               context.palette.white,
             ],
             stops: const [0.0, 0.3],
@@ -164,13 +164,13 @@ class _AnimatedContent extends StatelessWidget {
                       child: Container(
                         height: 200,
                         width: double.infinity,
-                        color: Colors.grey.shade200,
+                        color: context.palette.surfaceAlt,
                         // Placeholder for Map
                         child: Center(
                           child: Icon(
                             Icons.map,
                             size: 60,
-                            color: Colors.grey.shade400,
+                            color: context.palette.textPlaceholder,
                           ),
                         ),
                       ),

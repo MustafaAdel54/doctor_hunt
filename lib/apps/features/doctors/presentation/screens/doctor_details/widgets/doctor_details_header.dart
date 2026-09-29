@@ -19,11 +19,11 @@ class DoctorDetailsHeader extends StatelessWidget {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: context.palette.surface,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: context.palette.shadowSoft,
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -32,7 +32,7 @@ class DoctorDetailsHeader extends StatelessWidget {
               child: const Icon(
                 Icons.arrow_back_ios_new,
                 size: 20,
-                color: Colors.black54,
+                color: context.palette.textSub,
               ),
             ),
           ),
@@ -46,7 +46,7 @@ class DoctorDetailsHeader extends StatelessWidget {
             width: 44,
             height: 44,
             alignment: Alignment.center,
-            child: const Icon(Icons.search, size: 28, color: Colors.black54),
+            child: Icon(Icons.search, size: 28, color: context.palette.textSub),
           ),
         ],
       ),
