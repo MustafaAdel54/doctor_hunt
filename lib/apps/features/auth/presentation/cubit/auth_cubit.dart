@@ -45,53 +45,6 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  bool _isCreatingProfile = false;
-
-  /// Creates the database application profile after role selection.
-  /// Used for both email-registered and Google Sign-In users.
-  Future<void> createUserProfile({
-    required String uid,
-    required String email,
-    required String role,
-    String? name,
-    String? photoUrl,
-    String? phone,
-    bool isVerified = false,
-  }) async {
-    if (_isCreatingProfile) return;
-    _isCreatingProfile = true;
-
-    try {
-      emit(const AuthState.loading());
-      final result = await repo.createUserProfile(
-        uid: uid,
-        email: email,
-        role: role,
-        name: name,
-        photoUrl: photoUrl,
-        phone: phone,
-        isVerified: isVerified,
-      );
-      result.fold(
-        (failure) {
-          if (failure is AuthFailure && failure.code == 'account-already-setup') {
-            // Self-healing: profile already exists, re-evaluate session so router redirects home
-            sessionService.refreshProfile();
-            if (!isClosed) emit(const AuthState.success());
-          } else {
-            if (!isClosed) emit(AuthState.error(_mapFailureToCode(failure)));
-          }
-        },
-        (user) {
-          // Profile created. Re-evaluate session so router redirects to home.
-          sessionService.refreshProfile();
-          if (!isClosed) emit(const AuthState.success());
-        },
-      );
-    } finally {
-      _isCreatingProfile = false;
-    }
-  }
 
   /// Performs Google OAuth + Supabase sign-in only.
   /// Does NOT create a database profile. Does NOT accept a role.

@@ -48,29 +48,6 @@ class AuthRepoImpl implements AuthRepo {
     }
   }
 
-  @override
-  Future<Either<Failure, UserModel>> createUserProfile({
-    required String uid,
-    required String email,
-    required String role,
-    String? name,
-    String? photoUrl,
-    String? phone,
-    bool isVerified = false,
-  }) async {
-    if (!await networkInfo.isConnected) return const Left(NetworkFailure());
-    try {
-      final user = await profileService.createProfile(
-        role: role,
-        name: name,
-        phone: (phone != null && phone.isEmpty) ? null : phone,
-        photoUrl: photoUrl,
-      );
-      return Right(user);
-    } catch (e) {
-      return Left(SupabaseErrorMapper.map(e));
-    }
-  }
 
   @override
   Future<Either<Failure, void>> loginWithGoogle() async {

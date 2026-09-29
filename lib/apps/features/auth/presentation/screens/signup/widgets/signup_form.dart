@@ -41,7 +41,7 @@ class _SignupFormState extends State<SignupForm> {
     }
     if (_formKey.currentState!.validate()) {
       // Creates only the Supabase Auth account. Role is chosen in Role Selection
-      // after authentication, then createUserProfile writes the database document.
+      // after authentication, then createProfile writes the database document.
       context.read<AuthCubit>().registerWithEmailOnly(
         _emailCtrl.text.trim(),
         _passCtrl.text,

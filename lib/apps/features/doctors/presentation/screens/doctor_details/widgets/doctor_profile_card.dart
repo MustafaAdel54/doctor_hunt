@@ -106,6 +106,8 @@ class DoctorProfileCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
+                        Icon(
+                          Icons.star,
                           color: palette.textBorders,
                           size: 16,
                         ),

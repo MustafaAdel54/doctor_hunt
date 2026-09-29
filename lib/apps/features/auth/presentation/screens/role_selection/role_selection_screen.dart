@@ -10,6 +10,8 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 import '../../cubit/auth_cubit.dart';
 import '../../cubit/auth_state.dart';
+import '../../../profile/presentation/cubit/profile_cubit.dart';
+import '../../../profile/presentation/cubit/profile_state.dart';
 import 'package:doctor_hunt/apps/core/utils/error_mapper.dart';
 import 'widgets/role_option_card.dart';
 import 'widgets/role_selection_header.dart';
@@ -30,7 +32,7 @@ class RoleSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<AuthCubit>(),
+      create: (_) => sl<ProfileCubit>(),
       child: const _RoleSelectionView(),
     );
   }
@@ -64,17 +66,14 @@ class _RoleSelectionViewState extends State<_RoleSelectionView> {
     final metadata = supabaseUser?.userMetadata;
     final isGoogle = supabaseUser?.appMetadata['provider'] == 'google';
 
-    context.read<AuthCubit>().createUserProfile(
-      uid: uid,
-      email: email,
+    context.read<ProfileCubit>().createProfile(
       role: role,
       name: metadata?['name'] as String?,
       photoUrl: metadata?['photoUrl'] as String?,
       phone: null, // Phone is collected later in the profile
-      isVerified: isGoogle,
     );
 
-    // No explicit navigation needed. After createUserProfile writes users/{uid},
+    // No explicit navigation needed. After createProfile writes users/{uid},
     // the SessionService Firestore stream fires, the session transitions to
     // authenticated(role: ...), and GoRouter redirects to the correct home.
   }
@@ -85,7 +84,7 @@ class _RoleSelectionViewState extends State<_RoleSelectionView> {
 
     return Scaffold(
       backgroundColor: palette.surface,
-      body: BlocConsumer<AuthCubit, AuthState>(
+      body: BlocConsumer<ProfileCubit, ProfileState>(
         listener: (context, state) {
           state.whenOrNull(
             error: (code) {

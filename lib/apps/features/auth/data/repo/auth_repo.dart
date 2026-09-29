@@ -17,17 +17,7 @@ abstract interface class AuthRepo {
     String name,
   );
 
-  /// Creates the database application profile for any authenticated user.
-  /// Called from Role Selection for both email-registered and Google users.
-  Future<Either<Failure, UserModel>> createUserProfile({
-    required String uid,
-    required String email,
-    required String role,
-    String? name,
-    String? photoUrl,
-    String? phone,
-    bool isVerified,
-  });
+
 
   /// Performs Google OAuth + Supabase credential sign-in only.
   /// Does NOT create a database application profile.

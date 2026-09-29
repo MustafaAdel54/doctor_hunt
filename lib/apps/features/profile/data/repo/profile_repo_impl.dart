@@ -13,6 +13,27 @@ class ProfileRepoImpl implements ProfileRepo {
   final NetworkInfo networkInfo;
 
   @override
+  Future<Either<Failure, UserModel>> createProfile({
+    required String role,
+    String? name,
+    String? photoUrl,
+    String? phone,
+  }) async {
+    if (!await networkInfo.isConnected) return const Left(NetworkFailure());
+    try {
+      final user = await service.createProfile(
+        role: role,
+        name: name,
+        phone: phone,
+        photoUrl: photoUrl,
+      );
+      return Right(user);
+    } catch (e) {
+      return Left(SupabaseErrorMapper.map(e));
+    }
+  }
+
+  @override
   Future<Either<Failure, UserModel>> getProfile(String uid) async {
     if (!await networkInfo.isConnected) return const Left(NetworkFailure());
     try {
