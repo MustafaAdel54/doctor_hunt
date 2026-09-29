@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:doctor_hunt/i18n/strings.g.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -138,13 +139,13 @@ class PatientShell extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
     body: navigationShell,
     bottomNavigationBar: BottomNavigationBar(
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+      items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: t.nav.home),
         BottomNavigationBarItem(
           icon: Icon(Icons.calendar_today),
-          label: 'Appointments',
+          label: t.appointments.title,
         ),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: t.nav.profile),
       ],
     ),
   );
@@ -157,15 +158,15 @@ class DoctorShell extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
     body: navigationShell,
     bottomNavigationBar: BottomNavigationBar(
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Requests'),
+      items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: t.nav.home),
+        BottomNavigationBarItem(icon: Icon(Icons.list), label: t.nav.requests),
         BottomNavigationBarItem(
           icon: Icon(Icons.schedule),
-          label: 'Availability',
+          label: t.doctor.availability,
         ),
-        BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Reviews'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        BottomNavigationBarItem(icon: Icon(Icons.star), label: t.reviews.title),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: t.nav.profile),
       ],
     ),
   );

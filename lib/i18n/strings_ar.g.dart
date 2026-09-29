@@ -35,6 +35,8 @@ class TranslationsAr extends Translations with BaseTranslations<AppLocale, Trans
 
 	// Translations
 	@override late final _Translations$common$ar common = _Translations$common$ar._(_root);
+	@override late final _Translations$home$ar home = _Translations$home$ar._(_root);
+	@override late final _Translations$nav$ar nav = _Translations$nav$ar._(_root);
 	@override late final _Translations$auth$ar auth = _Translations$auth$ar._(_root);
 	@override late final _Translations$onboarding$ar onboarding = _Translations$onboarding$ar._(_root);
 	@override late final _Translations$doctorOnboarding$ar doctorOnboarding = _Translations$doctorOnboarding$ar._(_root);
@@ -67,6 +69,33 @@ class _Translations$common$ar extends Translations$common$en {
 	@override String get search => 'بحث';
 }
 
+// Path: home
+class _Translations$home$ar extends Translations$home$en {
+	_Translations$home$ar._(TranslationsAr root) : this._root = root, super.internal(root);
+
+	final TranslationsAr _root; // ignore: unused_field
+
+	// Translations
+	@override String greeting({required Object name}) => 'مرحباً، ${name}!';
+	@override String get liveDoctors => 'أطباء متاحون الآن';
+	@override String get popularDoctors => 'أطباء مشهورون';
+	@override String get featuredDoctors => 'أطباء مميزون';
+	@override String get seeAll => 'عرض الكل';
+	@override String get live => 'مباشر';
+}
+
+// Path: nav
+class _Translations$nav$ar extends Translations$nav$en {
+	_Translations$nav$ar._(TranslationsAr root) : this._root = root, super.internal(root);
+
+	final TranslationsAr _root; // ignore: unused_field
+
+	// Translations
+	@override String get home => 'الرئيسية';
+	@override String get profile => 'الملف الشخصي';
+	@override String get requests => 'الطلبات';
+}
+
 // Path: auth
 class _Translations$auth$ar extends Translations$auth$en {
 	_Translations$auth$ar._(TranslationsAr root) : this._root = root, super.internal(root);
@@ -90,6 +119,7 @@ class _Translations$auth$ar extends Translations$auth$en {
 	@override String get roleDoctorDesc => 'إدارة عيادتك ومواعيدك';
 	@override String get chooseRole => 'كيف ستستخدم التطبيق؟';
 	@override String welcomeBack({required Object name}) => 'مرحباً بك، ${name}';
+	@override String get termsRequired => 'يجب عليك الموافقة على شروط الخدمة';
 }
 
 // Path: onboarding
@@ -157,6 +187,11 @@ class _Translations$doctors$ar extends Translations$doctors$en {
 	@override String get treats => 'يعالج';
 	@override String withinRadius({required Object km}) => 'ضمن ${km} كم';
 	@override String get recentSearches => 'عمليات البحث الأخيرة';
+	@override String get detailsTitle => 'تفاصيل الطبيب';
+	@override String get statRunning => 'قيد التشغيل';
+	@override String get statOngoing => 'مستمر';
+	@override String get statPatients => 'المرضى';
+	@override String get services => 'الخدمات';
 }
 
 // Path: reviews
@@ -300,6 +335,7 @@ class _Translations$errors$ar extends Translations$errors$en {
 	@override String get locationUnavailable => 'لا يمكن تحديد موقعك';
 	@override String get alreadyReviewed => 'لقد قمت بتقييم هذه الزيارة بالفعل';
 	@override String get callFailed => 'تعذر بدء المكالمة';
+	@override String get loadDoctor => 'خطأ في تحميل تفاصيل الطبيب';
 	@override late final _Translations$errors$auth$ar auth = _Translations$errors$auth$ar._(_root);
 }
 

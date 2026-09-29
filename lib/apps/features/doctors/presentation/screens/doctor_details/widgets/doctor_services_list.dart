@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:doctor_hunt/generated/style_atoms.dart';
 import 'package:doctor_hunt/apps/features/doctors/data/models/doctor_model.dart';
+import 'package:doctor_hunt/i18n/strings.g.dart';
 
 class DoctorServicesList extends StatelessWidget {
   final DoctorModel doctor;
@@ -15,7 +16,7 @@ class DoctorServicesList extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Services',
+            t.doctors.services,
             style: context.medium18.copyWith(color: context.palette.textMain),
           ),
           const SizedBox(height: 16),

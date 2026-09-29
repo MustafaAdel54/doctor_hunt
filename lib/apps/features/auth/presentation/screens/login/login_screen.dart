@@ -9,6 +9,7 @@ import 'widgets/login_header.dart';
 import 'package:doctor_hunt/apps/core/widgets/auth_social_buttons.dart';
 import 'widgets/login_form.dart';
 import 'widgets/login_footer.dart';
+import 'package:doctor_hunt/apps/core/utils/error_mapper.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -34,7 +35,8 @@ class _LoginView extends StatelessWidget {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           state.whenOrNull(
-            error: (msg) {
+            error: (code) {
+              final msg = getErrorMessage(code);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(msg), backgroundColor: palette.danger),
               );

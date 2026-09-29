@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:doctor_hunt/generated/style_atoms.dart';
 import 'package:doctor_hunt/apps/core/constants/app_constants.dart';
+import 'package:doctor_hunt/generated/image_assets.dart';
+import 'package:doctor_hunt/i18n/strings.g.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
@@ -66,19 +68,19 @@ class HomeHeader extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Hi Handwerker!',
+                      t.home.greeting(name: 'Handwerker'), // FLAG: No profile plumbing available. Wiring default name.
                       style: context.regular20.copyWith(color: palette.white.withValues(alpha: 0.7)),
                     ),
                     Gaps.h4,
                     Text(
-                      'Find Your Doctor',
+                      t.doctors.title,
                       style: context.bold24.copyWith(color: palette.white),
                     ),
                   ],
                 ),
                 ClipOval(
                   child: Image.asset(
-                    'assets/images/home/avatar.png',
+                    ImageAssets.avatar,
                     width: 60,
                     height: 60,
                     fit: BoxFit.cover,
@@ -86,7 +88,7 @@ class HomeHeader extends StatelessWidget {
                       width: 60,
                       height: 60,
                       color: palette.white.withValues(alpha: 0.24),
-                      child: const Icon(
+                      child: Icon(
                         Icons.person,
                         color: palette.white,
                         size: 30,

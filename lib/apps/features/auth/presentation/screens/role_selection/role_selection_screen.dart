@@ -10,6 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 import '../../cubit/auth_cubit.dart';
 import '../../cubit/auth_state.dart';
+import 'package:doctor_hunt/apps/core/utils/error_mapper.dart';
 import 'widgets/role_option_card.dart';
 import 'widgets/role_selection_header.dart';
 
@@ -87,7 +88,8 @@ class _RoleSelectionViewState extends State<_RoleSelectionView> {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           state.whenOrNull(
-            error: (msg) {
+            error: (code) {
+              final msg = getErrorMessage(code);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(msg), backgroundColor: palette.danger),
               );

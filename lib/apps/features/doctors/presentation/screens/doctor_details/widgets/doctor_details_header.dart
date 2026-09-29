@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:doctor_hunt/generated/style_atoms.dart';
+import 'package:doctor_hunt/i18n/strings.g.dart';
 
 class DoctorDetailsHeader extends StatelessWidget {
   const DoctorDetailsHeader({super.key});
@@ -38,7 +39,7 @@ class DoctorDetailsHeader extends StatelessWidget {
           ),
           // Title
           Text(
-            'Doctor Details',
+            t.doctors.detailsTitle,
             style: context.medium18.copyWith(color: context.palette.textMain),
           ),
           // Search icon

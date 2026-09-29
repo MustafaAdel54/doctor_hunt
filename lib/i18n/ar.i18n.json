@@ -10,6 +10,19 @@
     "noData": "لا يوجد شيء هنا بعد",
     "search": "بحث"
   },
+  "home": {
+    "greeting": "مرحباً، {{name}}!",
+    "liveDoctors": "أطباء متاحون الآن",
+    "popularDoctors": "أطباء مشهورون",
+    "featuredDoctors": "أطباء مميزون",
+    "seeAll": "عرض الكل",
+    "live": "مباشر"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "profile": "الملف الشخصي",
+    "requests": "الطلبات"
+  },
   "auth": {
     "login": "تسجيل الدخول",
     "register": "إنشاء حساب",
@@ -26,7 +39,8 @@
     "rolePatientDesc": "ابحث عن الأطباء واحجز المواعيد",
     "roleDoctorDesc": "إدارة عيادتك ومواعيدك",
     "chooseRole": "كيف ستستخدم التطبيق؟",
-    "welcomeBack": "مرحباً بك، {{name}}"
+    "welcomeBack": "مرحباً بك، {{name}}",
+    "termsRequired": "يجب عليك الموافقة على شروط الخدمة"
   },
   "onboarding": {
     "page1Title": "ابحث عن أطباء موثوقين",
@@ -72,7 +86,12 @@
     "openInMaps": "فتح في الخرائط",
     "treats": "يعالج",
     "withinRadius": "ضمن {{km}} كم",
-    "recentSearches": "عمليات البحث الأخيرة"
+    "recentSearches": "عمليات البحث الأخيرة",
+    "detailsTitle": "تفاصيل الطبيب",
+    "statRunning": "قيد التشغيل",
+    "statOngoing": "مستمر",
+    "statPatients": "المرضى",
+    "services": "الخدمات"
   },
   "reviews": {
     "title": "التقييمات",
@@ -165,6 +184,7 @@
     "locationUnavailable": "لا يمكن تحديد موقعك",
     "alreadyReviewed": "لقد قمت بتقييم هذه الزيارة بالفعل",
     "callFailed": "تعذر بدء المكالمة",
+    "loadDoctor": "خطأ في تحميل تفاصيل الطبيب",
     "auth": {
       "invalidCredential": "البريد الإلكتروني أو كلمة المرور خاطئة",
       "emailAlreadyInUse": "هذا البريد الإلكتروني مسجل بالفعل",

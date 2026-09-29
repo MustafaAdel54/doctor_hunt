@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../i18n/strings.g.dart';
+import 'package:doctor_hunt/generated/image_assets.dart';
 import '../../../../core/router/routes.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../../generated/style_atoms.dart';
@@ -84,7 +85,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   top: -50.w,
                   left: -50.w,
                   child: Image.asset(
-                    'assets/images/onboarding/green-dot.png',
+                    ImageAssets.greenDot,
                     width: 300.w,
                     fit: BoxFit.contain,
                   ),
@@ -103,19 +104,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           children: [
                             OnboardingPageWidget(
                               imagePath:
-                                  'assets/images/onboarding/onboarding1.png',
+                                  ImageAssets.onboarding1,
                               title: t.onboarding.page1Title,
                               subtitle: t.onboarding.page1Subtitle,
                             ),
                             OnboardingPageWidget(
                               imagePath:
-                                  'assets/images/onboarding/onboarding2.png',
+                                  ImageAssets.onboarding2,
                               title: t.onboarding.page2Title,
                               subtitle: t.onboarding.page2Subtitle,
                             ),
                             OnboardingPageWidget(
                               imagePath:
-                                  'assets/images/onboarding/onboarding3.png',
+                                  ImageAssets.onboarding3,
                               title: t.onboarding.page3Title,
                               subtitle: t.onboarding.page3Subtitle,
                             ),

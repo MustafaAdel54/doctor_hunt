@@ -10,6 +10,19 @@
     "noData": "Nothing here yet",
     "search": "Search"
   },
+  "home": {
+    "greeting": "Hi, {{name}}!",
+    "liveDoctors": "Live Doctors",
+    "popularDoctors": "Popular Doctors",
+    "featuredDoctors": "Featured Doctors",
+    "seeAll": "See all",
+    "live": "LIVE"
+  },
+  "nav": {
+    "home": "Home",
+    "profile": "Profile",
+    "requests": "Requests"
+  },
   "auth": {
     "login": "Log in",
     "register": "Create account",
@@ -34,7 +47,8 @@
     "agreeTerms": "I agree with the Terms of Service & Privacy Policy",
     "name": "Name",
     "google": "Google",
-    "facebook": "Facebook"
+    "facebook": "Facebook",
+    "termsRequired": "You must agree to the Terms of Service"
   },
   "onboarding": {
     "page1Title": "Find Trusted Doctors",
@@ -80,7 +94,12 @@
     "openInMaps": "Open in Maps",
     "treats": "Treats",
     "withinRadius": "Within {{km}} km",
-    "recentSearches": "Recent searches"
+    "recentSearches": "Recent searches",
+    "detailsTitle": "Doctor Details",
+    "statRunning": "Running",
+    "statOngoing": "Ongoing",
+    "statPatients": "Patients",
+    "services": "Services"
   },
   "reviews": {
     "title": "Reviews",
@@ -173,6 +192,7 @@
     "locationUnavailable": "Could not determine your location",
     "alreadyReviewed": "You have already reviewed this visit",
     "callFailed": "Could not start the call",
+    "loadDoctor": "Error loading doctor details",
     "auth": {
       "invalidCredential": "Wrong email or password",
       "emailAlreadyInUse": "This email is already registered",

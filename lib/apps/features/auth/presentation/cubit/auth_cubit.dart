@@ -15,7 +15,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await repo.loginWithEmail(email, password);
     result.fold(
       (failure) {
-        if (!isClosed) emit(AuthState.error(_mapFailureToMessage(failure)));
+        if (!isClosed) emit(AuthState.error(_mapFailureToCode(failure)));
       },
       (user) {
         if (!isClosed) emit(const AuthState.success());
@@ -35,7 +35,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await repo.registerWithEmailOnly(email, password, name);
     result.fold(
       (failure) {
-        if (!isClosed) emit(AuthState.error(_mapFailureToMessage(failure)));
+        if (!isClosed) emit(AuthState.error(_mapFailureToCode(failure)));
       },
       (_) {
         // Supabase Auth user created. SessionService detects no database
@@ -79,7 +79,7 @@ class AuthCubit extends Cubit<AuthState> {
             sessionService.refreshProfile();
             if (!isClosed) emit(const AuthState.success());
           } else {
-            if (!isClosed) emit(AuthState.error(_mapFailureToMessage(failure)));
+            if (!isClosed) emit(AuthState.error(_mapFailureToCode(failure)));
           }
         },
         (user) {
@@ -100,7 +100,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await repo.loginWithGoogle();
     result.fold(
       (failure) {
-        if (!isClosed) emit(AuthState.error(_mapFailureToMessage(failure)));
+        if (!isClosed) emit(AuthState.error(_mapFailureToCode(failure)));
       },
       (_) {
         if (!isClosed) emit(const AuthState.success());
@@ -113,7 +113,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await repo.resetPassword(email);
     result.fold(
       (failure) {
-        if (!isClosed) emit(AuthState.error(_mapFailureToMessage(failure)));
+        if (!isClosed) emit(AuthState.error(_mapFailureToCode(failure)));
       },
       (_) {
         if (!isClosed) emit(const AuthState.success());
@@ -121,10 +121,10 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  String _mapFailureToMessage(Failure failure) {
+  String _mapFailureToCode(Failure failure) {
     if (failure is AuthFailure) return failure.code;
-    if (failure is NetworkFailure) return 'No internet connection';
-    if (failure is ServerFailure) return 'Server error';
-    return 'An unexpected error occurred';
+    if (failure is NetworkFailure) return 'network';
+    if (failure is ServerFailure) return 'server';
+    return 'unknown';
   }
 }

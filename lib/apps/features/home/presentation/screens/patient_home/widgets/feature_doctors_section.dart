@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:doctor_hunt/generated/style_atoms.dart';
 import 'package:doctor_hunt/apps/core/constants/app_constants.dart';
+import 'package:doctor_hunt/i18n/strings.g.dart';
 import '../../../models/home_mock_data.dart';
 import 'cards/feature_doctor_card.dart';
 
@@ -21,7 +22,7 @@ class FeatureDoctorsSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Feature Doctor',
+                t.home.featuredDoctors,
                 style: context.medium18.copyWith(
                   color: context.palette.textMain,
                 ),
@@ -32,7 +33,7 @@ class FeatureDoctorsSection extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'See all',
+                      t.home.seeAll,
                       style: context.light12.copyWith(
                         color: context.palette.textSub,
                       ),

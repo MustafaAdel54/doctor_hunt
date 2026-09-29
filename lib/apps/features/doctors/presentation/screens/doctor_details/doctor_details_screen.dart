@@ -3,6 +3,7 @@ import 'package:doctor_hunt/apps/features/doctors/data/models/doctor_model.dart'
 import 'package:doctor_hunt/apps/features/doctors/data/repo/doctor_repo.dart';
 import 'package:doctor_hunt/generated/style_atoms.dart';
 import 'package:flutter/material.dart';
+import 'package:doctor_hunt/i18n/strings.g.dart';
 
 import 'widgets/doctor_details_header.dart';
 import 'widgets/doctor_details_shimmer.dart';
@@ -83,7 +84,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen>
               }
 
               if (snapshot.hasError) {
-                return const Center(child: Text('Error loading doctor details'));
+                return Center(child: Text(t.errors.loadDoctor));
               }
 
               final doctor = snapshot.data!;

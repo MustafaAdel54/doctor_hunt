@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:doctor_hunt/generated/style_atoms.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:doctor_hunt/i18n/strings.g.dart';
 import '../../../../models/home_mock_data.dart';
 
 class LiveDoctorCard extends StatelessWidget {
@@ -72,14 +73,14 @@ class LiveDoctorCard extends StatelessWidget {
                       Container(
                         width: 6,
                         height: 6,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           color: palette.white,
                           shape: BoxShape.circle,
                         ),
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'LIVE',
+                        t.home.live,
                         style: context.medium8White.copyWith(fontSize: 7.sp),
                       ),
                     ],
@@ -92,7 +93,7 @@ class LiveDoctorCard extends StatelessWidget {
               child: Container(
                 width: 30,
                 height: 30,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: palette.white,
                   shape: BoxShape.circle,
                 ),

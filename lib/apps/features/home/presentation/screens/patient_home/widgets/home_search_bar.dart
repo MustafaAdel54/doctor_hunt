@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:doctor_hunt/generated/style_atoms.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:doctor_hunt/i18n/strings.g.dart';
 
 class HomeSearchBar extends StatelessWidget {
   const HomeSearchBar({super.key});
@@ -31,7 +32,7 @@ class HomeSearchBar extends StatelessWidget {
           Expanded(
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'Search.....',
+                hintText: t.doctors.searchHint,
                 hintStyle: context.regular14TextSub.copyWith(fontSize: 15.sp),
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,

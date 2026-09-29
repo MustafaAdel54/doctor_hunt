@@ -4,6 +4,7 @@ import 'package:doctor_hunt/apps/core/constants/app_constants.dart';
 import 'package:doctor_hunt/apps/features/doctors/data/models/doctor_model.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:doctor_hunt/i18n/strings.g.dart';
 
 class DoctorProfileCard extends StatelessWidget {
   final DoctorModel doctor;
@@ -148,7 +149,7 @@ class DoctorProfileCard extends StatelessWidget {
                       elevation: 0,
                     ),
                     child: Text(
-                      'Book Now',
+                      t.doctors.bookNow,
                       style: context.medium14.copyWith(color: palette.white),
                     ),
                   ),

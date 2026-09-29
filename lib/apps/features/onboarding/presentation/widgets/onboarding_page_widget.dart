@@ -16,8 +16,6 @@ class OnboardingPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
-
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       child: Column(

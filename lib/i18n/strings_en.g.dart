@@ -37,6 +37,8 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	// Translations
 	late final Translations$common$en common = Translations$common$en.internal(_root);
+	late final Translations$home$en home = Translations$home$en.internal(_root);
+	late final Translations$nav$en nav = Translations$nav$en.internal(_root);
 	late final Translations$auth$en auth = Translations$auth$en.internal(_root);
 	late final Translations$onboarding$en onboarding = Translations$onboarding$en.internal(_root);
 	late final Translations$doctorOnboarding$en doctorOnboarding = Translations$doctorOnboarding$en.internal(_root);
@@ -85,6 +87,51 @@ class Translations$common$en {
 
 	/// en: 'Search'
 	String get search => 'Search';
+}
+
+// Path: home
+class Translations$home$en {
+	Translations$home$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Hi, {{name}}!'
+	String greeting({required Object name}) => 'Hi, ${name}!';
+
+	/// en: 'Live Doctors'
+	String get liveDoctors => 'Live Doctors';
+
+	/// en: 'Popular Doctors'
+	String get popularDoctors => 'Popular Doctors';
+
+	/// en: 'Featured Doctors'
+	String get featuredDoctors => 'Featured Doctors';
+
+	/// en: 'See all'
+	String get seeAll => 'See all';
+
+	/// en: 'LIVE'
+	String get live => 'LIVE';
+}
+
+// Path: nav
+class Translations$nav$en {
+	Translations$nav$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Home'
+	String get home => 'Home';
+
+	/// en: 'Profile'
+	String get profile => 'Profile';
+
+	/// en: 'Requests'
+	String get requests => 'Requests';
 }
 
 // Path: auth
@@ -166,6 +213,9 @@ class Translations$auth$en {
 
 	/// en: 'Facebook'
 	String get facebook => 'Facebook';
+
+	/// en: 'You must agree to the Terms of Service'
+	String get termsRequired => 'You must agree to the Terms of Service';
 }
 
 // Path: onboarding
@@ -313,6 +363,21 @@ class Translations$doctors$en {
 
 	/// en: 'Recent searches'
 	String get recentSearches => 'Recent searches';
+
+	/// en: 'Doctor Details'
+	String get detailsTitle => 'Doctor Details';
+
+	/// en: 'Running'
+	String get statRunning => 'Running';
+
+	/// en: 'Ongoing'
+	String get statOngoing => 'Ongoing';
+
+	/// en: 'Patients'
+	String get statPatients => 'Patients';
+
+	/// en: 'Services'
+	String get services => 'Services';
 }
 
 // Path: reviews
@@ -581,6 +646,9 @@ class Translations$errors$en {
 
 	/// en: 'Could not start the call'
 	String get callFailed => 'Could not start the call';
+
+	/// en: 'Error loading doctor details'
+	String get loadDoctor => 'Error loading doctor details';
 
 	late final Translations$errors$auth$en auth = Translations$errors$auth$en.internal(_root);
 }

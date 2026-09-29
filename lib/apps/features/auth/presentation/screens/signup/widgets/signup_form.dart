@@ -35,7 +35,7 @@ class _SignupFormState extends State<SignupForm> {
   void _onSubmit() {
     if (!_termsAgreed) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('You must agree to the Terms of Service')),
+        SnackBar(content: Text(t.auth.termsRequired)),
       );
       return;
     }

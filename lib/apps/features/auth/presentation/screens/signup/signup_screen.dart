@@ -9,6 +9,7 @@ import '../../cubit/auth_state.dart';
 import 'widgets/signup_footer.dart';
 import 'widgets/signup_form.dart';
 import 'widgets/signup_header.dart';
+import 'package:doctor_hunt/apps/core/utils/error_mapper.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
@@ -34,7 +35,8 @@ class _SignupView extends StatelessWidget {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           state.whenOrNull(
-            error: (msg) {
+            error: (code) {
+              final msg = getErrorMessage(code);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(msg), backgroundColor: palette.danger),
               );

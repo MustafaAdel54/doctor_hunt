@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:doctor_hunt/generated/style_atoms.dart';
 import 'package:doctor_hunt/apps/core/constants/app_constants.dart';
+import 'package:doctor_hunt/i18n/strings.g.dart';
 import '../../../models/home_mock_data.dart';
 import 'cards/live_doctor_card.dart';
 
@@ -17,7 +18,7 @@ class LiveDoctorsSection extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Text(
-            'Live Doctors',
+            t.home.liveDoctors,
             style: context.medium18.copyWith(color: context.palette.textMain),
           ),
         ),
