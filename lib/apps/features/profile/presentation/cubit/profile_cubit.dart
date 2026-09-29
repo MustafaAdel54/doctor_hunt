@@ -6,7 +6,7 @@ import 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit({required this.repo, required this.sessionService})
-      : super(const ProfileState.initial());
+      : super(const ProfileInitial());
 
   final ProfileRepo repo;
   final SessionService sessionService;
@@ -25,7 +25,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     _isCreatingProfile = true;
 
     try {
-      emit(const ProfileState.loading());
+      emit(const ProfileLoading());
       final result = await repo.createProfile(
         role: role,
         name: name,
@@ -37,15 +37,15 @@ class ProfileCubit extends Cubit<ProfileState> {
           if (failure is AuthFailure && failure.code == 'account-already-setup') {
             // Self-healing: profile already exists, re-evaluate session so router redirects home
             sessionService.refreshProfile();
-            if (!isClosed) emit(const ProfileState.success());
+            if (!isClosed) emit(const ProfileSuccess());
           } else {
-            if (!isClosed) emit(ProfileState.error(_mapFailureToCode(failure)));
+            if (!isClosed) emit(ProfileError(_mapFailureToCode(failure)));
           }
         },
         (user) {
           // Profile created. Re-evaluate session so router redirects to home.
           sessionService.refreshProfile();
-          if (!isClosed) emit(const ProfileState.success());
+          if (!isClosed) emit(const ProfileSuccess());
         },
       );
     } finally {

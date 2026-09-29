@@ -87,20 +87,15 @@ class _RoleSelectionViewState extends State<_RoleSelectionView> {
       backgroundColor: palette.surface,
       body: BlocConsumer<ProfileCubit, ProfileState>(
         listener: (context, state) {
-          state.whenOrNull(
-            error: (code) {
-              final msg = getErrorMessage(code);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(msg), backgroundColor: palette.danger),
-              );
-            },
-          );
+          if (state is ProfileError) {
+            final msg = getErrorMessage(state.code);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(msg), backgroundColor: palette.danger),
+            );
+          }
         },
         builder: (context, state) {
-          final isLoading = state.maybeWhen(
-            loading: () => true,
-            orElse: () => false,
-          );
+          final isLoading = state is ProfileLoading;
 
           return SafeArea(
             child: CustomScrollView(
