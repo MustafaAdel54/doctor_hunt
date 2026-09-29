@@ -1,3 +1,4 @@
+import 'package:doctor_hunt/generated/image_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -11,10 +12,10 @@ class CategoryTabsSection extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildCategoryTab('assets/icons/home/cat_tooth.svg', () {}),
-          _buildCategoryTab('assets/icons/home/cat_heart.svg', () {}),
-          _buildCategoryTab('assets/icons/home/cat_eye.svg', () {}),
-          _buildCategoryTab('assets/icons/home/cat_body.svg', () {}),
+          _buildCategoryTab(ImageAssets.catTooth, () {}),
+          _buildCategoryTab(ImageAssets.catHeart, () {}),
+          _buildCategoryTab(ImageAssets.catEye, () {}),
+          _buildCategoryTab(ImageAssets.catBody, () {}),
         ],
       ),
     );

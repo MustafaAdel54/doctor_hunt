@@ -76,7 +76,7 @@ class _Translations$home$ar extends Translations$home$en {
 	final TranslationsAr _root; // ignore: unused_field
 
 	// Translations
-	@override String greeting({required Object name}) => 'مرحباً، ${name}!';
+	@override String greeting({required Object name}) => 'أهلاً ${name}!';
 	@override String get liveDoctors => 'أطباء متاحون الآن';
 	@override String get popularDoctors => 'أطباء مشهورون';
 	@override String get featuredDoctors => 'أطباء مميزون';
@@ -118,7 +118,11 @@ class _Translations$auth$ar extends Translations$auth$en {
 	@override String get rolePatientDesc => 'ابحث عن الأطباء واحجز المواعيد';
 	@override String get roleDoctorDesc => 'إدارة عيادتك ومواعيدك';
 	@override String get chooseRole => 'كيف ستستخدم التطبيق؟';
+	@override String get roleSubtitle => 'يحدد الدور المختار تجربتك والميزات المتاحة لك.';
 	@override String welcomeBack({required Object name}) => 'مرحباً بك، ${name}';
+	@override String get welcomeBackTitle => 'مرحباً بعودتك';
+	@override String get loginSubtitle => 'يمكنك البحث عن الأطباء وحجز المواعيد بكل سهولة';
+	@override String get joinUsTitle => 'انضم إلينا لتبدأ البحث';
 	@override String get termsRequired => 'يجب عليك الموافقة على شروط الخدمة';
 }
 
@@ -268,7 +272,7 @@ class _Translations$doctor$ar extends Translations$doctor$en {
 	@override String get todayAppointments => 'مواعيد اليوم';
 	@override String get totalPatients => 'إجمالي المرضى';
 	@override String get pendingRequests => 'الطلبات المعلقة';
-	@override String get availability => 'توفري';
+	@override String get availability => 'أوقات العمل';
 	@override String get addSlot => 'إضافة وقت';
 	@override String get workingHours => 'ساعات العمل';
 	@override String get accept => 'قبول';
@@ -336,6 +340,7 @@ class _Translations$errors$ar extends Translations$errors$en {
 	@override String get alreadyReviewed => 'لقد قمت بتقييم هذه الزيارة بالفعل';
 	@override String get callFailed => 'تعذر بدء المكالمة';
 	@override String get loadDoctor => 'خطأ في تحميل تفاصيل الطبيب';
+	@override String get accountAlreadySetup => 'هذا الحساب تم إعداده مسبقاً';
 	@override late final _Translations$errors$auth$ar auth = _Translations$errors$auth$ar._(_root);
 }
 

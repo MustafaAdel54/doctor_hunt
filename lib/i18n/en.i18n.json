@@ -193,6 +193,7 @@
     "alreadyReviewed": "You have already reviewed this visit",
     "callFailed": "Could not start the call",
     "loadDoctor": "Error loading doctor details",
+    "accountAlreadySetup": "This account is already setup",
     "auth": {
       "invalidCredential": "Wrong email or password",
       "emailAlreadyInUse": "This email is already registered",

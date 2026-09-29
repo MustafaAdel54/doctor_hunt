@@ -1,6 +1,7 @@
 import 'package:doctor_hunt/apps/core/di/injector.dart';
 import 'package:doctor_hunt/apps/core/session/session_service.dart';
 import 'package:doctor_hunt/apps/core/widgets/primary_button.dart';
+import 'package:doctor_hunt/generated/image_assets.dart';
 import 'package:doctor_hunt/generated/style_atoms.dart';
 import 'package:doctor_hunt/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
@@ -117,7 +118,7 @@ class _RoleSelectionViewState extends State<_RoleSelectionView> {
                         RoleOptionCard(
                           title: t.auth.rolePatient,
                           description: t.auth.rolePatientDesc,
-                          iconAsset: 'assets/icons/patient_icon.svg',
+                          iconAsset: ImageAssets.patientIcon,
                           isSelected: _selectedRole == 'patient',
                           onTap: isLoading
                               ? null

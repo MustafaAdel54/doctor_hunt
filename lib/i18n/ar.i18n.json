@@ -11,7 +11,7 @@
     "search": "بحث"
   },
   "home": {
-    "greeting": "مرحباً، {{name}}!",
+    "greeting": "أهلاً {{name}}!",
     "liveDoctors": "أطباء متاحون الآن",
     "popularDoctors": "أطباء مشهورون",
     "featuredDoctors": "أطباء مميزون",
@@ -39,7 +39,11 @@
     "rolePatientDesc": "ابحث عن الأطباء واحجز المواعيد",
     "roleDoctorDesc": "إدارة عيادتك ومواعيدك",
     "chooseRole": "كيف ستستخدم التطبيق؟",
+    "roleSubtitle": "يحدد الدور المختار تجربتك والميزات المتاحة لك.",
     "welcomeBack": "مرحباً بك، {{name}}",
+    "welcomeBackTitle": "مرحباً بعودتك",
+    "loginSubtitle": "يمكنك البحث عن الأطباء وحجز المواعيد بكل سهولة",
+    "joinUsTitle": "انضم إلينا لتبدأ البحث",
     "termsRequired": "يجب عليك الموافقة على شروط الخدمة"
   },
   "onboarding": {
@@ -145,7 +149,7 @@
     "todayAppointments": "مواعيد اليوم",
     "totalPatients": "إجمالي المرضى",
     "pendingRequests": "الطلبات المعلقة",
-    "availability": "توفري",
+    "availability": "أوقات العمل",
     "addSlot": "إضافة وقت",
     "workingHours": "ساعات العمل",
     "accept": "قبول",
@@ -185,6 +189,7 @@
     "alreadyReviewed": "لقد قمت بتقييم هذه الزيارة بالفعل",
     "callFailed": "تعذر بدء المكالمة",
     "loadDoctor": "خطأ في تحميل تفاصيل الطبيب",
+    "accountAlreadySetup": "هذا الحساب تم إعداده مسبقاً",
     "auth": {
       "invalidCredential": "البريد الإلكتروني أو كلمة المرور خاطئة",
       "emailAlreadyInUse": "هذا البريد الإلكتروني مسجل بالفعل",

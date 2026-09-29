@@ -650,6 +650,9 @@ class Translations$errors$en {
 	/// en: 'Error loading doctor details'
 	String get loadDoctor => 'Error loading doctor details';
 
+	/// en: 'This account is already setup'
+	String get accountAlreadySetup => 'This account is already setup';
+
 	late final Translations$errors$auth$en auth = Translations$errors$auth$en.internal(_root);
 }
 

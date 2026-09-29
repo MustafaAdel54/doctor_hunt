@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:doctor_hunt/generated/image_assets.dart';
 import 'package:doctor_hunt/generated/style_atoms.dart';
 import 'package:doctor_hunt/i18n/strings.g.dart';
 
@@ -17,7 +18,7 @@ class RoleSelectionHeader extends StatelessWidget {
         // App Logo
         Center(
           child: Image.asset(
-            'assets/images/logos/splash_logo.png', // Assuming this holds the Doctor Hunt logo based on the provided design
+            ImageAssets.splashLogo, // Assuming this holds the Doctor Hunt logo based on the provided design
             height: 100.h,
             fit: BoxFit.contain,
           ),

@@ -1,3 +1,4 @@
+import 'package:doctor_hunt/generated/image_assets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'home_mock_data.freezed.dart';
@@ -24,21 +25,21 @@ abstract final class HomeMockData {
       id: 'live1',
       name:
           'Dr. Handwerker', // Note: using default names or the name from the image isn't clear, just providing mock
-      imageAsset: 'assets/images/home/live_doctor_1.png',
+      imageAsset: ImageAssets.liveDoctor1,
       rating: 0,
       isLive: true,
     ),
     HomeDoctor(
       id: 'live2',
       name: 'Dr. Smith',
-      imageAsset: 'assets/images/home/live_doctor_2.png',
+      imageAsset: ImageAssets.liveDoctor2,
       rating: 0,
       isLive: true,
     ),
     HomeDoctor(
       id: 'live3',
       name: 'Dr. Doe',
-      imageAsset: 'assets/images/home/live_doctor_3.png',
+      imageAsset: ImageAssets.liveDoctor3,
       rating: 0,
       isLive: true,
     ),
@@ -49,14 +50,14 @@ abstract final class HomeMockData {
       id: 'pop1',
       name: 'Dr. Fillerup Grab',
       specialization: 'Medicine Specialist',
-      imageAsset: 'assets/images/home/pop_doctor_1.png',
+      imageAsset: ImageAssets.popDoctor1,
       rating: 5.0, // Or whatever the Figma showed, assuming full stars for now
     ),
     HomeDoctor(
       id: 'pop2',
       name: 'Dr. Blessing',
       specialization: 'Dentist Specialist',
-      imageAsset: 'assets/images/home/pop_doctor_2.png',
+      imageAsset: ImageAssets.popDoctor2,
       rating: 5.0,
     ),
   ];
@@ -66,21 +67,21 @@ abstract final class HomeMockData {
       id: 'feat1',
       name: 'Dr. Crick',
       hourlyRate: r'$ 25.00/ hours',
-      imageAsset: 'assets/images/home/feat_doctor_1.png',
+      imageAsset: ImageAssets.featDoctor1,
       rating: 3.7,
     ),
     HomeDoctor(
       id: 'feat2',
       name: 'Dr. Strain',
       hourlyRate: r'$ 22.00/ hours',
-      imageAsset: 'assets/images/home/feat_doctor_2.png',
+      imageAsset: ImageAssets.featDoctor2,
       rating: 3.0,
     ),
     HomeDoctor(
       id: 'feat3',
       name: 'Dr. Lachinet',
       hourlyRate: r'$ 29.00/ hours',
-      imageAsset: 'assets/images/home/feat_doctor_3.png',
+      imageAsset: ImageAssets.featDoctor3,
       rating: 2.9,
     ),
   ];

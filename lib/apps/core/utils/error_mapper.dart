@@ -20,6 +20,8 @@ String getErrorMessage(String code) {
       return t.errors.auth.tooManyRequests;
     case 'email_not_verified':
       return t.errors.auth.emailNotVerified;
+    case 'account-already-setup':
+      return t.errors.accountAlreadySetup;
     default:
       return t.errors.auth.unknown;
   }
