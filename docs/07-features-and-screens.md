@@ -54,7 +54,7 @@ map/geolocation UI is explicitly deferred to v1.1.
 
 - Chosen role is passed as a **route parameter** to Register: `/register?role=doctor`.
 - A "I already have an account" link goes straight to Login — **role is not asked at
-  login**, it's read from Firestore.
+  login**, it's read from PostgreSQL.
 
 > **Security note:** the security rule in `06 §2` allows both roles to self-register.
 > The create rule accepts `role in ['patient', 'doctor']`.
@@ -68,7 +68,7 @@ map/geolocation UI is explicitly deferred to v1.1.
 ### A3. Login (`login_screen.dart`)
 - Email, password, forgot-password link, submit, divider, Google button, link to
   role selection.
-- Role comes from `users/{uid}.role` — the user never picks it here.
+- Role comes from the `profiles` table — the user never picks it here.
 
 ### A4. Register (`register_screen.dart`)
 - Receives `role` from the route. Header shows which role is being created.
@@ -88,8 +88,8 @@ A 4-step `PageView` with a progress indicator, shown once right after doctor sig
    v1.1: map picker + geocoding.
 4. **Contact** — clinic phone, optional WhatsApp, address text.
 
-- `doctors/{uid}.isProfileComplete` gates it. `go_router` redirects any doctor with
-  `isProfileComplete == false` back into the wizard.
+- `doctors.is_profile_complete` gates it. `go_router` redirects any doctor with
+  `is_profile_complete == false` back into the wizard.
 - Each step saves as it completes, so a dropout can resume.
 
 ### A6. Forgot Password
@@ -108,16 +108,15 @@ Email → `sendPasswordResetEmail` → confirmation view.
 ### B2. 🆕 Search (`search_screen.dart`)
 Search by **name** or **specialization** — both explicitly required.
 
-> ⚠️ **Firestore cannot do substring or fuzzy search.** Three options:
-> - **(a) Prefix search** with `orderBy(name).startAt(q).endAt(q+'\uf8ff')` —
->   "ahm" finds "Ahmed", but "med" does not. Cheap, no extra service.
+> ⚠️ **Search Implementation.**
+> Unlike Firestore, PostgreSQL handles substring and fuzzy search natively. Options:
+> - **(a) Native Supabase query:** `.ilike('name', '%$query%')`.
 > - **(b) Client-side filter** over all active doctors, cached locally. Fine up to a
 >   few hundred doctors; perfect for a demo with seeded data.
-> - **(c) Algolia / Typesense** — real search, extra service and cost.
+> - **(c) Full-Text Search (FTS)** using PostgreSQL `to_tsvector`.
 >
-> **Recommendation: (b) for v1**, with (a) as the fallback once the list grows.
-> Specialization filtering is a normal `where('specialization', isEqualTo: x)` query
-> either way. Store a lowercase `nameSearch` field to make matching case-insensitive.
+> **Recommendation: (a) for v1.**
+> Specialization filtering is a normal `.eq('specialization', x)` query.
 
 - UI: search field, recent searches, specialization grid, results list.
 - Debounce input 300 ms.
@@ -137,14 +136,14 @@ Search by **name** or **specialization** — both explicitly required.
 
 All bullets in this section are **v1.1 only**; do not implement them in v1.
 
-> ⚠️ **Firestore has no native geo-radius query.** Options:
-> - **(a) `geoflutterfire_plus`** — geohash field on each doctor, real radius queries.
->   The correct answer. Adds a `geohash` field maintained on write.
+> ⚠️ **Native geo-radius query.** Options:
+> - **(a) PostGIS** — real radius queries natively supported by PostgreSQL.
+>   The correct answer.
 > - **(b) Fetch all active doctors, compute distance client-side** with the Haversine
 >   formula, sort, filter. Trivial to build, fine for a demo, does not scale.
 >
-> **Recommendation: (b) for v1.1** (keeps the first map implementation simple),
-> note (a) in the README as the production path. Neither approach is implemented in v1.
+> **Recommendation: (a) for v1.1** (keeps the first map implementation simple),
+> Neither approach is implemented in v1.
 
 - **Permission denied** is a first-class state for v1.1: show the list view with an explanatory
   banner, never a blank map.
@@ -171,7 +170,7 @@ Unchanged from the previous draft and still the most complex screen:
 - Notes field, summary card, confirm button.
 - Slots computed by the pure `calculateAvailableSlots()` in
   `features/availability/data/repo/slot_calculator.dart`.
-- Booking runs in a **Firestore transaction** with a `slotLocks` doc (see `06 §4`) so
+- Booking runs via a **PostgreSQL RPC** (e.g. `book_appointment`) that safely inserts the appointment and relies on a `Unique Partial Index` (`idx_appointments_concurrent_lock`) so
   two patients cannot take the same slot.
 - On `SlotTakenFailure`: show `t.errors.slotTaken`, refresh the grid, stay on screen.
 - On success: confirmation dialog showing **the exact confirmed date and time**, plus
@@ -189,8 +188,7 @@ Unchanged from the previous draft and still the most complex screen:
 - 1–5 star selector, optional comment, submit.
 - **Only allowed** when an appointment between this patient and doctor has
   `status == 'completed'`. Enforced in security rules, not just in the UI.
-- **One review per appointment**, enforced by using `reviews/{appointmentId}` as the
-  document ID, and editable for 7 days.
+- **One review per appointment**, enforced by a unique constraint on `appointment_id` in the `reviews` table, and editable for 7 days.
 - Writing or editing a review updates the doctor's aggregate — see §F.
 
 ### B8. Profile / Edit Profile
@@ -208,7 +206,7 @@ Avatar, name, email, phone, links to appointments / settings / sign out.
 
 ### C2. Requests / Appointments (`doctor_appointments_screen.dart`)
 - Status filter chips, list with patient name + **phone (tap to call)**.
-- Accept / Reject on pending. Reject must also delete the `slotLock`.
+- Accept / Reject on pending. Reject automatically frees the slot as the row leaves the index.
 - Mark as **completed** after the visit — this is what unlocks the patient's review.
 
 > **Rejection** is modelled as cancellation with `cancelledBy: 'doctor'` and
@@ -239,7 +237,7 @@ Avatar, name, email, phone, links to appointments / settings / sign out.
 Everything from the onboarding wizard, editable: specialization, bio EN/AR, what they
 treat, fee, **clinic address**, **contact phone**, optional remote `photoUrl`,
 `isActive` toggle. The map picker is v1.1. Profile-photo uploads are deferred because
-Firebase Storage for Firebase requires Blaze.
+Supabase Storage is excluded in v1.
 
 ### C5. 🆕 My Reviews (`doctor_reviews_screen.dart`)
 Read-only list of received reviews with the rating distribution. No replies in v1.
@@ -250,7 +248,7 @@ Read-only list of received reviews with the rating distribution. No replies in v
 Language (EN/AR), theme (light + dark, default `ThemeMode.system`), sign out,
 **account deactivation**, about/version.
 
-> **Account deactivation (Spark v1):** see `12-firebase-spark-plan.md §3` for the
+> **Account deactivation (v1):** see `12-supabase-plan.md §3` for the
 > canonical flow and constraints. The Settings UI triggers that contract; this feature
 > spec does not duplicate the backend lifecycle policy.
 
@@ -318,26 +316,14 @@ Denormalised onto the doctor for fast list rendering:
 ```
 
 ### ⚠️ Keeping the aggregate correct
-Updating `rating` / `ratingCount` from the client is **racy and spoofable** — two
-simultaneous reviews can clobber each other, and a malicious client could just write
-`rating: 5.0`.
+Updating `rating` / `rating_count` from the client directly is **racy and spoofable**.
 
-- **(a) server-side function** on `reviews/{id}` write → recompute in a transaction.
-  Correct, but **not available on Spark**; defer to the future Blaze version.
-- **(b) Client-side transaction** that reads the doctor doc, increments `ratingSum`
-  and `ratingCount`, recomputes the average, writes both docs atomically. Safe against
-  races (Firestore transactions retry), **not** safe against a malicious client.
-- **(c) Aggregation query** — compute `avg()` on demand, don't denormalise. Correct,
-  but costs a query per doctor card.
-
-**Recommendation: (b) for v1**, with the security rule requiring a matching completed
-appointment and `rating` between 1 and 5. This is Spark-compatible but intentionally
-client-trusted; the future Blaze version can move aggregate maintenance server-side.
+**Recommendation:** A PostgreSQL RPC (e.g., `add_review`) that safely inserts the review and updates the aggregate on the doctor in a single database transaction. This is the v1 implementation defined in `supabase/schema.sql`.
 
 ### Security rules
 
-The authoritative Firestore rules for `reviews/{appointmentId}` live in
-`06-firebase-and-data-model.md §6`. Implement and test that single source of truth;
+The authoritative PostgreSQL RLS rules for the `reviews` table live in
+`supabase/schema.sql`. Implement and test that single source of truth;
 do not duplicate the rules here. The same document also defines the seven-day edit
 window and completed-appointment gate.
 
@@ -360,15 +346,15 @@ window and completed-appointment gate.
       │ cancelled  │                   │ completed  │
       └────────────┘                   └────────────┘
             │                                │
-       slotLock deleted              unlocks patient review
+     frees slot in index             unlocks patient review
 ```
 
 | Transition | Who | Notes |
 |---|---|---|
-| → `pending` | patient | creates `slotLock` in a transaction |
+| → `pending` | patient | via `book_appointment` RPC; `idx_appointments_concurrent_lock` prevents double-booking |
 | `pending` → `confirmed` | doctor | |
-| `pending`/`confirmed` → `cancelled` | doctor **or** patient | **must delete `slotLock`** |
-| `confirmed` → `completed` | **doctor only** | the only gate to reviews |
+| `pending`/`confirmed` → `cancelled` | doctor **or** patient | frees the slot automatically as row leaves index |
+| `confirmed` → `completed` | **doctor only** | the only gate to reviews; frees the slot |
 
 > ⚠️ **No notifications in v1.** The patient is not told when the doctor accepts or
 > rejects — they have to open the app and look. This is precisely why the spec's

@@ -1,0 +1,29 @@
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class LoginHeader extends StatelessWidget {
+  const LoginHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SizedBox(height: 60.h),
+        Text(
+          t.auth.welcomeBackTitle,
+          style: context.bold28TextMain,
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 12.h),
+        Text(
+          t.auth.loginSubtitle,
+          style: context.regular14TextSub.copyWith(height: 1.5),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+}

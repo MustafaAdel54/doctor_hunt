@@ -10,26 +10,32 @@
 ```
 presentation/                        data/
 ├── controller/   ──────────────►    ├── repo/      (abstract + impl)
-├── screens/                         ├── service/   (Firebase-facing)
+├── screens/                         ├── service/   (Supabase-facing)
 └── widgets/                         └── models/
 ```
 
 ### `data/service/`
-Thin wrappers over Firebase. **Throws** exceptions, returns raw models.
-Knows about `FirebaseAuth` and `FirebaseFirestore`. Nothing else does.
-Spark v1 intentionally does not include `FirebaseStorage` or Cloud Functions.
+Thin wrappers over Supabase. **Throws** exceptions, returns raw models.
+Knows about `SupabaseClient`. Nothing else does.
+The v1 scope intentionally does not include Supabase Storage or Edge Functions.
+
+> **Migration Note (google-services.json):** `google-services.json`, the Gradle plugin, and `firebase_core` are REMOVED in the Supabase backend migration. Google Cloud Console config (Web client ID, Android SHA-1) remains unchanged, and Google Sign-in uses `serverClientId`.
 
 ```dart
 class AuthService {
-  AuthService(this._auth, this._db, this._google);
-  final FirebaseAuth _auth;
-  final FirebaseFirestore _db;
+  AuthService(this._supabase, this._google);
+  final SupabaseClient _supabase;
   final GoogleSignIn _google;
 
-  Future<UserModel> signIn(String email, String password) async {
-    final cred = await _auth.signInWithEmailAndPassword(email: email, password: password);
-    final doc = await _db.collection(FbC.users).doc(cred.user!.uid).get();
-    return UserModel.fromJson(doc.data()!);
+  Future<UserModel> signInWithGoogle() async {
+    final googleUser = await _google.signIn();
+    final googleAuth = await googleUser!.authentication;
+    final response = await _supabase.auth.signInWithIdToken(
+      provider: OAuthProvider.google,
+      idToken: googleAuth.idToken!,
+    );
+    final data = await _supabase.from('profiles').select().eq('id', response.user!.id).single();
+    return UserModel.fromJson(data);
   }
 }
 ```
@@ -53,10 +59,10 @@ class AuthRepoImpl implements AuthRepo {
   final AuthService _service;
 
   @override
-  Future<Either<Failure, UserModel>> signIn(String email, String password) async {
+  Future<Either<Failure, UserModel>> signInWithGoogle() async {
     try {
-      return Right(await _service.signIn(email, password));
-    } on FirebaseAuthException catch (e) {
+      return Right(await _service.signInWithGoogle());
+    } on AuthException catch (e) {
       return Left(mapAuthException(e));
     } on SocketException {
       return const Left(NetworkFailure());
@@ -75,38 +81,38 @@ there are no separate domain entities. One class, one job, less ceremony.
 The only branch-specific folder. Calls repos, folds the `Either`, emits state.
 
 ### `presentation/screens/` + `widgets/`
-Render state, dispatch callbacks. No Firebase imports, no business logic.
+Render state, dispatch callbacks. No Supabase imports, no business logic.
 
 ---
 
 ## 2. Dependency Rule
 
 ```
-screens ──► controller ──► repo (abstract) ──► repo_impl ──► service ──► Firebase
+screens ──► controller ──► repo (abstract) ──► repo_impl ──► service ──► Supabase
 ```
 
-- Screens **never** import `service/` or `cloud_firestore`.
+- Screens **never** import `service/` or `supabase_flutter`.
 - Controllers depend on the **abstract** `AuthRepo`, injected via `get_it`.
 - `service/` never imports anything from `presentation/`.
 
 > **Trade-off, stated honestly:** dropping `domain/` means models are shared between
-> the wire format and the UI. If Firestore's shape changes, it ripples upward. For a
+> the wire format and the UI. If PostgreSQL's schema changes, it ripples upward. For a
 > portfolio project focused on state management comparison, that's an acceptable and
 > defensible choice — and worth mentioning in the README as a conscious decision, not
 > an oversight.
 
-### Spark-plan boundary
-Account deletion is **not** implemented as a server-side callable in v1. Firebase Cloud
-Functions are unavailable on Spark, so the Flutter app must not import or depend on
-`cloud_functions`. The Settings action is therefore **Deactivate account**: after
-recent authentication, the client marks the profile inactive and signs the user out.
-A true server-side purge/cascade can be added later on Blaze without changing the core
+### Supabase v1 scope
+Account deletion is **not** implemented as a server-side callable in v1. Edge
+Functions are unavailable in the v1 scope, so the Flutter app must not depend on
+them. The Settings action is therefore **Deactivate account**: after
+recent authentication, the client marks the profile inactive via RPC and signs the user out.
+A true server-side purge/cascade can be added later as an Edge Function without changing the core
 feature contracts.
 
 ## 3. The One Piece of Real Business Logic
 
 Slot availability is the only genuine algorithm in the app. It must be a **pure
-function** with zero Firebase dependency so it can be unit-tested identically on all
+function** with zero Database/Supabase dependency so it can be unit-tested identically on all
 three branches.
 
 ```dart
@@ -124,7 +130,7 @@ List<TimeSlot> calculateAvailableSlots({
 }
 ```
 
-No `async`, no `Firestore`, no `BuildContext`. Highest-value test in the codebase.
+No `async`, no `Supabase`, no `BuildContext`. Highest-value test in the codebase.
 
 ---
 
@@ -143,15 +149,15 @@ class ServerFailure    extends Failure { const ServerFailure(); }
 class NetworkFailure   extends Failure { const NetworkFailure(); }
 class SlotTakenFailure extends Failure { const SlotTakenFailure(); }
 class AuthFailure      extends Failure {
-  const AuthFailure(this.code);
-  final String code;     // raw FirebaseAuthException.code
+  const AuthFailure(this.message);
+  final String message;  // raw AuthException.message
 }
 ```
 
 Failures carry **no user-facing message strings** — the UI maps them to slang
 translations via an exhaustive `switch` (see `05-localization-slang.md §4`). This
-keeps the data layer completely localization-agnostic. Machine-readable codes
-(like `AuthFailure.code`) are allowed — they're the input to the mapping function,
+keeps the data layer completely localization-agnostic. Machine-readable messages
+(like `AuthFailure.message`) are allowed — they're the input to the mapping function,
 not the output.
 
 ---
@@ -203,11 +209,10 @@ adapter seam that keeps screens nearly identical across branches.
 final sl = GetIt.instance;
 
 Future<void> initCore() async {
-  sl.registerLazySingleton(() => FirebaseAuth.instance);
-  sl.registerLazySingleton(() => FirebaseFirestore.instance);
-  sl.registerLazySingleton(() => GoogleSignIn());
+  sl.registerLazySingleton(() => Supabase.instance.client);
+  sl.registerLazySingleton(() => GoogleSignIn(serverClientId: 'YOUR_WEB_CLIENT_ID'));
 
-  sl.registerLazySingleton(() => AuthService(sl(), sl(), sl()));
+  sl.registerLazySingleton(() => AuthService(sl(), sl()));
   sl.registerLazySingleton<AuthRepo>(() => AuthRepoImpl(sl()));
 
   sl.registerLazySingleton(() => SessionService(sl<AuthRepo>()));
