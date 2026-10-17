@@ -1,5 +1,6 @@
-import 'package:doctor_hunt/generated/image_assets.dart';
+import 'package:doctor_hunt/shared/generated/image_assets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CategoryTabsSection extends StatelessWidget {
@@ -7,14 +8,19 @@ class CategoryTabsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      physics: const BouncingScrollPhysics(),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           _buildCategoryTab(ImageAssets.catTooth, () {}),
+          SizedBox(width: 8.w),
           _buildCategoryTab(ImageAssets.catHeart, () {}),
+          SizedBox(width: 8.w),
           _buildCategoryTab(ImageAssets.catEye, () {}),
+          SizedBox(width: 8.w),
           _buildCategoryTab(ImageAssets.catBody, () {}),
         ],
       ),
@@ -26,9 +32,8 @@ class CategoryTabsSection extends StatelessWidget {
       onTap: onTap,
       child: SvgPicture.asset(
         asset,
-        width:
-            80, // Approximate width to fit 4 in a row nicely, original Figma group width was 113 for the spacing
-        height: 90,
+        width: 80.w,
+        height: 100.h,
       ),
     );
   }
