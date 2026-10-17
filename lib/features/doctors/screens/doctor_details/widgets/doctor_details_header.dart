@@ -1,53 +1,57 @@
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:doctor_hunt/generated/style_atoms.dart';
-import 'package:doctor_hunt/i18n/strings.g.dart';
 
 class DoctorDetailsHeader extends StatelessWidget {
   const DoctorDetailsHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.palette;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Back button
           GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () => context.pop(),
             child: Container(
-              width: 44,
-              height: 44,
+              width: 44.w,
+              height: 44.h,
               decoration: BoxDecoration(
-                color: context.palette.surface,
-                borderRadius: BorderRadius.circular(12),
+                color: palette.surface,
+                borderRadius: BorderRadius.circular(12.r),
                 boxShadow: [
                   BoxShadow(
-                    color: context.palette.shadowSoft,
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
+                    color: palette.shadowSoft,
+                    blurRadius: 10.r,
+                    offset: Offset(0, 4.h),
                   ),
                 ],
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.arrow_back_ios_new,
-                size: 20,
-                color: context.palette.textSub,
+                size: 20.sp,
+                color: palette.textSub,
               ),
             ),
           ),
           // Title
           Text(
             t.doctors.detailsTitle,
-            style: context.medium18.copyWith(color: context.palette.textMain),
+            style: context.medium18TextMain,
           ),
           // Search icon
           Container(
-            width: 44,
-            height: 44,
+            width: 44.w,
+            height: 44.h,
             alignment: Alignment.center,
-            child: Icon(Icons.search, size: 28, color: context.palette.textSub),
+            child: Icon(Icons.search, size: 28.sp, color: palette.textSub),
           ),
         ],
       ),

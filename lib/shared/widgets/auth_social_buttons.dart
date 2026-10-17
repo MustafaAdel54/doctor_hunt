@@ -1,8 +1,8 @@
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:doctor_hunt/generated/style_atoms.dart';
-import 'package:doctor_hunt/i18n/strings.g.dart';
 
 class AuthSocialButtons extends StatelessWidget {
   const AuthSocialButtons({
@@ -25,8 +25,8 @@ class AuthSocialButtons extends StatelessWidget {
             text: t.auth.google,
             icon: SvgPicture.asset(
               'assets/icons/google_icon.svg',
-              width: 24.w,
-              height: 24.w,
+              width: 18.w,
+              height: 18.w,
             ),
             onPressed: isLoading ? null : onGooglePressed,
           ),
@@ -37,8 +37,8 @@ class AuthSocialButtons extends StatelessWidget {
             text: t.auth.facebook,
             icon: SvgPicture.asset(
               'assets/icons/facebook_icon.svg',
-              width: 24.w,
-              height: 24.w,
+              width: 18.w,
+              height: 18.w,
             ),
             onPressed: isLoading ? null : onFacebookPressed,
           ),
@@ -62,34 +62,36 @@ class _SocialButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 14.h),
-        decoration: BoxDecoration(
-          color: palette.surface,
-          borderRadius: BorderRadius.circular(12.r),
-          boxShadow: [
-            BoxShadow(
-              color: palette.shadowSoft,
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon,
-            SizedBox(width: 8.w),
-            Text(
-              text,
-              style: context.semiBold.copyWith(
-                color: palette.textMain,
-                fontSize: 14.sp,
+    return Material(
+      color: palette.transparent,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(12.r),
+        child: Ink(
+          height: 54.h,
+          decoration: BoxDecoration(
+            color: palette.surface,
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(color: palette.textBorders),
+            boxShadow: [
+              BoxShadow(
+                color: palette.shadowSoft,
+                blurRadius: 22.r,
+                offset: const Offset(0, 0),
               ),
-            ),
-          ],
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon,
+              SizedBox(width: 12.w),
+              Text(
+                text,
+                style: context.light16TextSub,
+              ),
+            ],
+          ),
         ),
       ),
     );

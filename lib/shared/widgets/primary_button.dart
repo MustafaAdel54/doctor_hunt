@@ -1,6 +1,8 @@
+import 'package:doctor_hunt/shared/constants/app_constants.dart';
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:flutter/material.dart';
-import '../constants/app_constants.dart';
-import '../../../../generated/style_atoms.dart';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
@@ -24,17 +26,15 @@ class PrimaryButton extends StatelessWidget {
 
     final child = isLoading
         ? SizedBox.square(
-            dimension: 24,
+            dimension: 24.w,
             child: CircularProgressIndicator(
-              strokeWidth: 2,
+              strokeWidth: 2.w,
               color: isOutline ? palette.primary : palette.white,
             ),
           )
         : Text(
             text,
-            style: context.bold.copyWith(
-              color: isOutline ? palette.primary : palette.white,
-            ),
+            style: isOutline ? context.bold18Primary : context.bold18White,
           );
 
     final button = isOutline
@@ -42,8 +42,11 @@ class PrimaryButton extends StatelessWidget {
             onPressed: isLoading ? null : onPressed,
             style: OutlinedButton.styleFrom(
               foregroundColor: palette.primary,
-              side: BorderSide(color: palette.primary, width: 1.5),
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              side: BorderSide(color: palette.primary, width: 1.5.w),
+              padding: EdgeInsets.symmetric(
+                vertical: 16.h,
+                horizontal: 24.w,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppRadius.md),
               ),
@@ -56,7 +59,10 @@ class PrimaryButton extends StatelessWidget {
               backgroundColor: palette.primary,
               foregroundColor: palette.white,
               disabledBackgroundColor: palette.primary.withValues(alpha: 0.5),
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              padding: EdgeInsets.symmetric(
+                vertical: 16.h,
+                horizontal: 24.w,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppRadius.md),
               ),

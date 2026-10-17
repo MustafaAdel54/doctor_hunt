@@ -12,6 +12,7 @@
   },
   "home": {
     "greeting": "Hi, {{name}}!",
+    "defaultUser": "User",
     "liveDoctors": "Live Doctors",
     "popularDoctors": "Popular Doctors",
     "featuredDoctors": "Featured Doctors",
@@ -42,12 +43,13 @@
     "roleSubtitle": "The selected role determines the experience and available features.",
     "welcomeBack": "Welcome back, {{name}}",
     "welcomeBackTitle": "Welcome back",
-    "loginSubtitle": "You can search course, apply course and find scholarship for abroad studies",
+    "loginSubtitle": "Search for top specialist doctors and book appointments easily",
     "joinUsTitle": "Join us to start searching",
     "agreeTerms": "I agree with the Terms of Service & Privacy Policy",
     "name": "Name",
     "google": "Google",
     "facebook": "Facebook",
+    "joinUs": "Join us",
     "termsRequired": "You must agree to the Terms of Service"
   },
   "onboarding": {
@@ -99,7 +101,9 @@
     "statRunning": "Running",
     "statOngoing": "Ongoing",
     "statPatients": "Patients",
-    "services": "Services"
+    "services": "Services",
+    "perHour": "${{price}}/hr",
+    "viewsCount": "({{count}} views)"
   },
   "reviews": {
     "title": "Reviews",

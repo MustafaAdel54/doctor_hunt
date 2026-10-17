@@ -1,11 +1,12 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/error/failures.dart';
-import '../../../../core/network/supabase_error_mapper.dart';
-import '../../../../core/network/network_info.dart';
-import '../models/appointment_model.dart';
+import 'package:doctor_hunt/core/error/exceptions.dart';
+import 'package:doctor_hunt/core/error/failures.dart';
+import 'package:doctor_hunt/core/network/network_info.dart';
+import 'package:doctor_hunt/core/network/supabase_error_mapper.dart';
+import 'package:doctor_hunt/features/appointments/models/appointment_model.dart';
+import 'package:doctor_hunt/features/appointments/service/appointment_service.dart';
+
 import 'appointment_repo.dart';
-import '../service/appointment_service.dart';
-import '../../../../core/error/exceptions.dart';
 
 class AppointmentRepoImpl implements AppointmentRepo {
   const AppointmentRepoImpl({required this.service, required this.networkInfo});

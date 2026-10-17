@@ -1,7 +1,7 @@
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:doctor_hunt/generated/style_atoms.dart';
 
 class RoleOptionCard extends StatelessWidget {
   const RoleOptionCard({
@@ -37,14 +37,14 @@ class RoleOptionCard extends StatelessWidget {
             color: isSelected
                 ? palette.primary
                 : palette.textBorders.withValues(alpha: 0.5),
-            width: isSelected ? 2 : 1,
+            width: isSelected ? 2.w : 1.w,
           ),
           boxShadow: [
             if (!isSelected)
               BoxShadow(
                 color: palette.shadowSoft,
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+                blurRadius: 10.r,
+                offset: Offset(0, 4.h),
               ),
           ],
         ),

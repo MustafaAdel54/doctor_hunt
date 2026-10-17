@@ -1,6 +1,6 @@
+import 'package:doctor_hunt/core/constants/supabase_constants.dart';
+import 'package:doctor_hunt/features/availability/models/availability_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../../../core/constants/supabase_constants.dart';
-import '../models/availability_model.dart';
 
 class AvailabilityService {
   const AvailabilityService({required this.supabase});

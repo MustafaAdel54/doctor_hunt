@@ -1,7 +1,7 @@
+import 'package:doctor_hunt/core/constants/supabase_constants.dart';
+import 'package:doctor_hunt/core/error/exceptions.dart';
+import 'package:doctor_hunt/features/reviews/models/review_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../../../core/constants/supabase_constants.dart';
-import '../../../../core/error/exceptions.dart';
-import '../models/review_model.dart';
 
 class ReviewService {
   const ReviewService({required this.supabase});

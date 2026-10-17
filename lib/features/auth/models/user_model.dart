@@ -1,21 +1,69 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+class UserModel {
+  final String uid;
+  final String email;
+  final String role;
+  final bool isVerified;
+  final bool isActive;
+  final String? photoUrl;
+  final String? name;
+  final String? phone;
 
-part 'user_model.freezed.dart';
-part 'user_model.g.dart';
+  const UserModel({
+    required this.uid,
+    required this.email,
+    required this.role,
+    this.isVerified = false,
+    this.isActive = true,
+    this.photoUrl,
+    this.name,
+    this.phone,
+  });
 
-@freezed
-class UserModel with _$UserModel {
-  const factory UserModel({
-    @JsonKey(name: 'id') required String uid,
-    required String email,
-    required String role,
-    @JsonKey(name: 'is_verified') @Default(false) bool isVerified,
-    @JsonKey(name: 'is_active') @Default(true) bool isActive,
-    @JsonKey(name: 'photo_url') String? photoUrl,
+  UserModel copyWith({
+    String? uid,
+    String? email,
+    String? role,
+    bool? isVerified,
+    bool? isActive,
+    String? photoUrl,
     String? name,
     String? phone,
-  }) = _UserModel;
+  }) {
+    return UserModel(
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      role: role ?? this.role,
+      isVerified: isVerified ?? this.isVerified,
+      isActive: isActive ?? this.isActive,
+      photoUrl: photoUrl ?? this.photoUrl,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+    );
+  }
 
-  factory UserModel.fromJson(Map<String, dynamic> json) =>
-      _$UserModelFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      uid: (json['id'] ?? json['uid'] ?? '') as String,
+      email: (json['email'] ?? '') as String,
+      role: (json['role'] ?? '') as String,
+      isVerified: (json['is_verified'] as bool?) ?? false,
+      isActive: (json['is_active'] as bool?) ?? true,
+      photoUrl: json['photo_url'] as String?,
+      name: json['name'] as String?,
+      phone: json['phone'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': uid,
+      'email': email,
+      'role': role,
+      'is_verified': isVerified,
+      'is_active': isActive,
+      if (photoUrl != null) 'photo_url': photoUrl,
+      if (name != null) 'name': name,
+      if (phone != null) 'phone': phone,
+    };
+  }
 }

@@ -12,10 +12,12 @@ abstract final class Routes {
   // patient
   static const patientHome = 'patientHome';
   static const search = 'search';
+  static const popularDoctors = 'popularDoctors';
   static const doctorDetails = 'doctorDetails'; // :doctorId
   static const rateDoctor = 'rateDoctor'; // :appointmentId
   static const bookAppointment = 'bookAppointment'; // :doctorId
   static const myAppointments = 'myAppointments';
+  static const favoriteDoctors = 'favoriteDoctors';
 
   // doctor
   static const doctorHome = 'doctorHome';
@@ -45,9 +47,11 @@ abstract final class Paths {
 
   static const patientHome = '/patient';
   static const search = 'search'; // nested under patientHome
+  static const popularDoctors = 'popular-doctors'; // nested under patientHome
   static const doctorDetails = 'doctor/:doctorId'; // nested under patientHome
   static const bookAppointment = 'doctor/:doctorId/book';
   static const myAppointments = '/patient/appointments';
+  static const favoriteDoctors = '/patient/favorites';
   static const rateDoctor =
       ':appointmentId/rate'; // nested under myAppointments
 

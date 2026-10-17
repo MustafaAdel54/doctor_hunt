@@ -1,6 +1,6 @@
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../generated/style_atoms.dart';
 
 class OnboardingPageWidget extends StatelessWidget {
   const OnboardingPageWidget({

@@ -54,7 +54,7 @@ const List<int> kFontSizes = <int>[
   8, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 36, 40, //
 ];
 
-const String kOutputPath = 'lib/generated/';
+const String kOutputPath = 'lib/shared/generated/';
 const String kOutputFile = 'style_atoms.dart';
 const String kColorsImport = "import 'app_colors.dart';";
 

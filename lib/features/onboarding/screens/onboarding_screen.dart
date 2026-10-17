@@ -1,14 +1,16 @@
+import 'package:doctor_hunt/core/di/injector.dart';
+import 'package:doctor_hunt/core/router/routes.dart';
+import 'package:doctor_hunt/features/onboarding/cubit/onboarding_cubit.dart';
+import 'package:doctor_hunt/features/onboarding/widgets/onboarding_page_widget.dart';
+import 'package:doctor_hunt/shared/generated/image_assets.dart';
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
+import 'package:doctor_hunt/shared/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../../i18n/strings.g.dart';
-import 'package:doctor_hunt/generated/image_assets.dart';
-import '../../../../core/router/routes.dart';
-import '../../../../core/widgets/primary_button.dart';
-import '../../../../../generated/style_atoms.dart';
-import '../cubit/onboarding_cubit.dart';
-import '../widgets/onboarding_page_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -40,11 +42,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
+      sl<SharedPreferences>().setBool('seen_onboarding', true);
       context.go(Paths.login);
     }
   }
 
   void _onSkip(BuildContext context) {
+    sl<SharedPreferences>().setBool('seen_onboarding', true);
     context.go(Paths.login);
   }
 

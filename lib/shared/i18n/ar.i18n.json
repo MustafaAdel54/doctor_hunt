@@ -12,6 +12,7 @@
   },
   "home": {
     "greeting": "أهلاً {{name}}!",
+    "defaultUser": "مستخدم",
     "liveDoctors": "أطباء متاحون الآن",
     "popularDoctors": "أطباء مشهورون",
     "featuredDoctors": "أطباء مميزون",
@@ -44,6 +45,7 @@
     "welcomeBackTitle": "مرحباً بعودتك",
     "loginSubtitle": "يمكنك البحث عن الأطباء وحجز المواعيد بكل سهولة",
     "joinUsTitle": "انضم إلينا لتبدأ البحث",
+    "joinUs": "انضم إلينا",
     "termsRequired": "يجب عليك الموافقة على شروط الخدمة"
   },
   "onboarding": {
@@ -95,7 +97,9 @@
     "statRunning": "قيد التشغيل",
     "statOngoing": "مستمر",
     "statPatients": "المرضى",
-    "services": "الخدمات"
+    "services": "الخدمات",
+    "perHour": "{{price}} $/ساعة",
+    "viewsCount": "({{count}} مشاهدة)"
   },
   "reviews": {
     "title": "التقييمات",

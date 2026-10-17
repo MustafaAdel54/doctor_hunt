@@ -1,21 +1,69 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+class ReviewModel {
+  final String id;
+  final String appointmentId;
+  final String patientId;
+  final String doctorId;
+  final int rating;
+  final String? comment;
+  final DateTime createdAt;
+  final String? patientName;
 
-part 'review_model.freezed.dart';
-part 'review_model.g.dart';
+  const ReviewModel({
+    required this.id,
+    required this.appointmentId,
+    required this.patientId,
+    required this.doctorId,
+    required this.rating,
+    this.comment,
+    required this.createdAt,
+    this.patientName,
+  });
 
-@freezed
-class ReviewModel with _$ReviewModel {
-  const factory ReviewModel({
-    required String id,
-    @JsonKey(name: 'appointment_id') required String appointmentId,
-    @JsonKey(name: 'patient_id') required String patientId,
-    @JsonKey(name: 'doctor_id') required String doctorId,
-    required int rating,
+  ReviewModel copyWith({
+    String? id,
+    String? appointmentId,
+    String? patientId,
+    String? doctorId,
+    int? rating,
     String? comment,
-    @JsonKey(name: 'created_at') required DateTime createdAt,
-    @JsonKey(name: 'patient_name') String? patientName,
-  }) = _ReviewModel;
+    DateTime? createdAt,
+    String? patientName,
+  }) {
+    return ReviewModel(
+      id: id ?? this.id,
+      appointmentId: appointmentId ?? this.appointmentId,
+      patientId: patientId ?? this.patientId,
+      doctorId: doctorId ?? this.doctorId,
+      rating: rating ?? this.rating,
+      comment: comment ?? this.comment,
+      createdAt: createdAt ?? this.createdAt,
+      patientName: patientName ?? this.patientName,
+    );
+  }
 
-  factory ReviewModel.fromJson(Map<String, dynamic> json) =>
-      _$ReviewModelFromJson(json);
+  factory ReviewModel.fromJson(Map<String, dynamic> json) {
+    return ReviewModel(
+      id: json['id'] as String,
+      appointmentId: json['appointment_id'] as String,
+      patientId: json['patient_id'] as String,
+      doctorId: json['doctor_id'] as String,
+      rating: (json['rating'] as num).toInt(),
+      comment: json['comment'] as String?,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      patientName: json['patient_name'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'appointment_id': appointmentId,
+      'patient_id': patientId,
+      'doctor_id': doctorId,
+      'rating': rating,
+      if (comment != null) 'comment': comment,
+      'created_at': createdAt.toIso8601String(),
+      if (patientName != null) 'patient_name': patientName,
+    };
+  }
 }

@@ -1,7 +1,8 @@
+import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
+import 'package:doctor_hunt/shared/constants/app_constants.dart';
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:flutter/material.dart';
-import 'package:doctor_hunt/generated/style_atoms.dart';
-import 'package:doctor_hunt/apps/core/constants/app_constants.dart';
-import '../../../../models/home_mock_data.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FeatureDoctorCard extends StatelessWidget {
   const FeatureDoctorCard({
@@ -20,16 +21,16 @@ class FeatureDoctorCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 96,
-        height: 130,
+        width: 96.w,
+        height: 130.h,
         decoration: BoxDecoration(
           color: palette.surface,
-          borderRadius: BorderRadius.circular(6),
+          borderRadius: BorderRadius.circular(6.r),
           boxShadow: [
             BoxShadow(
               color: palette.shadowSoft,
-              blurRadius: 20,
-              offset: const Offset(0, -1),
+              blurRadius: 20.r,
+              offset: Offset(0, -1.h),
             ),
           ],
         ),
@@ -46,17 +47,17 @@ class FeatureDoctorCard extends StatelessWidget {
                     child: ClipOval(
                       child: Image.asset(
                         doctor.imageAsset,
-                        width: 54,
-                        height: 54,
+                        width: 54.w,
+                        height: 54.h,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
-                          width: 54,
-                          height: 54,
+                          width: 54.w,
+                          height: 54.h,
                           color: palette.surfaceAlt,
                           child: Icon(
                             Icons.person,
                             color: palette.textPlaceholder,
-                            size: 24,
+                            size: 24.sp,
                           ),
                         ),
                       ),
@@ -66,7 +67,7 @@ class FeatureDoctorCard extends StatelessWidget {
                 Gaps.h8,
                 Text(
                   doctor.name,
-                  style: context.medium12.copyWith(color: palette.textMain),
+                  style: context.medium12TextMain,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
@@ -75,10 +76,7 @@ class FeatureDoctorCard extends StatelessWidget {
                   Gaps.h4,
                   Text(
                     doctor.hourlyRate!,
-                    style: context.light8.copyWith(
-                      color: palette.primary,
-                      fontSize: 9,
-                    ),
+                    style: context.light8Primary,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
@@ -88,25 +86,20 @@ class FeatureDoctorCard extends StatelessWidget {
             ),
             // Rating badge (top left)
             Positioned(
-              top: 8,
-              left: 8,
+              top: 8.h,
+              left: 8.w,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(Icons.star, color: palette.warning, size: 10),
-                  const SizedBox(width: 2),
+                  Icon(Icons.star, color: palette.warning, size: 10.sp),
+                  SizedBox(width: 2.w),
                   Text(
                     doctor.rating.toStringAsFixed(1),
-                    style: context.regular12.copyWith(
-                      color: palette.textSub,
-                      fontSize: 10,
-                    ),
+                    style: context.regular11TextSub,
                   ),
                 ],
               ),
             ),
-            // Favorite icon (top right)? Wait, I don't see one in Figma structure but usually there is.
-            // Actually, there's a heart icon inside the feature doctor group in Figma? Let's skip it unless needed.
           ],
         ),
       ),

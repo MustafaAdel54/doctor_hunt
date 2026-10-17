@@ -114,6 +114,7 @@ class AppPalette {
     required this.shadowMedium,
     required this.shadowStrong,
     required this.shadowBrand,
+    this.transparent = const Color(0x00000000),
   });
 
   final Color primary;
@@ -135,6 +136,7 @@ class AppPalette {
   final Color white;
   final Color black;
   final Color boxShadow;
+  final Color transparent;
 
   final Color scaffold;
   final Color surface;
@@ -191,49 +193,8 @@ abstract final class AppColorsLight {
   );
 }
 
-// ---------------------------------------------------------------------------
-// DARK — derived, not in Figma. See docs/11-color-system.md §4.
-//
-// Rules used:
-//   * brand green lightened + slightly desaturated so it reads on dark
-//   * `*Light` tints become dark, low-chroma versions of their base hue
-//   * surfaces carry a subtle green tint so the brand still feels present
-//   * every text/semantic colour verified >= 4.5:1 against `surface`
-// ---------------------------------------------------------------------------
-abstract final class AppColorsDark {
-  static const AppPalette palette = AppPalette(
-    primary: Color(0xFF2FD79B), // 9.18:1 on surface
-    primaryLight: Color(0xFF143026),
-    primaryDark: Color(0xFF5FE8B8),
-    secondary: Color(0xFF7FA0FF), // 6.79:1 - lightened #2E6FF2
-    secondaryLight: Color(0xFF18213A),
-    secondaryDark: Color(0xFFA9C0FF),
-    textMain: Color(0xFFE8EDEB), // 14.40:1
-    textSub: Color(0xFF9AA6B2), // 6.87:1
-    textPlaceholder: Color(0xFF6B7785),
-    textBorders: Color(0xFF2A3832),
-    danger: Color(0xFFFF5A75), // 5.66:1
-    dangerLight: Color(0xFF3A151D),
-    success: Color(0xFF3FD98D), // 9.35:1
-    successLight: Color(0xFF12301F),
-    warning: Color(0xFFFBBF24), // 10.21:1 - amber
-    warningLight: Color(0xFF3A2E12),
-    white: FigmaRaw.white, // absolute
-    black: FigmaRaw.black, // absolute
-    boxShadow: Color(0x66000000),
-    scaffold: Color(0xFF0B1310),
-    surface: Color(0xFF151E1A),
-    surfaceAlt: Color(0xFF1E2A24),
-    surfaceBrand: Color(0xFF143026),
-    shadowSoft: Color(0x33000000),
-    shadowMedium: Color(0x4D000000),
-    shadowStrong: Color(0x80000000),
-    shadowBrand: Color(0x4D2FD79B),
-  );
-}
-
 // ===========================================================================
-// ThemeExtension — the mechanism that makes dark mode work.
+// ThemeExtension — provides the active light palette to widgets.
 // ===========================================================================
 @immutable
 class AppColorsTheme extends ThemeExtension<AppColorsTheme> {
@@ -244,21 +205,13 @@ class AppColorsTheme extends ThemeExtension<AppColorsTheme> {
   static const AppColorsTheme light = AppColorsTheme(
     palette: AppColorsLight.palette,
   );
-  static const AppColorsTheme dark = AppColorsTheme(
-    palette: AppColorsDark.palette,
-  );
 
   @override
   AppColorsTheme copyWith({AppPalette? palette}) =>
       AppColorsTheme(palette: palette ?? this.palette);
 
-  /// Snap rather than cross-fade: interpolating between two full palettes
-  /// produces a muddy half-way state during the theme switch.
   @override
-  AppColorsTheme lerp(ThemeExtension<AppColorsTheme>? other, double t) {
-    if (other is! AppColorsTheme) return this;
-    return t < 0.5 ? this : other;
-  }
+  AppColorsTheme lerp(ThemeExtension<AppColorsTheme>? other, double t) => this;
 }
 
 // ===========================================================================

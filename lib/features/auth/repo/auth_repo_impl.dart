@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/error/failures.dart';
-import '../../../../core/network/supabase_error_mapper.dart';
-import '../../../../core/network/network_info.dart';
-import '../models/user_model.dart';
-import 'auth_repo.dart';
-import '../service/auth_service.dart';
+import 'package:doctor_hunt/core/error/failures.dart';
+import 'package:doctor_hunt/core/network/network_info.dart';
+import 'package:doctor_hunt/core/network/supabase_error_mapper.dart';
+import 'package:doctor_hunt/features/auth/models/user_model.dart';
+import 'package:doctor_hunt/features/auth/service/auth_service.dart';
+import 'package:doctor_hunt/features/profile/service/profile_service.dart';
 
-import '../../../profile/data/service/profile_service.dart';
+import 'auth_repo.dart';
 
 class AuthRepoImpl implements AuthRepo {
   const AuthRepoImpl({

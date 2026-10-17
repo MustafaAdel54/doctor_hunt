@@ -1,32 +1,31 @@
+import 'package:doctor_hunt/core/network/network_info.dart';
+import 'package:doctor_hunt/core/session/session_service.dart';
+import 'package:doctor_hunt/features/appointments/repo/appointment_repo.dart';
+import 'package:doctor_hunt/features/appointments/repo/appointment_repo_impl.dart';
+import 'package:doctor_hunt/features/appointments/service/appointment_service.dart';
+import 'package:doctor_hunt/features/auth/repo/auth_repo.dart';
+import 'package:doctor_hunt/features/auth/repo/auth_repo_impl.dart';
+// Features
+import 'package:doctor_hunt/features/auth/service/auth_service.dart';
+import 'package:doctor_hunt/features/availability/repo/availability_repo.dart';
+import 'package:doctor_hunt/features/availability/repo/availability_repo_impl.dart';
+import 'package:doctor_hunt/features/availability/service/availability_service.dart';
+import 'package:doctor_hunt/features/doctors/repo/doctor_repo.dart';
+import 'package:doctor_hunt/features/doctors/repo/doctor_repo_impl.dart';
+import 'package:doctor_hunt/features/doctors/service/doctor_service.dart';
+import 'package:doctor_hunt/features/profile/repo/profile_repo.dart';
+import 'package:doctor_hunt/features/profile/repo/profile_repo_impl.dart';
+import 'package:doctor_hunt/features/profile/service/profile_service.dart';
+import 'package:doctor_hunt/features/reviews/repo/review_repo.dart';
+import 'package:doctor_hunt/features/reviews/repo/review_repo_impl.dart';
+import 'package:doctor_hunt/features/reviews/service/review_service.dart';
+import 'package:doctor_hunt/features/settings/service/settings_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../network/network_info.dart';
-import '../session/session_service.dart';
 import 'state_injector.dart';
-
-// Features
-import '../../features/auth/data/service/auth_service.dart';
-import '../../features/auth/data/repo/auth_repo.dart';
-import '../../features/auth/data/repo/auth_repo_impl.dart';
-import '../../features/doctors/data/service/doctor_service.dart';
-import '../../features/doctors/data/repo/doctor_repo.dart';
-import '../../features/doctors/data/repo/doctor_repo_impl.dart';
-import '../../features/appointments/data/service/appointment_service.dart';
-import '../../features/appointments/data/repo/appointment_repo.dart';
-import '../../features/appointments/data/repo/appointment_repo_impl.dart';
-import '../../features/availability/data/service/availability_service.dart';
-import '../../features/availability/data/repo/availability_repo.dart';
-import '../../features/availability/data/repo/availability_repo_impl.dart';
-import '../../features/reviews/data/service/review_service.dart';
-import '../../features/reviews/data/repo/review_repo.dart';
-import '../../features/reviews/data/repo/review_repo_impl.dart';
-import '../../features/profile/data/service/profile_service.dart';
-import '../../features/profile/data/repo/profile_repo.dart';
-import '../../features/profile/data/repo/profile_repo_impl.dart';
-import '../../features/settings/data/service/settings_service.dart';
 
 final sl = GetIt.instance;
 

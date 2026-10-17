@@ -1,17 +1,44 @@
-import 'package:doctor_hunt/apps/features/home/presentation/screens/patient_home/patient_home_screen.dart';
-import 'package:doctor_hunt/apps/features/placeholder_screens.dart';
+import 'package:doctor_hunt/core/di/injector.dart';
+import 'package:doctor_hunt/core/router/doctor_shell.dart';
+import 'package:doctor_hunt/core/router/not_found_screen.dart';
+import 'package:doctor_hunt/core/router/patient_shell.dart';
+import 'package:doctor_hunt/core/session/session_service.dart';
+import 'package:doctor_hunt/core/session/session_state.dart';
+import 'package:doctor_hunt/features/appointments/screens/book_appointment/book_appointment_screen.dart';
+import 'package:doctor_hunt/features/appointments/screens/doctor_requests/doctor_requests_screen.dart';
+import 'package:doctor_hunt/features/appointments/screens/my_appointments/my_appointments_screen.dart';
+import 'package:doctor_hunt/features/auth/screens/account_inactive/account_inactive_screen.dart';
+import 'package:doctor_hunt/features/auth/screens/forgot_password/forgot_password_screen.dart';
+import 'package:doctor_hunt/features/auth/screens/login/login_screen.dart';
+import 'package:doctor_hunt/features/auth/screens/role_selection/role_selection_screen.dart';
+import 'package:doctor_hunt/features/auth/screens/signup/signup_screen.dart';
+import 'package:doctor_hunt/features/auth/screens/splash/splash_screen.dart';
+import 'package:doctor_hunt/features/availability/screens/doctor_availability/doctor_availability_screen.dart';
+import 'package:doctor_hunt/features/doctors/screens/doctor_details/doctor_details_screen.dart';
+import 'package:doctor_hunt/features/doctors/screens/search/search_screen.dart';
+import 'package:doctor_hunt/features/home/screens/doctor_home/doctor_home_screen.dart';
+import 'package:doctor_hunt/features/home/screens/patient_home/patient_home_screen.dart';
+import 'package:doctor_hunt/features/home/screens/popular_doctors/popular_doctors_screen.dart';
+import 'package:doctor_hunt/features/onboarding/screens/doctor_onboarding_screen.dart';
+import 'package:doctor_hunt/features/onboarding/screens/onboarding_screen.dart';
+import 'package:doctor_hunt/features/profile/screens/edit_profile/edit_profile_screen.dart';
+import 'package:doctor_hunt/features/profile/screens/profile/profile_screen.dart';
+import 'package:doctor_hunt/features/reviews/screens/doctor_reviews/doctor_reviews_screen.dart';
+import 'package:doctor_hunt/features/reviews/screens/rate_doctor/rate_doctor_screen.dart';
+import 'package:doctor_hunt/features/settings/screens/settings_screen.dart';
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../session/session_service.dart';
-import '../session/session_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'routes.dart';
-import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
-import '../../features/auth/presentation/screens/login/login_screen.dart';
-import '../../features/auth/presentation/screens/signup/signup_screen.dart';
-import '../../features/auth/presentation/screens/role_selection/role_selection_screen.dart';
-import '../../features/doctors/presentation/screens/doctor_details/doctor_details_screen.dart';
+
+final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 GoRouter createRouter(SessionService session) => GoRouter(
+  navigatorKey: rootNavigatorKey,
   initialLocation: Paths.splash,
   refreshListenable: session,
   debugLogDiagnostics: kDebugMode,
@@ -29,38 +56,36 @@ GoRouter createRouter(SessionService session) => GoRouter(
       Paths.forgotPassword,
     ].contains(loc);
 
-    // 1. Still resolving → stay on splash
+    // Allow SplashScreen to display its animation and load data in background
+    if (onSplash) return null;
+
     if (s.status == SessionStatus.initial) {
-      return onSplash ? null : Paths.splash;
+      return Paths.splash;
     }
 
-    // 2. Signed out → allow auth/onboarding pages only
     if (s.status == SessionStatus.unauthenticated) {
       final onAuthEntryPage = onOnboarding || onRoleSelection || onAuthPage;
-      return onAuthEntryPage ? null : Paths.onboarding;
+      if (onAuthEntryPage) return null;
+      final seenOnboarding =
+          sl<SharedPreferences>().getBool('seen_onboarding') ?? false;
+      return seenOnboarding ? Paths.login : Paths.onboarding;
     }
 
-    // 3. Supabase user authenticated but no PostgreSQL application profile.
-    //    Must go through Role Selection before reaching any home screen.
     if (s.status == SessionStatus.authenticatedWithoutProfile) {
       return onRoleSelection ? null : Paths.roleSelection;
     }
 
-    // 3.5. Profile exists but is marked inactive
     if (s.status == SessionStatus.authenticatedInactive) {
       final onInactivePage = loc == Paths.accountInactive;
       return onInactivePage ? null : Paths.accountInactive;
     }
 
-    // 4. Fully authenticated with a role.
     final isDoctor = s.role == 'doctor';
     final isPatient = s.role == 'patient';
     final home = isDoctor ? Paths.doctorHome : Paths.patientHome;
 
-    // Redirect away from splash/auth/role pages to the correct home
-    if (onSplash || onRoleSelection || onAuthPage || onOnboarding) return home;
+    if (onRoleSelection || onAuthPage || onOnboarding) return home;
 
-    // Role isolation: prevent patients accessing doctor routes and vice versa
     if (loc.startsWith('/doctor') && !isDoctor) return Paths.patientHome;
     if (loc.startsWith('/patient') && !isPatient) return Paths.doctorHome;
 
@@ -126,10 +151,18 @@ GoRouter createRouter(SessionService session) => GoRouter(
                   builder: (_, __) => const SearchScreen(),
                 ),
                 GoRoute(
+                  parentNavigatorKey: rootNavigatorKey,
+                  path: Paths.popularDoctors,
+                  name: Routes.popularDoctors,
+                  builder: (_, __) => const PopularDoctorsScreen(),
+                ),
+                GoRoute(
+                  parentNavigatorKey: rootNavigatorKey,
                   path: 'doctor/:doctorId',
                   name: Routes.doctorDetails,
                   builder: (_, s) => DoctorDetailsScreen(
                     doctorId: s.pathParameters['doctorId']!,
+                    extra: s.extra,
                   ),
                 ),
                 GoRoute(
@@ -140,6 +173,22 @@ GoRouter createRouter(SessionService session) => GoRouter(
                   ),
                 ),
               ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Paths.favoriteDoctors,
+              name: Routes.favoriteDoctors,
+              builder: (ctx, __) => Scaffold(
+                body: Center(
+                  child: Text(
+                    t.doctors.title,
+                    style: ctx.medium16TextMain,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -164,16 +213,9 @@ GoRouter createRouter(SessionService session) => GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: Paths.profilePatient,
-              name: Routes.profilePatient,
-              builder: (_, __) => const ProfileScreen(),
-              routes: [
-                GoRoute(
-                  path: 'edit',
-                  name: Routes.editProfilePatient,
-                  builder: (_, __) => const EditProfileScreen(),
-                ),
-              ],
+              path: Paths.settings,
+              name: Routes.settings,
+              builder: (_, __) => const SettingsScreen(),
             ),
           ],
         ),

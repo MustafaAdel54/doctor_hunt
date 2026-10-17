@@ -1,8 +1,8 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:doctor_hunt/core/constants/supabase_constants.dart';
+import 'package:doctor_hunt/core/error/exceptions.dart';
+import 'package:doctor_hunt/features/auth/models/user_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../../../../core/constants/supabase_constants.dart';
-import '../../../../core/error/exceptions.dart';
-import '../models/user_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
   const AuthService({

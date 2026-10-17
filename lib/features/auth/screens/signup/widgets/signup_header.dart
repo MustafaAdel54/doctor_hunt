@@ -1,15 +1,13 @@
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:doctor_hunt/generated/style_atoms.dart';
-import 'package:doctor_hunt/i18n/strings.g.dart';
 
 class SignupHeader extends StatelessWidget {
   const SignupHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [

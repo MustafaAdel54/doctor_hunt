@@ -1,7 +1,7 @@
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
-import 'package:doctor_hunt/generated/style_atoms.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:doctor_hunt/i18n/strings.g.dart';
 
 class HomeSearchBar extends StatelessWidget {
   const HomeSearchBar({super.key});
@@ -12,28 +12,28 @@ class HomeSearchBar extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      height: 54,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      height: 54.h,
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
       decoration: BoxDecoration(
         color: palette.surface,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(6.r),
         boxShadow: [
           BoxShadow(
-            color: palette.black.withValues(alpha: 0.08),
-            blurRadius: 20,
+            color: palette.shadowSoft,
+            blurRadius: 20.r,
             offset: const Offset(0, 0),
           ),
         ],
       ),
       child: Row(
         children: [
-          Icon(Icons.search, color: palette.textSub, size: 20),
-          const SizedBox(width: 10),
+          Icon(Icons.search, color: palette.textSub, size: 20.sp),
+          SizedBox(width: 10.w),
           Expanded(
             child: TextField(
               decoration: InputDecoration(
                 hintText: t.doctors.searchHint,
-                hintStyle: context.regular14TextSub.copyWith(fontSize: 15.sp),
+                hintStyle: context.regular14TextPlaceholder,
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
@@ -42,8 +42,8 @@ class HomeSearchBar extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 10),
-          Icon(Icons.close, color: palette.textSub, size: 16),
+          SizedBox(width: 10.w),
+          Icon(Icons.close, color: palette.textSub, size: 16.sp),
         ],
       ),
     );

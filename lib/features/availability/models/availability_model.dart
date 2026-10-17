@@ -1,40 +1,110 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+class TimeRange {
+  final String start; // HH:mm
+  final String end; // HH:mm
 
-part 'availability_model.freezed.dart';
-part 'availability_model.g.dart';
+  const TimeRange({
+    required this.start,
+    required this.end,
+  });
 
-@freezed
-class TimeRange with _$TimeRange {
-  const factory TimeRange({
-    required String start, // HH:mm
-    required String end, // HH:mm
-  }) = _TimeRange;
+  TimeRange copyWith({
+    String? start,
+    String? end,
+  }) {
+    return TimeRange(
+      start: start ?? this.start,
+      end: end ?? this.end,
+    );
+  }
 
-  factory TimeRange.fromJson(Map<String, dynamic> json) =>
-      _$TimeRangeFromJson(json);
+  factory TimeRange.fromJson(Map<String, dynamic> json) {
+    return TimeRange(
+      start: json['start'] as String,
+      end: json['end'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'start': start,
+    'end': end,
+  };
 }
 
-@freezed
-class DayAvailability with _$DayAvailability {
-  const factory DayAvailability({
-    required int weekday, // 1 = Monday, 7 = Sunday
-    @Default([]) List<TimeRange> ranges,
-  }) = _DayAvailability;
+class DayAvailability {
+  final int weekday; // 1 = Monday, 7 = Sunday
+  final List<TimeRange> ranges;
 
-  factory DayAvailability.fromJson(Map<String, dynamic> json) =>
-      _$DayAvailabilityFromJson(json);
+  const DayAvailability({
+    required this.weekday,
+    this.ranges = const [],
+  });
+
+  DayAvailability copyWith({
+    int? weekday,
+    List<TimeRange>? ranges,
+  }) {
+    return DayAvailability(
+      weekday: weekday ?? this.weekday,
+      ranges: ranges ?? this.ranges,
+    );
+  }
+
+  factory DayAvailability.fromJson(Map<String, dynamic> json) {
+    return DayAvailability(
+      weekday: json['weekday'] as int,
+      ranges: (json['ranges'] as List<dynamic>?)
+              ?.map((e) => TimeRange.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'weekday': weekday,
+    'ranges': ranges.map((e) => e.toJson()).toList(),
+  };
 }
 
-@freezed
-class AvailabilityModel with _$AvailabilityModel {
-  const factory AvailabilityModel({
-    @JsonKey(name: 'doctor_id') required String doctorId,
-    @JsonKey(name: 'slot_duration_minutes') required int slotDurationMinutes,
-    @Default([]) List<DayAvailability> days,
-  }) = _AvailabilityModel;
+class AvailabilityModel {
+  final String doctorId;
+  final int slotDurationMinutes;
+  final List<DayAvailability> days;
 
-  factory AvailabilityModel.fromJson(Map<String, dynamic> json) =>
-      _$AvailabilityModelFromJson(json);
+  const AvailabilityModel({
+    required this.doctorId,
+    required this.slotDurationMinutes,
+    this.days = const [],
+  });
+
+  AvailabilityModel copyWith({
+    String? doctorId,
+    int? slotDurationMinutes,
+    List<DayAvailability>? days,
+  }) {
+    return AvailabilityModel(
+      doctorId: doctorId ?? this.doctorId,
+      slotDurationMinutes: slotDurationMinutes ?? this.slotDurationMinutes,
+      days: days ?? this.days,
+    );
+  }
+
+  factory AvailabilityModel.fromJson(Map<String, dynamic> json) {
+    return AvailabilityModel(
+      doctorId: (json['doctor_id'] ?? '') as String,
+      slotDurationMinutes:
+          (json['slot_duration_minutes'] as num?)?.toInt() ?? 30,
+      days: (json['days'] as List<dynamic>?)
+              ?.map((e) => DayAvailability.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'doctor_id': doctorId,
+    'slot_duration_minutes': slotDurationMinutes,
+    'days': days.map((e) => e.toJson()).toList(),
+  };
 }
 
 class TimeSlot {

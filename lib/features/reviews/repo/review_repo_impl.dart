@@ -1,10 +1,11 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/error/failures.dart';
-import '../../../../core/network/supabase_error_mapper.dart';
-import '../../../../core/network/network_info.dart';
-import '../models/review_model.dart';
+import 'package:doctor_hunt/core/error/failures.dart';
+import 'package:doctor_hunt/core/network/network_info.dart';
+import 'package:doctor_hunt/core/network/supabase_error_mapper.dart';
+import 'package:doctor_hunt/features/reviews/models/review_model.dart';
+import 'package:doctor_hunt/features/reviews/service/review_service.dart';
+
 import 'review_repo.dart';
-import '../service/review_service.dart';
 
 class ReviewRepoImpl implements ReviewRepo {
   const ReviewRepoImpl({required this.service, required this.networkInfo});

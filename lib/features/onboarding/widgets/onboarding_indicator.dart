@@ -1,8 +1,8 @@
+import 'package:doctor_hunt/features/onboarding/cubit/onboarding_cubit.dart';
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../generated/style_atoms.dart';
-import '../cubit/onboarding_cubit.dart';
 
 class OnboardingIndicator extends StatelessWidget {
   const OnboardingIndicator({super.key, required this.pageCount});

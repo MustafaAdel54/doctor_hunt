@@ -1,63 +1,102 @@
-import 'package:doctor_hunt/apps/core/di/injector.dart';
-import 'package:doctor_hunt/apps/features/doctors/data/models/doctor_model.dart';
-import 'package:doctor_hunt/apps/features/doctors/data/repo/doctor_repo.dart';
-import 'package:doctor_hunt/generated/style_atoms.dart';
+import 'package:doctor_hunt/core/di/injector.dart';
+import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
+import 'package:doctor_hunt/features/doctors/repo/doctor_repo.dart';
+import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
-import 'package:doctor_hunt/i18n/strings.g.dart';
 
-import 'widgets/doctor_details_header.dart';
+import 'widgets/doctor_details_animated_content.dart';
 import 'widgets/doctor_details_shimmer.dart';
-import 'widgets/doctor_profile_card.dart';
-import 'widgets/doctor_services_list.dart';
-import 'widgets/doctor_stats_row.dart';
 
 class DoctorDetailsScreen extends StatefulWidget {
   final String doctorId;
+  final Object? extra;
 
-  const DoctorDetailsScreen({super.key, required this.doctorId});
+  const DoctorDetailsScreen({
+    super.key,
+    required this.doctorId,
+    this.extra,
+  });
 
   @override
   State<DoctorDetailsScreen> createState() => _DoctorDetailsScreenState();
 }
 
-class _DoctorDetailsScreenState extends State<DoctorDetailsScreen>
-    with SingleTickerProviderStateMixin {
-  late Future<DoctorModel> _doctorFuture;
+class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
+  DoctorModel? _doctor;
+  Future<DoctorModel>? _doctorFuture;
 
   @override
   void initState() {
     super.initState();
-    _doctorFuture = _fetchDoctor();
+    _initDoctor();
   }
 
-  Future<DoctorModel> _fetchDoctor() async {
-    // Artificial delay to show shimmer animation
-    await Future.delayed(const Duration(seconds: 1));
+  void _initDoctor() {
+    // 1. Direct model passed from navigation
+    if (widget.extra is DoctorModel) {
+      _doctor = widget.extra as DoctorModel;
+      return;
+    }
+    if (widget.extra is HomeDoctor) {
+      _doctor = (widget.extra as HomeDoctor).toDoctorModel();
+      return;
+    }
+    if (widget.extra is Map<String, dynamic>) {
+      _doctor = DoctorModel.fromJson(widget.extra as Map<String, dynamic>);
+      return;
+    }
 
-    final repo = sl<DoctorRepo>();
-    final result = await repo.getDoctorById(widget.doctorId);
+    // 2. Mock fallback by ID
+    final allMock = [
+      ...HomeMockData.popularDoctors,
+      ...HomeMockData.featureDoctors,
+    ];
+    for (final d in allMock) {
+      if (d.id == widget.doctorId) {
+        _doctor = d.toDoctorModel();
+        return;
+      }
+    }
 
-    return result.fold((failure) {
-      // Fallback to dummy data if not in Firestore yet
-      return const DoctorModel(
-        name: {'en': 'Dr. Pediatrician'},
-        image: null,
-        phone: '+1234567890',
-        ratingSum: 200,
-        ratingCount: 50,
-        specialization: 'Specialist Cardiologist',
-        yearsExperience: 7,
-        patientsCount: 700,
-        runningCount: 100,
-        ongoingCount: 500,
-        hourlyRate: 28.0,
-        services: [
-          'Patient care should be the number one priority.',
-          'If you run your practice you know how frustrating.',
-          'That\'s why some of appointment reminder system.',
-        ],
+    // 3. Fallback: Fetch remotely from Supabase repo if deep-linked
+    _doctorFuture = _fetchRemoteDoctor();
+  }
+
+  Future<DoctorModel> _fetchRemoteDoctor() async {
+    try {
+      final repo = sl<DoctorRepo>();
+      final result = await repo.getDoctorById(widget.doctorId);
+
+      return result.fold(
+        (failure) => _defaultDoctorModel(),
+        (doctor) => doctor,
       );
-    }, (doctor) => doctor);
+    } catch (_) {
+      return _defaultDoctorModel();
+    }
+  }
+
+  DoctorModel _defaultDoctorModel() {
+    return const DoctorModel(
+      name: {'en': 'Dr. Pediatrician'},
+      image: null,
+      phone: '+1234567890',
+      ratingSum: 200,
+      ratingCount: 50,
+      specialization: 'Specialist Cardiologist',
+      yearsExperience: 7,
+      patientsCount: 700,
+      runningCount: 100,
+      ongoingCount: 500,
+      hourlyRate: 28.0,
+      services: [
+        'Patient care should be the number one priority.',
+        'If you run your practice you know how frustrating.',
+        "That's why some of appointment reminder system.",
+      ],
+    );
   }
 
   @override
@@ -69,121 +108,42 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen>
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              context.palette.primaryLight, // Light cyan
+              context.palette.primaryLight,
               context.palette.white,
             ],
             stops: const [0.0, 0.3],
           ),
         ),
         child: SafeArea(
-          child: FutureBuilder<DoctorModel>(
-            future: _doctorFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const DoctorDetailsShimmer();
-              }
+          child: _doctor != null
+              ? DoctorDetailsAnimatedContent(
+                  doctor: _doctor!,
+                  doctorId: widget.doctorId,
+                )
+              : FutureBuilder<DoctorModel>(
+                  future: _doctorFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const DoctorDetailsShimmer();
+                    }
 
-              if (snapshot.hasError) {
-                return Center(child: Text(t.errors.loadDoctor));
-              }
+                    if (snapshot.hasError || !snapshot.hasData) {
+                      return Center(
+                        child: Text(
+                          t.errors.loadDoctor,
+                          style: context.regular14TextSub,
+                        ),
+                      );
+                    }
 
-              final doctor = snapshot.data!;
-
-              return _AnimatedContent(
-                doctor: doctor,
-                doctorId: widget.doctorId,
-              );
-            },
-          ),
+                    return DoctorDetailsAnimatedContent(
+                      doctor: snapshot.data!,
+                      doctorId: widget.doctorId,
+                    );
+                  },
+                ),
         ),
       ),
-    );
-  }
-}
-
-class _AnimatedContent extends StatelessWidget {
-  final DoctorModel doctor;
-  final String doctorId;
-
-  const _AnimatedContent({required this.doctor, required this.doctorId});
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder<double>(
-      tween: Tween<double>(begin: 0.0, end: 1.0),
-      duration: const Duration(milliseconds: 600),
-      curve: Curves.easeOutCubic,
-      builder: (context, value, child) {
-        return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const DoctorDetailsHeader(),
-
-              // Profile Card animates in slightly later/faster
-              Transform.translate(
-                offset: Offset(0, 30 * (1 - value)),
-                child: Opacity(
-                  opacity: value,
-                  child: DoctorProfileCard(doctor: doctor, doctorId: doctorId),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              Transform.translate(
-                offset: Offset(0, 40 * (1 - value)),
-                child: Opacity(
-                  opacity: value,
-                  child: DoctorStatsRow(doctor: doctor),
-                ),
-              ),
-
-              const SizedBox(height: 30),
-
-              Transform.translate(
-                offset: Offset(0, 50 * (1 - value)),
-                child: Opacity(
-                  opacity: value,
-                  child: DoctorServicesList(doctor: doctor),
-                ),
-              ),
-
-              const SizedBox(height: 30),
-
-              Transform.translate(
-                offset: Offset(0, 60 * (1 - value)),
-                child: Opacity(
-                  opacity: value,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Container(
-                        height: 200,
-                        width: double.infinity,
-                        color: context.palette.surfaceAlt,
-                        // Placeholder for Map
-                        child: Center(
-                          child: Icon(
-                            Icons.map,
-                            size: 60,
-                            color: context.palette.textPlaceholder,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 40),
-            ],
-          ),
-        );
-      },
     );
   }
 }

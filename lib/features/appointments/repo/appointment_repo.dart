@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/error/failures.dart';
-import '../models/appointment_model.dart';
+import 'package:doctor_hunt/core/error/failures.dart';
+import 'package:doctor_hunt/features/appointments/models/appointment_model.dart';
 
 abstract interface class AppointmentRepo {
   Future<Either<Failure, List<AppointmentModel>>> getPatientAppointments(

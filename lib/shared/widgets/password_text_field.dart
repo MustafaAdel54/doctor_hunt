@@ -1,6 +1,8 @@
+import 'package:doctor_hunt/shared/constants/app_constants.dart';
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:flutter/material.dart';
-import '../constants/app_constants.dart';
-import '../../../../generated/style_atoms.dart';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PasswordTextField extends StatefulWidget {
   const PasswordTextField({
@@ -41,7 +43,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         if (widget.showLabel) ...[
           Text(
             widget.label,
-            style: context.bold.copyWith(color: palette.textMain),
+            style: context.bold14TextMain,
           ),
           Gaps.h8,
         ],
@@ -49,23 +51,24 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           controller: widget.controller,
           obscureText: _obscureText,
           validator: widget.validator,
-          style: context.regular.copyWith(color: palette.textMain),
+          style: context.regular16TextMain,
           decoration: InputDecoration(
             hintText: widget.hint ?? (widget.showLabel ? null : widget.label),
-            hintStyle: context.regular.copyWith(color: palette.textPlaceholder),
+            hintStyle: context.regular14TextPlaceholder,
             filled: true,
             fillColor: palette.surface,
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 16,
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 16.w,
+              vertical: 16.h,
             ),
             suffixIcon: IconButton(
               icon: Icon(
                 _obscureText ? Icons.visibility_off : Icons.visibility,
                 color: palette.textSub,
+                size: 22.sp,
               ),
               onPressed: _toggleVisibility,
-              splashRadius: 24,
+              splashRadius: 24.r,
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppRadius.md),
@@ -77,7 +80,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppRadius.md),
-              borderSide: BorderSide(color: palette.primary, width: 2),
+              borderSide: BorderSide(color: palette.primary, width: 1.5.w),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppRadius.md),

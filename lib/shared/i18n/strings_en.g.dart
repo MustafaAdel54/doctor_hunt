@@ -100,6 +100,9 @@ class Translations$home$en {
 	/// en: 'Hi, {{name}}!'
 	String greeting({required Object name}) => 'Hi, ${name}!';
 
+	/// en: 'User'
+	String get defaultUser => 'User';
+
 	/// en: 'Live Doctors'
 	String get liveDoctors => 'Live Doctors';
 
@@ -196,8 +199,8 @@ class Translations$auth$en {
 	/// en: 'Welcome back'
 	String get welcomeBackTitle => 'Welcome back';
 
-	/// en: 'You can search course, apply course and find scholarship for abroad studies'
-	String get loginSubtitle => 'You can search course, apply course and find scholarship for abroad studies';
+	/// en: 'Search for top specialist doctors and book appointments easily'
+	String get loginSubtitle => 'Search for top specialist doctors and book appointments easily';
 
 	/// en: 'Join us to start searching'
 	String get joinUsTitle => 'Join us to start searching';
@@ -213,6 +216,9 @@ class Translations$auth$en {
 
 	/// en: 'Facebook'
 	String get facebook => 'Facebook';
+
+	/// en: 'Join us'
+	String get joinUs => 'Join us';
 
 	/// en: 'You must agree to the Terms of Service'
 	String get termsRequired => 'You must agree to the Terms of Service';
@@ -378,6 +384,12 @@ class Translations$doctors$en {
 
 	/// en: 'Services'
 	String get services => 'Services';
+
+	/// en: '${{price}}/hr'
+	String perHour({required Object price}) => '\$${price}/hr';
+
+	/// en: '({{count}} views)'
+	String viewsCount({required Object count}) => '(${count} views)';
 }
 
 // Path: reviews

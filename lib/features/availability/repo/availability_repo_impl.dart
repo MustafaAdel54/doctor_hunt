@@ -1,11 +1,12 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/error/failures.dart';
-import '../../../../core/network/supabase_error_mapper.dart';
-import '../../../../core/network/network_info.dart';
-import '../models/availability_model.dart';
-import '../../../appointments/data/models/appointment_model.dart';
+import 'package:doctor_hunt/core/error/failures.dart';
+import 'package:doctor_hunt/core/network/network_info.dart';
+import 'package:doctor_hunt/core/network/supabase_error_mapper.dart';
+import 'package:doctor_hunt/features/appointments/models/appointment_model.dart';
+import 'package:doctor_hunt/features/availability/models/availability_model.dart';
+import 'package:doctor_hunt/features/availability/service/availability_service.dart';
+
 import 'availability_repo.dart';
-import '../service/availability_service.dart';
 import 'slot_calculator.dart';
 
 class AvailabilityRepoImpl implements AvailabilityRepo {

@@ -1,7 +1,8 @@
-import 'package:doctor_hunt/apps/core/error/failures.dart';
-import 'package:doctor_hunt/apps/core/session/session_service.dart';
+import 'package:doctor_hunt/core/error/failures.dart';
+import 'package:doctor_hunt/core/session/session_service.dart';
+import 'package:doctor_hunt/features/profile/repo/profile_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../data/repo/profile_repo.dart';
+
 import 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {

@@ -1,5 +1,6 @@
+import 'package:doctor_hunt/shared/generated/app_colors.dart';
 import 'package:flutter/material.dart';
-import '../../../../generated/app_colors.dart';
+
 import 'font_family.dart';
 
 abstract final class AppTheme {
@@ -7,12 +8,6 @@ abstract final class AppTheme {
     brightness: Brightness.light,
     extensions: const [AppColorsTheme.light],
     palette: AppColorsLight.palette,
-  );
-
-  static ThemeData get dark => _build(
-    brightness: Brightness.dark,
-    extensions: const [AppColorsTheme.dark],
-    palette: AppColorsDark.palette,
   );
 
   static ThemeData _build({

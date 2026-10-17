@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/error/failures.dart';
-import '../../../auth/data/models/user_model.dart';
+import 'package:doctor_hunt/core/error/failures.dart';
+import 'package:doctor_hunt/features/auth/models/user_model.dart';
 
 abstract interface class ProfileRepo {
   Future<Either<Failure, UserModel>> createProfile({

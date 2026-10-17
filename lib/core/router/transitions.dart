@@ -1,6 +1,6 @@
+import 'package:doctor_hunt/shared/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../constants/app_constants.dart';
 
 CustomTransitionPage<T> fadePage<T>({
   required Widget child,

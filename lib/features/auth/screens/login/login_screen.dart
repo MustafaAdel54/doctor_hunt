@@ -1,15 +1,17 @@
+import 'package:doctor_hunt/core/di/injector.dart';
+import 'package:doctor_hunt/core/utils/error_mapper.dart';
+import 'package:doctor_hunt/features/auth/cubit/auth_cubit.dart';
+import 'package:doctor_hunt/features/auth/cubit/auth_state.dart';
+import 'package:doctor_hunt/features/auth/screens/widgets/auth_background_glow.dart';
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
+import 'package:doctor_hunt/shared/widgets/auth_social_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:doctor_hunt/apps/core/di/injector.dart';
-import 'package:doctor_hunt/generated/style_atoms.dart';
-import '../../cubit/auth_cubit.dart';
-import '../../cubit/auth_state.dart';
-import 'widgets/login_header.dart';
-import 'package:doctor_hunt/apps/core/widgets/auth_social_buttons.dart';
-import 'widgets/login_form.dart';
+
 import 'widgets/login_footer.dart';
-import 'package:doctor_hunt/apps/core/utils/error_mapper.dart';
+import 'widgets/login_form.dart';
+import 'widgets/login_header.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -32,54 +34,67 @@ class _LoginView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: palette.surface,
-      body: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {
-          state.whenOrNull(
-            error: (code) {
-              final msg = getErrorMessage(code);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(msg), backgroundColor: palette.danger),
-              );
-            },
-          );
-        },
-        builder: (context, state) {
-          final isLoading = state.maybeWhen(
-            loading: () => true,
-            orElse: () => false,
-          );
+      body: Stack(
+        children: [
+          const AuthBackgroundGlow(),
+          SafeArea(
+            child: BlocConsumer<AuthCubit, AuthState>(
+              listener: (context, state) {
+                state.whenOrNull(
+                  error: (code) {
+                    if (code == 'cancelled') return;
+                    final msg = getErrorMessage(code);
+                    if (msg.isEmpty) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(msg), backgroundColor: palette.danger),
+                    );
+                  },
+                );
+              },
+              builder: (context, state) {
+                final isLoading = state.maybeWhen(
+                  loading: () => true,
+                  orElse: () => false,
+                );
 
-          return SafeArea(
-            child: CustomScrollView(
-              slivers: [
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const LoginHeader(),
-                        SizedBox(height: 48.h),
-                        AuthSocialButtons(
-                          isLoading: isLoading,
-                          onGooglePressed: () =>
-                              context.read<AuthCubit>().loginWithGoogle(),
-                          onFacebookPressed:
-                              () {}, // Optional feature out of scope
+                return LayoutBuilder(
+                  builder: (context, constraints) {
+                    return SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: constraints.maxHeight,
                         ),
-                        SizedBox(height: 40.h),
-                        LoginForm(isLoading: isLoading),
-                        SizedBox(height: 16.h),
-                        const LoginFooter(),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                        child: IntrinsicHeight(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 24.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                const LoginHeader(),
+                                SizedBox(height: 36.h),
+                                AuthSocialButtons(
+                                  isLoading: isLoading,
+                                  onGooglePressed: () =>
+                                      context.read<AuthCubit>().loginWithGoogle(),
+                                  onFacebookPressed: () {},
+                                ),
+                                SizedBox(height: 32.h),
+                                LoginForm(isLoading: isLoading),
+                                const Spacer(),
+                                const LoginFooter(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }

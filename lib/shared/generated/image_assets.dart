@@ -20,13 +20,23 @@ class ImageAssets {
   static const String liveDoctor1 = 'assets/images/home/live_doctor_1.png';
   static const String liveDoctor2 = 'assets/images/home/live_doctor_2.png';
   static const String liveDoctor3 = 'assets/images/home/live_doctor_3.png';
-  static const String popDoctor1 = 'assets/images/home/pop_doctor_1.png';
-  static const String popDoctor2 = 'assets/images/home/pop_doctor_2.png';
+  static const String popDoctor1 = 'assets/images/home/pop_doc_1.png';
+  static const String popDoctor2 = 'assets/images/home/pop_doc_2.png';
+  static const String popDoctor3 = 'assets/images/home/pop_doc_3.png';
+  static const String popDoctor4 = 'assets/images/home/pop_doc_4.png';
   static const String featDoctor1 = 'assets/images/home/feat_doctor_1.png';
   static const String featDoctor2 = 'assets/images/home/feat_doctor_2.png';
   static const String featDoctor3 = 'assets/images/home/feat_doctor_3.png';
 
-  // Auth
+  // Popular doctors screen & common decorations
+  static const String bgEllipseTop = 'assets/images/home/bg_ellipse_top.png';
+  static const String bgEllipseBottom = 'assets/images/home/bg_ellipse_bottom.png';
+  static const String backArrow = 'assets/icons/back_arrow.svg';
+  static const String heartFilled = 'assets/icons/heart_filled.svg';
+  static const String heartOutline = 'assets/icons/heart_outline.svg';
+
+  // Auth / Branding
   static const String patientIcon = 'assets/icons/patient_icon.svg';
   static const String splashLogo = 'assets/images/logos/splash_logo.png';
+  static const String appLogo = 'assets/icons/app_logo.svg';
 }

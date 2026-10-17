@@ -77,6 +77,7 @@ class _Translations$home$ar extends Translations$home$en {
 
 	// Translations
 	@override String greeting({required Object name}) => 'أهلاً ${name}!';
+	@override String get defaultUser => 'مستخدم';
 	@override String get liveDoctors => 'أطباء متاحون الآن';
 	@override String get popularDoctors => 'أطباء مشهورون';
 	@override String get featuredDoctors => 'أطباء مميزون';
@@ -123,6 +124,7 @@ class _Translations$auth$ar extends Translations$auth$en {
 	@override String get welcomeBackTitle => 'مرحباً بعودتك';
 	@override String get loginSubtitle => 'يمكنك البحث عن الأطباء وحجز المواعيد بكل سهولة';
 	@override String get joinUsTitle => 'انضم إلينا لتبدأ البحث';
+	@override String get joinUs => 'انضم إلينا';
 	@override String get termsRequired => 'يجب عليك الموافقة على شروط الخدمة';
 }
 
@@ -196,6 +198,8 @@ class _Translations$doctors$ar extends Translations$doctors$en {
 	@override String get statOngoing => 'مستمر';
 	@override String get statPatients => 'المرضى';
 	@override String get services => 'الخدمات';
+	@override String perHour({required Object price}) => '${price} \$/ساعة';
+	@override String viewsCount({required Object count}) => '(${count} مشاهدة)';
 }
 
 // Path: reviews

@@ -1,65 +1,48 @@
+import 'package:doctor_hunt/core/router/routes.dart';
+import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
+import 'package:doctor_hunt/shared/constants/app_constants.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
-import 'package:doctor_hunt/generated/style_atoms.dart';
-import 'package:doctor_hunt/apps/core/constants/app_constants.dart';
-import 'package:doctor_hunt/i18n/strings.g.dart';
-import '../../../models/home_mock_data.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+
 import 'cards/feature_doctor_card.dart';
+import 'home_section_header.dart';
 
 class FeatureDoctorsSection extends StatelessWidget {
   const FeatureDoctorsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final doctors = HomeMockData.featureDoctors;
+    const doctors = HomeMockData.featureDoctors;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                t.home.featuredDoctors,
-                style: context.medium18.copyWith(
-                  color: context.palette.textMain,
-                ),
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      t.home.seeAll,
-                      style: context.light12.copyWith(
-                        color: context.palette.textSub,
-                      ),
-                    ),
-                    Gaps.w4,
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 10,
-                      color: context.palette.textSub,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        HomeSectionHeader(
+          title: t.home.featuredDoctors,
+          onSeeAllTap: () {},
         ),
         Gaps.h16,
         SizedBox(
-          height: 130,
+          height: 130.h,
           child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             scrollDirection: Axis.horizontal,
             itemCount: doctors.length,
             separatorBuilder: (context, index) => Gaps.w16,
             itemBuilder: (context, index) {
-              return FeatureDoctorCard(doctor: doctors[index], onTap: () {});
+              final doctor = doctors[index];
+              return FeatureDoctorCard(
+                doctor: doctor,
+                onTap: () {
+                  context.pushNamed(
+                    Routes.doctorDetails,
+                    pathParameters: {'doctorId': doctor.id},
+                    extra: doctor.toDoctorModel(),
+                  );
+                },
+              );
             },
           ),
         ),

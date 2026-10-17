@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/error/failures.dart';
-import '../models/doctor_model.dart';
+import 'package:doctor_hunt/core/error/failures.dart';
+import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
 
 abstract interface class DoctorRepo {
   Future<Either<Failure, List<DoctorModel>>> getDoctors({

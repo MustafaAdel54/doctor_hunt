@@ -1,6 +1,8 @@
+import 'package:doctor_hunt/shared/constants/app_constants.dart';
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
-import '../constants/app_constants.dart';
-import '../../../../generated/style_atoms.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EmptyState extends StatelessWidget {
   const EmptyState({
@@ -22,23 +24,26 @@ class EmptyState extends StatelessWidget {
 
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: EdgeInsets.all(32.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 64, color: palette.surfaceAlt),
+            Icon(icon, size: 64.sp, color: palette.textPlaceholder),
             Gaps.h16,
             Text(
               message,
-              style: context.medium.copyWith(color: palette.textSub),
+              style: context.medium16TextSub,
               textAlign: TextAlign.center,
             ),
             if (onRetry != null) ...[
               Gaps.h24,
               TextButton.icon(
                 onPressed: onRetry,
-                icon: const Icon(Icons.refresh),
-                label: Text(retryText ?? 'Retry'),
+                icon: Icon(Icons.refresh, size: 20.sp),
+                label: Text(
+                  retryText ?? t.common.retry,
+                  style: context.medium14Primary,
+                ),
                 style: TextButton.styleFrom(foregroundColor: palette.primary),
               ),
             ],

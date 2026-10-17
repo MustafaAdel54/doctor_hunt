@@ -1,4 +1,6 @@
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DoctorDetailsShimmer extends StatelessWidget {
@@ -6,99 +8,101 @@ class DoctorDetailsShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.palette;
+
     return Shimmer.fromColors(
-      baseColor: Colors.grey.shade300, // shimmer base/highlight — structural, not brand
-      highlightColor: Colors.grey.shade100,
+      baseColor: palette.surfaceAlt,
+      highlightColor: palette.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header Shimmer
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: 44,
-                  height: 44,
+                  width: 44.w,
+                  height: 44.h,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.circular(12),
+                    color: palette.white,
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                 ),
-                Container(width: 120, height: 20, color: Theme.of(context).cardColor),
+                Container(width: 120.w, height: 20.h, color: palette.white),
                 Container(
-                  width: 44,
-                  height: 44,
+                  width: 44.w,
+                  height: 44.h,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.circular(12),
+                    color: palette.white,
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
 
           // Card Shimmer
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            height: 140,
+            margin: EdgeInsets.symmetric(horizontal: 20.w),
+            height: 140.h,
             decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(16),
+              color: palette.white,
+              borderRadius: BorderRadius.circular(16.r),
             ),
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: 30.h),
 
           // Stats Row Shimmer
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            height: 90,
+            margin: EdgeInsets.symmetric(horizontal: 20.w),
+            height: 90.h,
             decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(16),
+              color: palette.white,
+              borderRadius: BorderRadius.circular(16.r),
             ),
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: 30.h),
 
           // Services Shimmer
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(width: 100, height: 24, color: Theme.of(context).cardColor),
-                const SizedBox(height: 16),
+                Container(width: 100.w, height: 24.h, color: palette.white),
+                SizedBox(height: 16.h),
                 Container(
                   width: double.infinity,
-                  height: 20,
-                  color: Theme.of(context).cardColor,
+                  height: 20.h,
+                  color: palette.white,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 Container(
                   width: double.infinity,
-                  height: 20,
-                  color: Theme.of(context).cardColor,
+                  height: 20.h,
+                  color: palette.white,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 Container(
                   width: double.infinity,
-                  height: 20,
-                  color: Theme.of(context).cardColor,
+                  height: 20.h,
+                  color: palette.white,
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: 30.h),
 
           // Map Shimmer
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            height: 200,
+            margin: EdgeInsets.symmetric(horizontal: 20.w),
+            height: 200.h,
             decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(16),
+              color: palette.white,
+              borderRadius: BorderRadius.circular(16.r),
             ),
           ),
         ],

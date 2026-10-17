@@ -1,6 +1,8 @@
+import 'package:doctor_hunt/shared/constants/app_constants.dart';
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:flutter/material.dart';
-import '../constants/app_constants.dart';
-import '../../../../generated/style_atoms.dart';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTextField extends StatelessWidget {
   const AppTextField({
@@ -30,23 +32,23 @@ class AppTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (showLabel) ...[
-          Text(label, style: context.bold.copyWith(color: palette.textMain)),
+          Text(label, style: context.bold14TextMain),
           Gaps.h8,
         ],
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
           validator: validator,
-          style: context.regular.copyWith(color: palette.textMain),
+          style: context.regular16TextMain,
           decoration: InputDecoration(
             hintText: hint ?? (showLabel ? null : label),
-            hintStyle: context.regular.copyWith(color: palette.textPlaceholder),
+            hintStyle: context.regular14TextPlaceholder,
             suffixIcon: suffixIcon,
             filled: true,
             fillColor: palette.surface,
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 16,
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 16.w,
+              vertical: 16.h,
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppRadius.md),
@@ -58,7 +60,7 @@ class AppTextField extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppRadius.md),
-              borderSide: BorderSide(color: palette.primary, width: 2),
+              borderSide: BorderSide(color: palette.primary, width: 1.5.w),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppRadius.md),

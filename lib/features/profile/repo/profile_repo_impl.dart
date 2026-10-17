@@ -1,10 +1,11 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/error/failures.dart';
-import '../../../../core/network/supabase_error_mapper.dart';
-import '../../../../core/network/network_info.dart';
-import '../../../auth/data/models/user_model.dart';
+import 'package:doctor_hunt/core/error/failures.dart';
+import 'package:doctor_hunt/core/network/network_info.dart';
+import 'package:doctor_hunt/core/network/supabase_error_mapper.dart';
+import 'package:doctor_hunt/features/auth/models/user_model.dart';
+import 'package:doctor_hunt/features/profile/service/profile_service.dart';
+
 import 'profile_repo.dart';
-import '../service/profile_service.dart';
 
 class ProfileRepoImpl implements ProfileRepo {
   const ProfileRepoImpl({required this.service, required this.networkInfo});

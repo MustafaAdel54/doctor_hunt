@@ -1,11 +1,54 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+sealed class AuthState {
+  const AuthState();
 
-part 'auth_state.freezed.dart';
+  const factory AuthState.initial() = AuthInitial;
+  const factory AuthState.loading() = AuthLoading;
+  const factory AuthState.success() = AuthSuccess;
+  const factory AuthState.error(String message) = AuthError;
 
-@freezed
-class AuthState with _$AuthState {
-  const factory AuthState.initial() = _Initial;
-  const factory AuthState.loading() = _Loading;
-  const factory AuthState.success() = _Success;
-  const factory AuthState.error(String message) = _Error;
+  T? whenOrNull<T>({
+    T? Function()? initial,
+    T? Function()? loading,
+    T? Function()? success,
+    T? Function(String message)? error,
+  }) {
+    final state = this;
+    if (state is AuthInitial && initial != null) return initial();
+    if (state is AuthLoading && loading != null) return loading();
+    if (state is AuthSuccess && success != null) return success();
+    if (state is AuthError && error != null) return error(state.message);
+    return null;
+  }
+
+  T maybeWhen<T>({
+    T Function()? initial,
+    T Function()? loading,
+    T Function()? success,
+    T Function(String message)? error,
+    required T Function() orElse,
+  }) {
+    final state = this;
+    if (state is AuthInitial && initial != null) return initial();
+    if (state is AuthLoading && loading != null) return loading();
+    if (state is AuthSuccess && success != null) return success();
+    if (state is AuthError && error != null) return error(state.message);
+    return orElse();
+  }
+}
+
+class AuthInitial extends AuthState {
+  const AuthInitial();
+}
+
+class AuthLoading extends AuthState {
+  const AuthLoading();
+}
+
+class AuthSuccess extends AuthState {
+  const AuthSuccess();
+}
+
+class AuthError extends AuthState {
+  final String message;
+  const AuthError(this.message);
 }

@@ -1,5 +1,5 @@
-import '../models/availability_model.dart';
-import '../../../appointments/data/models/appointment_model.dart';
+import 'package:doctor_hunt/features/appointments/models/appointment_model.dart';
+import 'package:doctor_hunt/features/availability/models/availability_model.dart';
 
 abstract final class SlotCalculator {
   static List<TimeSlot> calculate(

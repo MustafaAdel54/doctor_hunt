@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/error/failures.dart';
-import '../models/user_model.dart';
+import 'package:doctor_hunt/core/error/failures.dart';
+import 'package:doctor_hunt/features/auth/models/user_model.dart';
 
 abstract interface class AuthRepo {
   Future<Either<Failure, UserModel>> loginWithEmail(

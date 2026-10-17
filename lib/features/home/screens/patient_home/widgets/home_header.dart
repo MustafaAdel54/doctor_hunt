@@ -1,8 +1,10 @@
+import 'package:doctor_hunt/shared/constants/app_constants.dart';
+import 'package:doctor_hunt/shared/generated/image_assets.dart';
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
-import 'package:doctor_hunt/generated/style_atoms.dart';
-import 'package:doctor_hunt/apps/core/constants/app_constants.dart';
-import 'package:doctor_hunt/generated/image_assets.dart';
-import 'package:doctor_hunt/i18n/strings.g.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
@@ -10,21 +12,24 @@ class HomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final userName =
+        Supabase.instance.client.auth.currentUser?.userMetadata?['name']
+            as String? ??
+        t.home.defaultUser;
 
     return Container(
       width: double.infinity,
-      height: 156,
+      height: 156.h,
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.vertical(
-          bottom: Radius.circular(20),
-        ), // Based on typical designs, though figma didn't explicitly show radius, usually there's a slight radius. Let me omit it for now if it's 0 in Figma.
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(30.r),
+        ),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
             palette.primary,
-            palette
-                .primaryDark, // Or hardcode #0EBE7E and #07D9AD if strictly required, but palette is safer for dark mode. Let's use palette.
+            palette.primaryDark,
           ],
         ),
       ),
@@ -33,10 +38,10 @@ class HomeHeader extends StatelessWidget {
           // Background circles (bg group in Figma)
           Positioned(
             top: 0,
-            left: -30,
+            left: -30.w,
             child: Container(
-              width: 216,
-              height: 216,
+              width: 216.w,
+              height: 216.h,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: palette.white.withValues(alpha: 0.05),
@@ -44,11 +49,11 @@ class HomeHeader extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: -50,
-            right: -30,
+            bottom: -50.h,
+            right: -30.w,
             child: Container(
-              width: 242,
-              height: 242,
+              width: 242.w,
+              height: 242.h,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: palette.white.withValues(alpha: 0.05),
@@ -58,7 +63,7 @@ class HomeHeader extends StatelessWidget {
 
           // Content
           Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 40),
+            padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 40.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,30 +73,32 @@ class HomeHeader extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      t.home.greeting(name: 'Handwerker'), // FLAG: No profile plumbing available. Wiring default name.
-                      style: context.regular20.copyWith(color: palette.white.withValues(alpha: 0.7)),
+                      t.home.greeting(name: userName),
+                      style: context.regular20White.copyWith(
+                        color: palette.white.withValues(alpha: 0.7),
+                      ),
                     ),
                     Gaps.h4,
                     Text(
                       t.doctors.title,
-                      style: context.bold24.copyWith(color: palette.white),
+                      style: context.bold24White,
                     ),
                   ],
                 ),
                 ClipOval(
                   child: Image.asset(
                     ImageAssets.avatar,
-                    width: 60,
-                    height: 60,
+                    width: 60.w,
+                    height: 60.h,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) => Container(
-                      width: 60,
-                      height: 60,
+                      width: 60.w,
+                      height: 60.h,
                       color: palette.white.withValues(alpha: 0.24),
                       child: Icon(
                         Icons.person,
                         color: palette.white,
-                        size: 30,
+                        size: 30.sp,
                       ),
                     ),
                   ),

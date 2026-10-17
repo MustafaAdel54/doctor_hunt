@@ -1,10 +1,11 @@
+import 'package:doctor_hunt/core/themes/app_theme.dart';
+import 'package:doctor_hunt/shared/constants/app_constants.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import '../../i18n/strings.g.dart';
-import '../core/constants/app_constants.dart';
-import '../core/themes/app_theme.dart';
+
 import 'app_bootstrap.dart';
 
 class MyApp extends StatelessWidget {
@@ -25,9 +26,7 @@ class MyApp extends StatelessWidget {
             supportedLocales: AppLocaleUtils.supportedLocales,
             localizationsDelegates: GlobalMaterialLocalizations.delegates,
             theme: AppTheme.light,
-            darkTheme: AppTheme.dark,
-            // We use system theme for v1, the settings screen can override this
-            themeMode: ThemeMode.system,
+            themeMode: ThemeMode.light,
             routerConfig: router,
             debugShowCheckedModeBanner: false,
           ),

@@ -16,11 +16,11 @@ class CategoryTabsSection extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           _buildCategoryTab(ImageAssets.catTooth, () {}),
-          SizedBox(width: 8.w),
+          // SizedBox(width: 8.w),
           _buildCategoryTab(ImageAssets.catHeart, () {}),
-          SizedBox(width: 8.w),
+          // SizedBox(width: 8.w),
           _buildCategoryTab(ImageAssets.catEye, () {}),
-          SizedBox(width: 8.w),
+          // SizedBox(width: 8.w),
           _buildCategoryTab(ImageAssets.catBody, () {}),
         ],
       ),
@@ -32,8 +32,8 @@ class CategoryTabsSection extends StatelessWidget {
       onTap: onTap,
       child: SvgPicture.asset(
         asset,
-        width: 80.w,
-        height: 100.h,
+        width: 100.w,
+        height: 120.h,
       ),
     );
   }

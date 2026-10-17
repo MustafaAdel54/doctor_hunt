@@ -1,10 +1,11 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/error/failures.dart';
-import '../../../../core/network/supabase_error_mapper.dart';
-import '../../../../core/network/network_info.dart';
-import '../models/doctor_model.dart';
+import 'package:doctor_hunt/core/error/failures.dart';
+import 'package:doctor_hunt/core/network/network_info.dart';
+import 'package:doctor_hunt/core/network/supabase_error_mapper.dart';
+import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
+import 'package:doctor_hunt/features/doctors/service/doctor_service.dart';
+
 import 'doctor_repo.dart';
-import '../service/doctor_service.dart';
 
 class DoctorRepoImpl implements DoctorRepo {
   const DoctorRepoImpl({required this.service, required this.networkInfo});

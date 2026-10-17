@@ -1,7 +1,8 @@
-import 'package:doctor_hunt/apps/core/error/failures.dart';
-import 'package:doctor_hunt/apps/core/session/session_service.dart';
+import 'package:doctor_hunt/core/error/failures.dart';
+import 'package:doctor_hunt/core/session/session_service.dart';
+import 'package:doctor_hunt/features/auth/repo/auth_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../data/repo/auth_repo.dart';
+
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -70,6 +71,19 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (_) {
         if (!isClosed) emit(const AuthState.success());
+      },
+    );
+  }
+
+  Future<void> logout() async {
+    emit(const AuthState.loading());
+    final result = await repo.logout();
+    result.fold(
+      (failure) {
+        if (!isClosed) emit(AuthState.error(_mapFailureToCode(failure)));
+      },
+      (_) {
+        if (!isClosed) emit(const AuthState.initial());
       },
     );
   }

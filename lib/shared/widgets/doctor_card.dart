@@ -1,8 +1,9 @@
+import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
+import 'package:doctor_hunt/shared/constants/app_constants.dart';
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
-import '../constants/app_constants.dart';
-import '../../../../generated/style_atoms.dart';
-import '../../features/doctors/data/models/doctor_model.dart';
-import '../../../i18n/strings.g.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DoctorCard extends StatelessWidget {
   const DoctorCard({
@@ -27,7 +28,7 @@ class DoctorCard extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppRadius.lg),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
           color: palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -35,8 +36,8 @@ class DoctorCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: palette.shadowSoft,
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              blurRadius: 10.r,
+              offset: Offset(0, 4.h),
             ),
           ],
         ),
@@ -45,8 +46,8 @@ class DoctorCard extends StatelessWidget {
           children: [
             // Photo
             Container(
-              width: 80,
-              height: 80,
+              width: 80.w,
+              height: 80.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 color: palette.primary.withValues(alpha: 0.1),
@@ -58,7 +59,7 @@ class DoctorCard extends StatelessWidget {
                     : null,
               ),
               child: doctor.image == null
-                  ? Icon(Icons.person, color: palette.primary, size: 40)
+                  ? Icon(Icons.person, color: palette.primary, size: 40.sp)
                   : null,
             ),
             Gaps.w16,
@@ -69,34 +70,34 @@ class DoctorCard extends StatelessWidget {
                 children: [
                   Text(
                     name,
-                    style: context.bold.copyWith(color: palette.textMain),
+                    style: context.bold16TextMain,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Gaps.h4,
                   Text(
                     doctor.specialization,
-                    style: context.regular.copyWith(color: palette.textSub),
+                    style: context.regular14TextSub,
                   ),
                   Gaps.h8,
                   Row(
                     children: [
-                      Icon(Icons.star, color: palette.warning, size: 16),
+                      Icon(Icons.star, color: palette.warning, size: 16.sp),
                       Gaps.w4,
                       Text(
                         doctor.rating.toStringAsFixed(1),
-                        style: context.medium.copyWith(color: palette.textMain),
+                        style: context.medium14TextMain,
                       ),
                       Gaps.w12,
                       Icon(
                         Icons.work_history,
                         color: palette.primary,
-                        size: 16,
+                        size: 16.sp,
                       ),
                       Gaps.w4,
                       Text(
                         t.doctors.experience(n: doctor.yearsExperience),
-                        style: context.medium.copyWith(color: palette.textSub),
+                        style: context.medium14TextSub,
                       ),
                     ],
                   ),
@@ -113,7 +114,10 @@ class DoctorCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(AppRadius.md),
                           ),
                         ),
-                        child: Text(t.doctors.bookNow),
+                        child: Text(
+                          t.doctors.bookNow,
+                          style: context.medium14Primary,
+                        ),
                       ),
                     ),
                   ],

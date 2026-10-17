@@ -1,15 +1,17 @@
 import 'dart:async';
+
+import 'package:doctor_hunt/core/constants/supabase_constants.dart';
+import 'package:doctor_hunt/shared/utils/logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../constants/supabase_constants.dart';
-import '../utils/logger.dart';
+
 import 'session_state.dart';
 
 class SessionService extends ChangeNotifier
     implements ValueListenable<SessionState> {
   SessionService({
-    required SupabaseClient supabase,
-  }) : _supabase = supabase {
+    required this._supabase,
+  }) {
     _init();
   }
 
@@ -54,7 +56,6 @@ class SessionService extends ChangeNotifier
           continue;
         }
 
-        bool success = false;
         for (int attempt = 1; attempt <= 3; attempt++) {
           try {
             final doc = await _supabase
@@ -87,7 +88,6 @@ class SessionService extends ChangeNotifier
                 }
               }
             }
-            success = true;
             break; // Break retry loop on success
           } catch (e) {
             Log.e('Error fetching user profile (attempt $attempt)', e);
@@ -97,7 +97,7 @@ class SessionService extends ChangeNotifier
               );
             } else {
               // Short backoff
-              await Future.delayed(Duration(seconds: 1));
+              await Future.delayed(const Duration(seconds: 1));
             }
           }
         }

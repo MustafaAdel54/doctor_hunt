@@ -1,19 +1,17 @@
-import 'package:doctor_hunt/apps/core/di/injector.dart';
-import 'package:doctor_hunt/apps/core/session/session_service.dart';
-import 'package:doctor_hunt/apps/core/widgets/primary_button.dart';
-import 'package:doctor_hunt/generated/image_assets.dart';
-import 'package:doctor_hunt/generated/style_atoms.dart';
-import 'package:doctor_hunt/i18n/strings.g.dart';
+import 'package:doctor_hunt/core/di/injector.dart';
+import 'package:doctor_hunt/core/session/session_service.dart';
+import 'package:doctor_hunt/core/utils/error_mapper.dart';
+import 'package:doctor_hunt/features/profile/cubit/profile_cubit.dart';
+import 'package:doctor_hunt/features/profile/cubit/profile_state.dart';
+import 'package:doctor_hunt/shared/generated/image_assets.dart';
+import 'package:doctor_hunt/shared/generated/style_atoms.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
+import 'package:doctor_hunt/shared/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
-import '../../cubit/auth_cubit.dart';
-import '../../cubit/auth_state.dart';
-import '../../../profile/presentation/cubit/profile_cubit.dart';
-import '../../../profile/presentation/cubit/profile_state.dart';
-import 'package:doctor_hunt/apps/core/utils/error_mapper.dart';
 import 'widgets/role_option_card.dart';
 import 'widgets/role_selection_header.dart';
 
@@ -58,14 +56,11 @@ class _RoleSelectionViewState extends State<_RoleSelectionView> {
     // always non-null when this screen is shown.
     final supabaseUser = Supabase.instance.client.auth.currentUser;
     final sessionUid = sl<SessionService>().value.userId;
-
     final uid = sessionUid ?? supabaseUser?.id;
-    final email = supabaseUser?.email ?? '';
 
     if (uid == null) return; // Guard: should never happen
 
     final metadata = supabaseUser?.userMetadata;
-    final isGoogle = supabaseUser?.appMetadata['provider'] == 'google';
 
     context.read<ProfileCubit>().createProfile(
       role: role,

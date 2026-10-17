@@ -31,9 +31,8 @@ class SessionState extends Equatable {
       errorMessage = message;
 
   /// Supabase user exists but no PostgreSQL application profile yet.
-  const SessionState.authenticatedWithoutProfile({required String userId})
+  const SessionState.authenticatedWithoutProfile({required String this.userId})
     : status = SessionStatus.authenticatedWithoutProfile,
-      userId = userId,
       role = null,
       errorMessage = null;
 
@@ -41,9 +40,8 @@ class SessionState extends Equatable {
     : status = SessionStatus.authenticated,
       errorMessage = null;
 
-  const SessionState.authenticatedInactive({required String userId})
+  const SessionState.authenticatedInactive({required String this.userId})
     : status = SessionStatus.authenticatedInactive,
-      userId = userId,
       role = null,
       errorMessage = null;
 
