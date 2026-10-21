@@ -126,6 +126,19 @@ class _Translations$auth$ar extends Translations$auth$en {
 	@override String get joinUsTitle => 'انضم إلينا لتبدأ البحث';
 	@override String get joinUs => 'انضم إلينا';
 	@override String get termsRequired => 'يجب عليك الموافقة على شروط الخدمة';
+	@override String get forgotPasswordTitle => 'نسيت كلمة المرور';
+	@override String get forgotPasswordSubtitle => 'أدخل بريدك الإلكتروني لعملية التحقق، سنرسل رمز التحقق إلى بريدك الإلكتروني.';
+	@override String get enterCodeTitle => 'أدخل رمز التحقق';
+	@override String get enterCodeSubtitle => 'أدخل الرمز المكون من 6 أرقام الذي استلمته على بريدك الإلكتروني.';
+	@override String get resetPasswordTitle => 'تعيين كلمة المرور';
+	@override String get resetPasswordSubtitle => 'قم بتعيين كلمة المرور الجديدة لحسابك لتتمكن من تسجيل الدخول والوصول إلى جميع الميزات.';
+	@override String get newPassword => 'كلمة المرور الجديدة';
+	@override String get reenterPassword => 'إعادة إدخال كلمة المرور';
+	@override String get updatePassword => 'تحديث كلمة المرور';
+	@override String get continueText => 'متابعة';
+	@override String get resendCode => 'إعادة إرسال الرمز';
+	@override String resendCodeIn({required Object time}) => 'إعادة إرسال الرمز خلال ${time}';
+	@override String get passwordResetSuccess => 'تم تحديث كلمة المرور بنجاح! يرجى تسجيل الدخول.';
 }
 
 // Path: onboarding
@@ -200,6 +213,12 @@ class _Translations$doctors$ar extends Translations$doctors$en {
 	@override String get services => 'الخدمات';
 	@override String perHour({required Object price}) => '${price} \$/ساعة';
 	@override String viewsCount({required Object count}) => '(${count} مشاهدة)';
+	@override String get favouriteDoctors => 'الأطباء المفضلون';
+	@override String get noFavourites => 'لا يوجد أطباء مفضلون بعد';
+	@override String get noFavouritesDesc => 'اضغط على أيقونة القلب على أي طبيب لإضافته إلى المفضلة.';
+	@override String get searchFavouritesHint => 'ابحث عن طبيب أو تخصص';
+	@override String get addedToFavourites => 'تمت الإضافة إلى المفضلة';
+	@override String get removedFromFavourites => 'تمت الإزالة من المفضلة';
 }
 
 // Path: reviews
@@ -257,6 +276,18 @@ class _Translations$appointments$ar extends Translations$appointments$en {
 	@override String bookedFor({required Object date, required Object time}) => 'تم الحجز لـ ${date} الساعة ${time}';
 	@override String get cancelBooking => 'إلغاء الحجز';
 	@override String get cancelConfirm => 'هل أنت متأكد أنك تريد إلغاء هذا الموعد؟';
+	@override String get selectTime => 'اختر الوقت';
+	@override String get noSlotsAvailable => 'لا توجد مواعيد متاحة';
+	@override String slotsAvailable({required Object count}) => '${count} مواعيد متاحة';
+	@override String afternoonSlots({required Object count}) => 'فترة الظهيرة (${count} مواعيد)';
+	@override String eveningSlots({required Object count}) => 'فترة المساء (${count} مواعيد)';
+	@override String get confirm => 'تأكيد';
+	@override String get thankYou => 'شكراً لك !';
+	@override String get appointmentSuccessful => 'تم حجز موعدك بنجاح';
+	@override String bookingSuccessDesc({required Object doctor, required Object date, required Object time}) => 'لقد قمت بحجز موعد مع ${doctor} في تاريخ ${date}، الساعة ${time}';
+	@override String get done => 'تم';
+	@override String get today => 'اليوم';
+	@override String get tomorrow => 'غداً';
 	@override String count({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ar'))(n,
 		zero: 'لا توجد مواعيد',
 		one: 'موعد واحد',
@@ -369,6 +400,8 @@ class _Translations$errors$auth$ar extends Translations$errors$auth$en {
 
 	// Translations
 	@override String get invalidCredential => 'البريد الإلكتروني أو كلمة المرور خاطئة';
+	@override String get invalidOtp => 'رمز التحقق غير صحيح. يرجى التحقق والمحاولة مرة أخرى.';
+	@override String get otpExpired => 'رمز التحقق غير صحيح. يرجى التحقق والمحاولة مرة أخرى.';
 	@override String get emailAlreadyInUse => 'هذا البريد الإلكتروني مسجل بالفعل';
 	@override String get weakPassword => 'كلمة المرور ضعيفة جداً';
 	@override String get userDisabled => 'تم تعطيل هذا الحساب';

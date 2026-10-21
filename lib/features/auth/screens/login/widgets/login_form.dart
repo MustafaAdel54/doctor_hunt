@@ -1,5 +1,5 @@
-import 'package:doctor_hunt/core/router/routes.dart';
 import 'package:doctor_hunt/features/auth/cubit/auth_cubit.dart';
+import 'package:doctor_hunt/features/auth/screens/forgot_password/forgot_password_sheet.dart';
 import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:doctor_hunt/shared/widgets/app_text_field.dart';
@@ -8,7 +8,6 @@ import 'package:doctor_hunt/shared/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key, required this.isLoading});
@@ -88,7 +87,7 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(height: 12.h),
           Center(
             child: TextButton(
-              onPressed: () => context.push(Paths.forgotPassword),
+              onPressed: () => ForgotPasswordSheet.show(context),
               child: Text(
                 t.auth.forgotPassword,
                 style: context.semiBold14Primary,

@@ -34,6 +34,9 @@ class ImageAssets {
   static const String backArrow = 'assets/icons/back_arrow.svg';
   static const String heartFilled = 'assets/icons/heart_filled.svg';
   static const String heartOutline = 'assets/icons/heart_outline.svg';
+  static const String doctorMap = 'assets/images/home/doctor_map.png';
+  static const String noSlotsIllustration = 'assets/images/home/no_slots_illustration.png';
+  static const String bookingSuccessThumbsUp = 'assets/images/home/booking_success_thumbs_up.png';
 
   // Auth / Branding
   static const String patientIcon = 'assets/icons/patient_icon.svg';

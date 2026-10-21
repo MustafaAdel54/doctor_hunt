@@ -18,6 +18,7 @@ abstract final class SbC {
   static const String appointments = 'appointments';
   static const String availability = 'availability';
   static const String reviews = 'reviews';
+  static const String favorites = 'favorites';
 
   // Legacy Fields for compilation until services are migrated
   static const String users = 'profiles'; // Mapped to profiles

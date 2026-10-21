@@ -1,13 +1,18 @@
+import 'package:doctor_hunt/features/favorites/cubit/favorites_cubit.dart';
+import 'package:doctor_hunt/features/favorites/cubit/favorites_state.dart';
 import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
+import 'package:doctor_hunt/shared/generated/app_colors.dart';
 import 'package:doctor_hunt/shared/generated/image_assets.dart';
 import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:doctor_hunt/shared/i18n/strings.g.dart';
+import 'package:doctor_hunt/shared/utils/app_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class PopularDoctorListCard extends StatefulWidget {
+class PopularDoctorListCard extends StatelessWidget {
   final HomeDoctor doctor;
   final VoidCallback onTap;
 
@@ -16,19 +21,6 @@ class PopularDoctorListCard extends StatefulWidget {
     required this.doctor,
     required this.onTap,
   });
-
-  @override
-  State<PopularDoctorListCard> createState() => _PopularDoctorListCardState();
-}
-
-class _PopularDoctorListCardState extends State<PopularDoctorListCard> {
-  late bool _isFavorite;
-
-  @override
-  void initState() {
-    super.initState();
-    _isFavorite = widget.doctor.isFavorite;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +44,7 @@ class _PopularDoctorListCardState extends State<PopularDoctorListCard> {
         color: palette.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(8.r),
-          onTap: widget.onTap,
+          onTap: onTap,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
             child: Row(
@@ -60,11 +52,11 @@ class _PopularDoctorListCardState extends State<PopularDoctorListCard> {
               children: [
                 // Doctor Photo
                 Hero(
-                  tag: 'doctor_image_${widget.doctor.id}',
+                  tag: 'doctor_image_${doctor.id}',
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.r),
                     child: Image.asset(
-                      widget.doctor.imageAsset,
+                      doctor.imageAsset,
                       width: 82.w,
                       height: 82.h,
                       fit: BoxFit.cover,
@@ -94,7 +86,7 @@ class _PopularDoctorListCardState extends State<PopularDoctorListCard> {
                         children: [
                           Expanded(
                             child: Text(
-                              widget.doctor.name,
+                              doctor.name,
                               style: context.medium18TextMain.copyWith(
                                 height: 1.2,
                               ),
@@ -103,34 +95,51 @@ class _PopularDoctorListCardState extends State<PopularDoctorListCard> {
                             ),
                           ),
                           SizedBox(width: 8.w),
-                          GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              setState(() {
-                                _isFavorite = !_isFavorite;
-                              });
+                          BlocBuilder<FavoritesCubit, FavoritesState>(
+                            builder: (context, state) {
+                              final isFav = state.isFavorite(doctor.id);
+                              return GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  final willBeFav = !isFav;
+                                  context
+                                      .read<FavoritesCubit>()
+                                      .toggleFavorite(doctor.id);
+                                  AppSnackBar.showFavorite(context,
+                                      isAdded: willBeFav);
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 2.h),
+                                  child: AnimatedScale(
+                                    scale: isFav ? 1.05 : 1.0,
+                                    duration: const Duration(milliseconds: 200),
+                                    curve: Curves.easeOutBack,
+                                    child: isFav
+                                        ? SvgPicture.asset(
+                                            ImageAssets.heartFilled,
+                                            width: 19.w,
+                                            height: 17.h,
+                                          )
+                                        : SvgPicture.asset(
+                                            ImageAssets.heartOutline,
+                                            width: 19.w,
+                                            height: 17.h,
+                                            colorFilter: const ColorFilter.mode(
+                                              FigmaRaw.grey300,
+                                              BlendMode.srcIn,
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                              );
                             },
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 2.h),
-                              child: _isFavorite
-                                  ? SvgPicture.asset(
-                                      ImageAssets.heartFilled,
-                                      width: 19.w,
-                                      height: 17.h,
-                                    )
-                                  : SvgPicture.asset(
-                                      ImageAssets.heartOutline,
-                                      width: 19.w,
-                                      height: 17.h,
-                                    ),
-                            ),
                           ),
                         ],
                       ),
-                      if (widget.doctor.specialization != null) ...[
+                      if (doctor.specialization != null) ...[
                         SizedBox(height: 4.h),
                         Text(
-                          widget.doctor.specialization!,
+                          doctor.specialization!,
                           style: context.light14TextSub.copyWith(
                             height: 1.2,
                           ),
@@ -143,7 +152,7 @@ class _PopularDoctorListCardState extends State<PopularDoctorListCard> {
                       Row(
                         children: [
                           RatingBarIndicator(
-                            rating: widget.doctor.rating,
+                            rating: doctor.rating,
                             itemBuilder: (context, index) => Icon(
                               Icons.star,
                               color: palette.warning,
@@ -159,12 +168,14 @@ class _PopularDoctorListCardState extends State<PopularDoctorListCard> {
                               TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: '${widget.doctor.rating.toStringAsFixed(1)} ',
+                                    text:
+                                        '${doctor.rating.toStringAsFixed(1)} ',
                                     style: context.semiBold14TextMain,
                                   ),
-                                  if (widget.doctor.viewsCount != null)
+                                  if (doctor.viewsCount != null)
                                     TextSpan(
-                                      text: t.doctors.viewsCount(count: widget.doctor.viewsCount.toString()),
+                                      text: t.doctors.viewsCount(
+                                          count: doctor.viewsCount.toString()),
                                       style: context.light12TextSub,
                                     ),
                                 ],

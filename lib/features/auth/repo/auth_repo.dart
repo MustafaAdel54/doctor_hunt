@@ -24,6 +24,8 @@ abstract interface class AuthRepo {
   Future<Either<Failure, void>> loginWithGoogle();
 
   Future<Either<Failure, void>> resetPassword(String email);
+  Future<Either<Failure, void>> verifyOtp({required String email, required String token});
+  Future<Either<Failure, void>> updatePassword(String newPassword);
 
   Future<Either<Failure, void>> logout();
 }

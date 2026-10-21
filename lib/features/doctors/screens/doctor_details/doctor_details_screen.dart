@@ -2,6 +2,7 @@ import 'package:doctor_hunt/core/di/injector.dart';
 import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
 import 'package:doctor_hunt/features/doctors/repo/doctor_repo.dart';
 import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
+import 'package:doctor_hunt/features/home/screens/popular_doctors/widgets/popular_doctors_background_glow.dart';
 import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
@@ -101,48 +102,43 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.palette;
+
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              context.palette.primaryLight,
-              context.palette.white,
-            ],
-            stops: const [0.0, 0.3],
-          ),
-        ),
-        child: SafeArea(
-          child: _doctor != null
-              ? DoctorDetailsAnimatedContent(
-                  doctor: _doctor!,
-                  doctorId: widget.doctorId,
-                )
-              : FutureBuilder<DoctorModel>(
-                  future: _doctorFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const DoctorDetailsShimmer();
-                    }
+      backgroundColor: palette.surface,
+      body: Stack(
+        children: [
+          const PopularDoctorsBackgroundGlow(),
+          SafeArea(
+            child: _doctor != null
+                ? DoctorDetailsAnimatedContent(
+                    doctor: _doctor!,
+                    doctorId: widget.doctorId,
+                  )
+                : FutureBuilder<DoctorModel>(
+                    future: _doctorFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const DoctorDetailsShimmer();
+                      }
 
-                    if (snapshot.hasError || !snapshot.hasData) {
-                      return Center(
-                        child: Text(
-                          t.errors.loadDoctor,
-                          style: context.regular14TextSub,
-                        ),
+                      if (snapshot.hasError || !snapshot.hasData) {
+                        return Center(
+                          child: Text(
+                            t.errors.loadDoctor,
+                            style: context.regular14TextSub,
+                          ),
+                        );
+                      }
+
+                      return DoctorDetailsAnimatedContent(
+                        doctor: snapshot.data!,
+                        doctorId: widget.doctorId,
                       );
-                    }
-
-                    return DoctorDetailsAnimatedContent(
-                      doctor: snapshot.data!,
-                      doctorId: widget.doctorId,
-                    );
-                  },
-                ),
-        ),
+                    },
+                  ),
+          ),
+        ],
       ),
     );
   }

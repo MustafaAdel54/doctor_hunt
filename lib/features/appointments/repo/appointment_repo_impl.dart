@@ -44,6 +44,18 @@ class AppointmentRepoImpl implements AppointmentRepo {
   Future<Either<Failure, AppointmentModel>> bookAppointment(
     AppointmentModel appointment,
   ) async {
+    final uuidRegex = RegExp(
+      r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+    );
+
+    // If mock/demo doctor ID (not a UUID), return success model
+    if (!uuidRegex.hasMatch(appointment.doctorId)) {
+      return Right(appointment.copyWith(
+        id: 'mock_${DateTime.now().millisecondsSinceEpoch}',
+        status: 'pending',
+      ));
+    }
+
     if (!await networkInfo.isConnected) return const Left(NetworkFailure());
     try {
       final booked = await service.bookAppointment(appointment);

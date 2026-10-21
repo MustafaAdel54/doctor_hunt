@@ -222,6 +222,45 @@ class Translations$auth$en {
 
 	/// en: 'You must agree to the Terms of Service'
 	String get termsRequired => 'You must agree to the Terms of Service';
+
+	/// en: 'Forgot password'
+	String get forgotPasswordTitle => 'Forgot password';
+
+	/// en: 'Enter your email for the verification process, we will send a verification code to your email.'
+	String get forgotPasswordSubtitle => 'Enter your email for the verification process, we will send a verification code to your email.';
+
+	/// en: 'Enter Verification Code'
+	String get enterCodeTitle => 'Enter Verification Code';
+
+	/// en: 'Enter the 6 digits code that you received on your email.'
+	String get enterCodeSubtitle => 'Enter the 6 digits code that you received on your email.';
+
+	/// en: 'Reset Password'
+	String get resetPasswordTitle => 'Reset Password';
+
+	/// en: 'Set the new password for your account so you can login and access all the features.'
+	String get resetPasswordSubtitle => 'Set the new password for your account so you can login and access all the features.';
+
+	/// en: 'New Password'
+	String get newPassword => 'New Password';
+
+	/// en: 'Re-enter Password'
+	String get reenterPassword => 'Re-enter Password';
+
+	/// en: 'Update Password'
+	String get updatePassword => 'Update Password';
+
+	/// en: 'Continue'
+	String get continueText => 'Continue';
+
+	/// en: 'Resend code'
+	String get resendCode => 'Resend code';
+
+	/// en: 'Resend code in {{time}}'
+	String resendCodeIn({required Object time}) => 'Resend code in ${time}';
+
+	/// en: 'Password updated successfully! Please log in.'
+	String get passwordResetSuccess => 'Password updated successfully! Please log in.';
 }
 
 // Path: onboarding
@@ -390,6 +429,24 @@ class Translations$doctors$en {
 
 	/// en: '({{count}} views)'
 	String viewsCount({required Object count}) => '(${count} views)';
+
+	/// en: 'Favourite Doctors'
+	String get favouriteDoctors => 'Favourite Doctors';
+
+	/// en: 'No favourite doctors yet'
+	String get noFavourites => 'No favourite doctors yet';
+
+	/// en: 'Tap the heart icon on any doctor to add them to your favourites.'
+	String get noFavouritesDesc => 'Tap the heart icon on any doctor to add them to your favourites.';
+
+	/// en: 'Search doctor or specialization'
+	String get searchFavouritesHint => 'Search doctor or specialization';
+
+	/// en: 'Added to favourites'
+	String get addedToFavourites => 'Added to favourites';
+
+	/// en: 'Removed from favourites'
+	String get removedFromFavourites => 'Removed from favourites';
 }
 
 // Path: reviews
@@ -499,6 +556,42 @@ class Translations$appointments$en {
 
 	/// en: 'Are you sure you want to cancel this appointment?'
 	String get cancelConfirm => 'Are you sure you want to cancel this appointment?';
+
+	/// en: 'Select Time'
+	String get selectTime => 'Select Time';
+
+	/// en: 'No slots available'
+	String get noSlotsAvailable => 'No slots available';
+
+	/// en: '{{count}} slots available'
+	String slotsAvailable({required Object count}) => '${count} slots available';
+
+	/// en: 'Afternoon {{count}} slots'
+	String afternoonSlots({required Object count}) => 'Afternoon ${count} slots';
+
+	/// en: 'Evening {{count}} slots'
+	String eveningSlots({required Object count}) => 'Evening ${count} slots';
+
+	/// en: 'Confirm'
+	String get confirm => 'Confirm';
+
+	/// en: 'Thank You !'
+	String get thankYou => 'Thank You !';
+
+	/// en: 'Your Appointment Successful'
+	String get appointmentSuccessful => 'Your Appointment Successful';
+
+	/// en: 'You booked an appointment with {{doctor}} on {{date}}, at {{time}}'
+	String bookingSuccessDesc({required Object doctor, required Object date, required Object time}) => 'You booked an appointment with ${doctor} on ${date}, at ${time}';
+
+	/// en: 'Done'
+	String get done => 'Done';
+
+	/// en: 'Today'
+	String get today => 'Today';
+
+	/// en: 'Tomorrow'
+	String get tomorrow => 'Tomorrow';
 
 	/// en: '(zero) {No appointments} (one) {1 appointment} (other) {{{n}} appointments}'
 	String count({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n,
@@ -699,6 +792,12 @@ class Translations$errors$auth$en {
 
 	/// en: 'Wrong email or password'
 	String get invalidCredential => 'Wrong email or password';
+
+	/// en: 'Wrong verification code. Please check and try again.'
+	String get invalidOtp => 'Wrong verification code. Please check and try again.';
+
+	/// en: 'Wrong verification code. Please check and try again.'
+	String get otpExpired => 'Wrong verification code. Please check and try again.';
 
 	/// en: 'This email is already registered'
 	String get emailAlreadyInUse => 'This email is already registered';

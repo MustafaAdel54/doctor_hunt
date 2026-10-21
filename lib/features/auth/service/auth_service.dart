@@ -94,6 +94,20 @@ class AuthService {
     await supabase.auth.resetPasswordForEmail(email);
   }
 
+  Future<void> verifyOtp({required String email, required String token}) async {
+    await supabase.auth.verifyOTP(
+      email: email,
+      token: token,
+      type: OtpType.recovery,
+    );
+  }
+
+  Future<void> updatePassword(String newPassword) async {
+    await supabase.auth.updateUser(
+      UserAttributes(password: newPassword),
+    );
+  }
+
   Future<void> logout() async {
     await Future.wait([
       supabase.auth.signOut(),

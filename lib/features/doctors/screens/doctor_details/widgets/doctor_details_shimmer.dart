@@ -18,53 +18,42 @@ class DoctorDetailsShimmer extends StatelessWidget {
         children: [
           // Header Shimmer
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: 44.w,
-                  height: 44.h,
+                  width: 30.w,
+                  height: 30.w,
                   decoration: BoxDecoration(
                     color: palette.white,
-                    borderRadius: BorderRadius.circular(12.r),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
                 ),
                 Container(width: 120.w, height: 20.h, color: palette.white),
                 Container(
-                  width: 44.w,
-                  height: 44.h,
+                  width: 30.w,
+                  height: 30.w,
                   decoration: BoxDecoration(
                     color: palette.white,
-                    borderRadius: BorderRadius.circular(12.r),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 20.h),
+          SizedBox(height: 10.h),
 
-          // Card Shimmer
+          // Card Shimmer (170.h, 8.r)
           Container(
             margin: EdgeInsets.symmetric(horizontal: 20.w),
-            height: 140.h,
+            height: 170.h,
             decoration: BoxDecoration(
               color: palette.white,
-              borderRadius: BorderRadius.circular(16.r),
+              borderRadius: BorderRadius.circular(8.r),
             ),
           ),
-          SizedBox(height: 30.h),
-
-          // Stats Row Shimmer
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20.w),
-            height: 90.h,
-            decoration: BoxDecoration(
-              color: palette.white,
-              borderRadius: BorderRadius.circular(16.r),
-            ),
-          ),
-          SizedBox(height: 30.h),
+          SizedBox(height: 16.h),
 
           // Services Shimmer
           Padding(
@@ -72,37 +61,37 @@ class DoctorDetailsShimmer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(width: 100.w, height: 24.h, color: palette.white),
+                Container(width: 100.w, height: 20.h, color: palette.white),
                 SizedBox(height: 16.h),
                 Container(
                   width: double.infinity,
-                  height: 20.h,
+                  height: 16.h,
                   color: palette.white,
                 ),
                 SizedBox(height: 16.h),
                 Container(
                   width: double.infinity,
-                  height: 20.h,
+                  height: 16.h,
                   color: palette.white,
                 ),
                 SizedBox(height: 16.h),
                 Container(
                   width: double.infinity,
-                  height: 20.h,
+                  height: 16.h,
                   color: palette.white,
                 ),
               ],
             ),
           ),
-          SizedBox(height: 30.h),
+          SizedBox(height: 20.h),
 
-          // Map Shimmer
+          // Map Shimmer (210.h, 12.r)
           Container(
             margin: EdgeInsets.symmetric(horizontal: 20.w),
-            height: 200.h,
+            height: 210.h,
             decoration: BoxDecoration(
               color: palette.white,
-              borderRadius: BorderRadius.circular(16.r),
+              borderRadius: BorderRadius.circular(12.r),
             ),
           ),
         ],

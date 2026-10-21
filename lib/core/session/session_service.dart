@@ -19,12 +19,31 @@ class SessionService extends ChangeNotifier
 
   SessionState _state = const SessionState.initial();
   StreamSubscription<AuthState>? _authSub;
+  bool _isPasswordRecovery = false;
+
+  bool get isPasswordRecovery => _isPasswordRecovery;
+  set isPasswordRecovery(bool value) {
+    if (_isPasswordRecovery != value) {
+      _isPasswordRecovery = value;
+      notifyListeners();
+    }
+  }
 
   @override
   SessionState get value => _state;
 
+  User? get currentUser => _supabase.auth.currentUser;
+  String? get currentUserId => _supabase.auth.currentUser?.id;
+
   void _init() {
     _authSub = _supabase.auth.onAuthStateChange.listen((data) {
+      if (data.event == AuthChangeEvent.passwordRecovery) {
+        _isPasswordRecovery = true;
+      }
+      if (_isPasswordRecovery) {
+        Log.d('Password recovery in progress. Suppressing automatic redirect.');
+        return;
+      }
       _handleAuthChange(data.session?.user);
     });
   }
@@ -34,6 +53,8 @@ class SessionService extends ChangeNotifier
   bool _hasPending = false;
 
   Future<void> _handleAuthChange(User? user) async {
+    if (_isPasswordRecovery) return;
+
     if (user == null) {
       _updateState(const SessionState.unauthenticated());
       _hasPending = false;

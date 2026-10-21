@@ -70,7 +70,7 @@ class _SocialButton extends StatelessWidget {
         child: Ink(
           height: 54.h,
           decoration: BoxDecoration(
-            color: palette.surface,
+            color: palette.white,
             borderRadius: BorderRadius.circular(12.r),
             border: Border.all(color: palette.textBorders),
             boxShadow: [

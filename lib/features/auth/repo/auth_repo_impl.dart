@@ -72,6 +72,31 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
+  Future<Either<Failure, void>> verifyOtp({
+    required String email,
+    required String token,
+  }) async {
+    if (!await networkInfo.isConnected) return const Left(NetworkFailure());
+    try {
+      await service.verifyOtp(email: email, token: token);
+      return const Right(null);
+    } catch (e) {
+      return Left(SupabaseErrorMapper.map(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updatePassword(String newPassword) async {
+    if (!await networkInfo.isConnected) return const Left(NetworkFailure());
+    try {
+      await service.updatePassword(newPassword);
+      return const Right(null);
+    } catch (e) {
+      return Left(SupabaseErrorMapper.map(e));
+    }
+  }
+
+  @override
   Future<Either<Failure, void>> logout() async {
     if (!await networkInfo.isConnected) return const Left(NetworkFailure());
     try {

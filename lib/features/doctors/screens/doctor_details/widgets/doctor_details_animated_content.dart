@@ -6,7 +6,6 @@ import 'doctor_details_header.dart';
 import 'doctor_location_map.dart';
 import 'doctor_profile_card.dart';
 import 'doctor_services_list.dart';
-import 'doctor_stats_row.dart';
 
 class DoctorDetailsAnimatedContent extends StatelessWidget {
   final DoctorModel doctor;
@@ -40,40 +39,29 @@ class DoctorDetailsAnimatedContent extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: 20.h),
-
-              // Stats Row
-              Transform.translate(
-                offset: Offset(0, 40.h * (1 - value)),
-                child: Opacity(
-                  opacity: value,
-                  child: DoctorStatsRow(doctor: doctor),
-                ),
-              ),
-
-              SizedBox(height: 30.h),
+              SizedBox(height: 16.h),
 
               // Services List
               Transform.translate(
-                offset: Offset(0, 50.h * (1 - value)),
+                offset: Offset(0, 40.h * (1 - value)),
                 child: Opacity(
                   opacity: value,
                   child: DoctorServicesList(doctor: doctor),
                 ),
               ),
 
-              SizedBox(height: 30.h),
+              SizedBox(height: 20.h),
 
-              // Map Placeholder Card
+              // Location Map Card
               Transform.translate(
-                offset: Offset(0, 60.h * (1 - value)),
+                offset: Offset(0, 50.h * (1 - value)),
                 child: Opacity(
                   opacity: value,
                   child: const DoctorLocationMap(),
                 ),
               ),
 
-              SizedBox(height: 40.h),
+              SizedBox(height: 32.h),
             ],
           ),
         );

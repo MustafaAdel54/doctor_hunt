@@ -16,6 +16,7 @@ import 'package:doctor_hunt/features/auth/screens/splash/splash_screen.dart';
 import 'package:doctor_hunt/features/availability/screens/doctor_availability/doctor_availability_screen.dart';
 import 'package:doctor_hunt/features/doctors/screens/doctor_details/doctor_details_screen.dart';
 import 'package:doctor_hunt/features/doctors/screens/search/search_screen.dart';
+import 'package:doctor_hunt/features/favorites/screens/favourite_doctors/favourite_doctors_screen.dart';
 import 'package:doctor_hunt/features/home/screens/doctor_home/doctor_home_screen.dart';
 import 'package:doctor_hunt/features/home/screens/patient_home/patient_home_screen.dart';
 import 'package:doctor_hunt/features/home/screens/popular_doctors/popular_doctors_screen.dart';
@@ -26,8 +27,6 @@ import 'package:doctor_hunt/features/profile/screens/profile/profile_screen.dart
 import 'package:doctor_hunt/features/reviews/screens/doctor_reviews/doctor_reviews_screen.dart';
 import 'package:doctor_hunt/features/reviews/screens/rate_doctor/rate_doctor_screen.dart';
 import 'package:doctor_hunt/features/settings/screens/settings_screen.dart';
-import 'package:doctor_hunt/shared/generated/style_atoms.dart';
-import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -166,10 +165,12 @@ GoRouter createRouter(SessionService session) => GoRouter(
                   ),
                 ),
                 GoRoute(
-                  path: 'doctor/:doctorId/book',
+                  parentNavigatorKey: rootNavigatorKey,
+                  path: Paths.bookAppointment,
                   name: Routes.bookAppointment,
                   builder: (_, s) => BookAppointmentScreen(
                     doctorId: s.pathParameters['doctorId']!,
+                    extra: s.extra,
                   ),
                 ),
               ],
@@ -181,14 +182,7 @@ GoRouter createRouter(SessionService session) => GoRouter(
             GoRoute(
               path: Paths.favoriteDoctors,
               name: Routes.favoriteDoctors,
-              builder: (ctx, __) => Scaffold(
-                body: Center(
-                  child: Text(
-                    t.doctors.title,
-                    style: ctx.medium16TextMain,
-                  ),
-                ),
-              ),
+              builder: (ctx, __) => const FavouriteDoctorsScreen(),
             ),
           ],
         ),

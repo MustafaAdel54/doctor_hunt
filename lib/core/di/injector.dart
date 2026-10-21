@@ -13,6 +13,9 @@ import 'package:doctor_hunt/features/availability/service/availability_service.d
 import 'package:doctor_hunt/features/doctors/repo/doctor_repo.dart';
 import 'package:doctor_hunt/features/doctors/repo/doctor_repo_impl.dart';
 import 'package:doctor_hunt/features/doctors/service/doctor_service.dart';
+import 'package:doctor_hunt/features/favorites/repo/favorites_repo.dart';
+import 'package:doctor_hunt/features/favorites/repo/favorites_repo_impl.dart';
+import 'package:doctor_hunt/features/favorites/service/favorites_service.dart';
 import 'package:doctor_hunt/features/profile/repo/profile_repo.dart';
 import 'package:doctor_hunt/features/profile/repo/profile_repo_impl.dart';
 import 'package:doctor_hunt/features/profile/service/profile_service.dart';
@@ -61,6 +64,12 @@ Future<void> initCore() async {
   sl.registerLazySingleton(() => DoctorService(supabase: sl()));
   sl.registerLazySingleton<DoctorRepo>(
     () => DoctorRepoImpl(service: sl(), networkInfo: sl()),
+  );
+
+  // Features - Favorites
+  sl.registerLazySingleton(() => FavoritesService(supabase: sl()));
+  sl.registerLazySingleton<FavoritesRepo>(
+    () => FavoritesRepoImpl(service: sl(), networkInfo: sl()),
   );
 
   // Features - Appointments

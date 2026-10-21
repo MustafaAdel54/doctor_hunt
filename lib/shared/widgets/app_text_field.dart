@@ -12,6 +12,8 @@ class AppTextField extends StatelessWidget {
     this.hint,
     this.showLabel = true,
     this.keyboardType,
+    this.textInputAction,
+    this.onFieldSubmitted,
     this.validator,
     this.suffixIcon,
   });
@@ -21,6 +23,8 @@ class AppTextField extends StatelessWidget {
   final String? hint;
   final bool showLabel;
   final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final ValueChanged<String>? onFieldSubmitted;
   final String? Function(String?)? validator;
   final Widget? suffixIcon;
 
@@ -38,6 +42,8 @@ class AppTextField extends StatelessWidget {
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
+          textInputAction: textInputAction,
+          onFieldSubmitted: onFieldSubmitted,
           validator: validator,
           style: context.regular16TextMain,
           decoration: InputDecoration(
