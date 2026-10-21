@@ -1,3 +1,4 @@
+import 'package:doctor_hunt/features/doctors/cubit/doctors_cubit.dart';
 import 'package:doctor_hunt/features/favorites/cubit/favorites_cubit.dart';
 import 'package:doctor_hunt/features/favorites/cubit/favorites_state.dart';
 import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
@@ -23,7 +24,9 @@ class _FavouriteDoctorsScreenState extends State<FavouriteDoctorsScreen> {
   String _searchQuery = '';
 
   // Source list of all available doctors
-  List<HomeDoctor> get _allDoctors {
+  List<HomeDoctor> _getAllDoctors(BuildContext context) {
+    final docs = context.watch<DoctorsCubit>().state.allDoctors;
+    if (docs.isNotEmpty) return docs;
     final seen = <String>{};
     final list = <HomeDoctor>[];
     for (final doc in [
@@ -72,7 +75,8 @@ class _FavouriteDoctorsScreenState extends State<FavouriteDoctorsScreen> {
                       }
 
                       // Filter doctors that are favorited
-                      final favoritedDoctors = _allDoctors.where((doctor) {
+                      final allDocs = _getAllDoctors(context);
+                      final favoritedDoctors = allDocs.where((doctor) {
                         return state.isFavorite(doctor.id);
                       }).toList();
 

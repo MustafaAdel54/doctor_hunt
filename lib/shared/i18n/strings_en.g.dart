@@ -601,6 +601,87 @@ class Translations$appointments$en {
 	);
 
 	late final Translations$appointments$status$en status = Translations$appointments$status$en.internal(_root);
+
+	/// en: 'Appointments'
+	String get appointmentsTitle => 'Appointments';
+
+	/// en: 'Completed'
+	String get completed => 'Completed';
+
+	/// en: 'Cancelled'
+	String get cancelled => 'Cancelled';
+
+	/// en: 'Appointment date'
+	String get appointmentDate => 'Appointment date';
+
+	/// en: 'Appointment time'
+	String get appointmentTime => 'Appointment time';
+
+	/// en: 'Consultation fee'
+	String get consultationFee => 'Consultation fee';
+
+	/// en: 'View Details'
+	String get viewDetails => 'View Details';
+
+	/// en: 'Cancel Appointment'
+	String get cancelAppointment => 'Cancel Appointment';
+
+	/// en: 'Tap to rate your visit'
+	String get tapToRateYourVisit => 'Tap to rate your visit';
+
+	/// en: 'Rate Doctor'
+	String get rateDoctor => 'Rate Doctor';
+
+	/// en: 'Your Rating'
+	String get yourRating => 'Your Rating';
+
+	/// en: 'Rated'
+	String get rated => 'Rated';
+
+	/// en: 'Edit Review'
+	String get editReview => 'Edit Review';
+
+	/// en: 'How was your experience?'
+	String get howWasYourExperience => 'How was your experience?';
+
+	/// en: 'Write your review here (optional)...'
+	String get writeReviewHint => 'Write your review here (optional)...';
+
+	/// en: 'Thank you! Your review has been submitted.'
+	String get reviewSubmitted => 'Thank you! Your review has been submitted.';
+
+	/// en: 'Cancel Appointment'
+	String get cancelAppointmentConfirmTitle => 'Cancel Appointment';
+
+	/// en: 'Are you sure you want to cancel this appointment?'
+	String get cancelAppointmentConfirmDesc => 'Are you sure you want to cancel this appointment?';
+
+	/// en: 'Keep Appointment'
+	String get keepAppointment => 'Keep Appointment';
+
+	/// en: 'Yes, Cancel'
+	String get confirmCancel => 'Yes, Cancel';
+
+	/// en: 'Appointment Details'
+	String get appointmentDetailsTitle => 'Appointment Details';
+
+	/// en: 'Patient Name'
+	String get patientName => 'Patient Name';
+
+	/// en: 'Notes'
+	String get notes => 'Notes';
+
+	/// en: 'No appointments found'
+	String get noAppointmentsFound => 'No appointments found';
+
+	/// en: 'You have no upcoming appointments'
+	String get noUpcomingAppointments => 'You have no upcoming appointments';
+
+	/// en: 'You have no completed appointments'
+	String get noCompletedAppointments => 'You have no completed appointments';
+
+	/// en: 'You have no cancelled appointments'
+	String get noCancelledAppointments => 'You have no cancelled appointments';
 }
 
 // Path: doctor

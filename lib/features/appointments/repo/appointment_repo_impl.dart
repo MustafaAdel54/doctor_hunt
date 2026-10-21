@@ -5,6 +5,7 @@ import 'package:doctor_hunt/core/network/network_info.dart';
 import 'package:doctor_hunt/core/network/supabase_error_mapper.dart';
 import 'package:doctor_hunt/features/appointments/models/appointment_model.dart';
 import 'package:doctor_hunt/features/appointments/service/appointment_service.dart';
+import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
 
 import 'appointment_repo.dart';
 
@@ -44,24 +45,30 @@ class AppointmentRepoImpl implements AppointmentRepo {
   Future<Either<Failure, AppointmentModel>> bookAppointment(
     AppointmentModel appointment,
   ) async {
-    final uuidRegex = RegExp(
-      r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
-    );
-
-    // If mock/demo doctor ID (not a UUID), return success model
-    if (!uuidRegex.hasMatch(appointment.doctorId)) {
-      return Right(appointment.copyWith(
-        id: 'mock_${DateTime.now().millisecondsSinceEpoch}',
-        status: 'pending',
-      ));
-    }
+    final realDoctorId = HomeMockData.getRealDoctorId(appointment.doctorId);
+    final targetAppointment = appointment.copyWith(doctorId: realDoctorId);
 
     if (!await networkInfo.isConnected) return const Left(NetworkFailure());
     try {
-      final booked = await service.bookAppointment(appointment);
+      final booked = await service.bookAppointment(targetAppointment);
       return Right(booked);
     } on SlotTakenException {
       return const Left(SlotTakenFailure());
+    } catch (e) {
+      return Left(SupabaseErrorMapper.map(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<DateTime>>> getBookedSlots(
+    String doctorId,
+    DateTime date,
+  ) async {
+    final realDoctorId = HomeMockData.getRealDoctorId(doctorId);
+    if (!await networkInfo.isConnected) return const Right([]);
+    try {
+      final slots = await service.getBookedSlots(realDoctorId, date);
+      return Right(slots);
     } catch (e) {
       return Left(SupabaseErrorMapper.map(e));
     }

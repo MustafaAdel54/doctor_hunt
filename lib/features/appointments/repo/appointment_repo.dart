@@ -12,6 +12,10 @@ abstract interface class AppointmentRepo {
   Future<Either<Failure, AppointmentModel>> bookAppointment(
     AppointmentModel appointment,
   );
+  Future<Either<Failure, List<DateTime>>> getBookedSlots(
+    String doctorId,
+    DateTime date,
+  );
   Future<Either<Failure, void>> updateStatus(
     String appointmentId,
     String status,

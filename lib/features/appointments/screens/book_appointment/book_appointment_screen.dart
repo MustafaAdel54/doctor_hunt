@@ -1,6 +1,7 @@
 import 'package:doctor_hunt/core/di/injector.dart';
 import 'package:doctor_hunt/features/appointments/cubit/booking_cubit.dart';
 import 'package:doctor_hunt/features/appointments/cubit/booking_state.dart';
+import 'package:doctor_hunt/features/doctors/cubit/doctors_cubit.dart';
 import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
 import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
 import 'package:doctor_hunt/features/home/screens/popular_doctors/widgets/popular_doctors_background_glow.dart';
@@ -58,6 +59,13 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
       return;
     }
 
+    // Check cached online DoctorsCubit
+    final cubitDoc = sl<DoctorsCubit>().getDoctorById(widget.doctorId);
+    if (cubitDoc != null) {
+      _doctor = cubitDoc;
+      return;
+    }
+
     // Fallback: search HomeMockData
     final allMock = [
       ...HomeMockData.popularDoctors,
@@ -94,7 +102,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
     final doctorName = _doctor.name[locale] ?? _doctor.name.values.firstOrNull ?? 'Doctor';
 
     return BlocProvider(
-      create: (_) => sl<BookingCubit>(),
+      create: (_) => sl<BookingCubit>()..initDoctor(widget.doctorId),
       child: BlocConsumer<BookingCubit, BookingState>(
         listenWhen: (prev, curr) =>
             prev.isSuccess != curr.isSuccess ||

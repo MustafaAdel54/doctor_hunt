@@ -4,6 +4,7 @@ import 'package:doctor_hunt/core/router/not_found_screen.dart';
 import 'package:doctor_hunt/core/router/patient_shell.dart';
 import 'package:doctor_hunt/core/session/session_service.dart';
 import 'package:doctor_hunt/core/session/session_state.dart';
+import 'package:doctor_hunt/features/appointments/models/appointment_model.dart';
 import 'package:doctor_hunt/features/appointments/screens/book_appointment/book_appointment_screen.dart';
 import 'package:doctor_hunt/features/appointments/screens/doctor_requests/doctor_requests_screen.dart';
 import 'package:doctor_hunt/features/appointments/screens/my_appointments/my_appointments_screen.dart';
@@ -198,6 +199,7 @@ GoRouter createRouter(SessionService session) => GoRouter(
                   name: Routes.rateDoctor,
                   builder: (_, s) => RateDoctorScreen(
                     appointmentId: s.pathParameters['appointmentId']!,
+                    appointment: s.extra as AppointmentModel?,
                   ),
                 ),
               ],

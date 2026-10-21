@@ -42,4 +42,10 @@ class ImageAssets {
   static const String patientIcon = 'assets/icons/patient_icon.svg';
   static const String splashLogo = 'assets/images/logos/splash_logo.png';
   static const String appLogo = 'assets/icons/app_logo.svg';
+
+  // Appointments
+  static const String apptCalendar = 'assets/icons/appointments/calendar_icon.svg';
+  static const String apptClock = 'assets/icons/appointments/clock_icon.svg';
+  static const String apptFee = 'assets/icons/appointments/fee_icon.svg';
+  static const String apptRatingStars = 'assets/icons/appointments/rating_stars.svg';
 }

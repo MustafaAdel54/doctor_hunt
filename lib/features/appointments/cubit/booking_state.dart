@@ -24,6 +24,8 @@ class BookingState extends Equatable {
   final List<BookingDateItem> availableDates;
   final List<String> afternoonSlots;
   final List<String> eveningSlots;
+  final Set<String> bookedSlots;
+  final bool isLoadingSlots;
   final bool isBooking;
   final bool isSuccess;
   final AppointmentModel? bookedAppointment;
@@ -35,6 +37,8 @@ class BookingState extends Equatable {
     this.availableDates = const [],
     this.afternoonSlots = const [],
     this.eveningSlots = const [],
+    this.bookedSlots = const {},
+    this.isLoadingSlots = false,
     this.isBooking = false,
     this.isSuccess = false,
     this.bookedAppointment,
@@ -45,6 +49,8 @@ class BookingState extends Equatable {
     return afternoonSlots.isNotEmpty || eveningSlots.isNotEmpty;
   }
 
+  bool isSlotBooked(String slot) => bookedSlots.contains(slot);
+
   BookingState copyWith({
     DateTime? selectedDate,
     String? selectedSlot,
@@ -52,6 +58,8 @@ class BookingState extends Equatable {
     List<BookingDateItem>? availableDates,
     List<String>? afternoonSlots,
     List<String>? eveningSlots,
+    Set<String>? bookedSlots,
+    bool? isLoadingSlots,
     bool? isBooking,
     bool? isSuccess,
     AppointmentModel? bookedAppointment,
@@ -64,6 +72,8 @@ class BookingState extends Equatable {
       availableDates: availableDates ?? this.availableDates,
       afternoonSlots: afternoonSlots ?? this.afternoonSlots,
       eveningSlots: eveningSlots ?? this.eveningSlots,
+      bookedSlots: bookedSlots ?? this.bookedSlots,
+      isLoadingSlots: isLoadingSlots ?? this.isLoadingSlots,
       isBooking: isBooking ?? this.isBooking,
       isSuccess: isSuccess ?? this.isSuccess,
       bookedAppointment: bookedAppointment ?? this.bookedAppointment,
@@ -78,6 +88,8 @@ class BookingState extends Equatable {
         availableDates,
         afternoonSlots,
         eveningSlots,
+        bookedSlots,
+        isLoadingSlots,
         isBooking,
         isSuccess,
         bookedAppointment,

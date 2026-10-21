@@ -68,6 +68,7 @@ flutter:
     - assets/images/home/
     - assets/icons/
     - assets/icons/home/
+    - assets/icons/appointments/
   fonts:
     - family: Cairo
       fonts:

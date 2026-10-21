@@ -48,7 +48,12 @@ class BookingSlotsView extends StatelessWidget {
                   style: context.medium16TextMain,
                 ),
                 SizedBox(height: 12.h),
-                _buildSlotGrid(context, state.afternoonSlots, state.selectedSlot),
+                _buildSlotGrid(
+                  context,
+                  state.afternoonSlots,
+                  state.selectedSlot,
+                  state.bookedSlots,
+                ),
                 SizedBox(height: 24.h),
               ],
 
@@ -59,7 +64,12 @@ class BookingSlotsView extends StatelessWidget {
                   style: context.medium16TextMain,
                 ),
                 SizedBox(height: 12.h),
-                _buildSlotGrid(context, state.eveningSlots, state.selectedSlot),
+                _buildSlotGrid(
+                  context,
+                  state.eveningSlots,
+                  state.selectedSlot,
+                  state.bookedSlots,
+                ),
                 SizedBox(height: 20.h),
               ],
             ],
@@ -73,18 +83,24 @@ class BookingSlotsView extends StatelessWidget {
     BuildContext context,
     List<String> slots,
     String? selectedSlot,
+    Set<String> bookedSlots,
   ) {
+    final palette = context.palette;
+
     return Wrap(
       spacing: 10.w,
       runSpacing: 10.h,
       children: slots.map((slot) {
-        final isSelected = slot == selectedSlot;
+        final isBooked = bookedSlots.contains(slot);
+        final isSelected = !isBooked && slot == selectedSlot;
 
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () {
-            context.read<BookingCubit>().selectSlot(slot);
-          },
+          onTap: isBooked
+              ? null
+              : () {
+                  context.read<BookingCubit>().selectSlot(slot);
+                },
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 180),
             curve: Curves.easeInOut,
@@ -92,10 +108,18 @@ class BookingSlotsView extends StatelessWidget {
             height: 40.h,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: isSelected
-                  ? FigmaRaw.green500
-                  : FigmaRaw.green500.withValues(alpha: 0.08),
+              color: isBooked
+                  ? palette.textSub.withValues(alpha: 0.08)
+                  : isSelected
+                      ? FigmaRaw.green500
+                      : FigmaRaw.green500.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(6.r),
+              border: isBooked
+                  ? Border.all(
+                      color: palette.textSub.withValues(alpha: 0.2),
+                      width: 1,
+                    )
+                  : null,
               boxShadow: isSelected
                   ? [
                       BoxShadow(
@@ -111,7 +135,13 @@ class BookingSlotsView extends StatelessWidget {
               style: TextStyle(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w500,
-                color: isSelected ? FigmaRaw.white : FigmaRaw.green500,
+                color: isBooked
+                    ? palette.textSub.withValues(alpha: 0.4)
+                    : isSelected
+                        ? FigmaRaw.white
+                        : FigmaRaw.green500,
+                decoration: isBooked ? TextDecoration.lineThrough : null,
+                decorationColor: palette.textSub.withValues(alpha: 0.4),
               ),
             ),
           ),

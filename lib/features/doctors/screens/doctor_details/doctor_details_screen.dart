@@ -1,4 +1,5 @@
 import 'package:doctor_hunt/core/di/injector.dart';
+import 'package:doctor_hunt/features/doctors/cubit/doctors_cubit.dart';
 import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
 import 'package:doctor_hunt/features/doctors/repo/doctor_repo.dart';
 import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
@@ -49,7 +50,14 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
       return;
     }
 
-    // 2. Mock fallback by ID
+    // 2. Check cached online DoctorsCubit
+    final cubitDoc = sl<DoctorsCubit>().getDoctorById(widget.doctorId);
+    if (cubitDoc != null) {
+      _doctor = cubitDoc;
+      return;
+    }
+
+    // 3. Mock fallback by ID
     final allMock = [
       ...HomeMockData.popularDoctors,
       ...HomeMockData.featureDoctors,

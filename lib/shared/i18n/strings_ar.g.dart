@@ -294,6 +294,33 @@ class _Translations$appointments$ar extends Translations$appointments$en {
 		other: '${n} مواعيد',
 	);
 	@override late final _Translations$appointments$status$ar status = _Translations$appointments$status$ar._(_root);
+	@override String get appointmentsTitle => 'المواعيد';
+	@override String get completed => 'المكتملة';
+	@override String get cancelled => 'الملغاة';
+	@override String get appointmentDate => 'تاريخ الموعد';
+	@override String get appointmentTime => 'وقت الموعد';
+	@override String get consultationFee => 'رسوم الاستشارة';
+	@override String get viewDetails => 'عرض التفاصيل';
+	@override String get cancelAppointment => 'إلغاء الموعد';
+	@override String get tapToRateYourVisit => 'اضغط لتقييم زيارتك';
+	@override String get rateDoctor => 'تقييم الطبيب';
+	@override String get yourRating => 'تقييمك';
+	@override String get rated => 'تم التقييم';
+	@override String get editReview => 'تعديل التقييم';
+	@override String get howWasYourExperience => 'كيف كانت تجربتك؟';
+	@override String get writeReviewHint => 'اكتب تقييمك هنا (اختياري)...';
+	@override String get reviewSubmitted => 'شكراً لك! تم إرسال تقييمك بنجاح.';
+	@override String get cancelAppointmentConfirmTitle => 'إلغاء الموعد';
+	@override String get cancelAppointmentConfirmDesc => 'هل أنت متأكد من رغبتك في إلغاء هذا الموعد؟';
+	@override String get keepAppointment => 'الاحتفاظ بالموعد';
+	@override String get confirmCancel => 'نعم، إلغاء';
+	@override String get appointmentDetailsTitle => 'تفاصيل الموعد';
+	@override String get patientName => 'اسم المريض';
+	@override String get notes => 'ملاحظات';
+	@override String get noAppointmentsFound => 'لم يتم العثور على مواعيد';
+	@override String get noUpcomingAppointments => 'لا توجد لديك مواعيد قادمة';
+	@override String get noCompletedAppointments => 'لا توجد لديك مواعيد مكتملة';
+	@override String get noCancelledAppointments => 'لا توجد لديك مواعيد ملغاة';
 }
 
 // Path: doctor

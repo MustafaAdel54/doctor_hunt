@@ -73,9 +73,30 @@ class HomeDoctor {
 }
 
 abstract final class HomeMockData {
+  static const String doctorShrutiKediaId = '82def5e8-727c-4070-b9dc-7bd579301647';
+  static const String doctorPediatricianId = 'a0000000-0000-0000-0000-000000000001';
+  static const String doctorMistryId = 'a0000000-0000-0000-0000-000000000002';
+  static const String doctorEtherId = 'a0000000-0000-0000-0000-000000000003';
+  static const String doctorJohanId = 'a0000000-0000-0000-0000-000000000004';
+  static const String doctorCrickId = 'a0000000-0000-0000-0000-000000000005';
+  static const String doctorStrainId = 'a0000000-0000-0000-0000-000000000006';
+  static const String doctorLachinetId = 'a0000000-0000-0000-0000-000000000007';
+
+  static const Map<String, String> legacyIdMap = {
+    'pop1': doctorPediatricianId,
+    'pop2': doctorMistryId,
+    'pop3': doctorEtherId,
+    'pop4': doctorJohanId,
+    'feat1': doctorCrickId,
+    'feat2': doctorStrainId,
+    'feat3': doctorLachinetId,
+  };
+
+  static String getRealDoctorId(String id) => legacyIdMap[id] ?? id;
+
   static const List<HomeDoctor> popularDoctors = [
     HomeDoctor(
-      id: 'pop1',
+      id: doctorPediatricianId,
       name: 'Dr. Pediatrician',
       specialization: 'Specialist Cardiologist',
       imageAsset: ImageAssets.popDoctor1,
@@ -84,7 +105,7 @@ abstract final class HomeMockData {
       isFavorite: true,
     ),
     HomeDoctor(
-      id: 'pop2',
+      id: doctorMistryId,
       name: 'Dr. Mistry Brick',
       specialization: 'Specialist Dentist',
       imageAsset: ImageAssets.popDoctor2,
@@ -93,7 +114,7 @@ abstract final class HomeMockData {
       isFavorite: false,
     ),
     HomeDoctor(
-      id: 'pop3',
+      id: doctorEtherId,
       name: 'Dr. Ether Wall',
       specialization: 'Specialist Cancer',
       imageAsset: ImageAssets.popDoctor3,
@@ -102,7 +123,7 @@ abstract final class HomeMockData {
       isFavorite: true,
     ),
     HomeDoctor(
-      id: 'pop4',
+      id: doctorJohanId,
       name: 'Dr. Johan smith',
       specialization: 'Specialist cardiologist',
       imageAsset: ImageAssets.popDoctor4,
@@ -114,21 +135,21 @@ abstract final class HomeMockData {
 
   static const List<HomeDoctor> featureDoctors = [
     HomeDoctor(
-      id: 'feat1',
+      id: doctorCrickId,
       name: 'Dr. Crick',
       hourlyRate: r'$ 25.00/ hours',
       imageAsset: ImageAssets.featDoctor1,
       rating: 3.7,
     ),
     HomeDoctor(
-      id: 'feat2',
+      id: doctorStrainId,
       name: 'Dr. Strain',
       hourlyRate: r'$ 22.00/ hours',
       imageAsset: ImageAssets.featDoctor2,
       rating: 3.0,
     ),
     HomeDoctor(
-      id: 'feat3',
+      id: doctorLachinetId,
       name: 'Dr. Lachinet',
       hourlyRate: r'$ 29.00/ hours',
       imageAsset: ImageAssets.featDoctor3,
@@ -148,6 +169,7 @@ extension HomeDoctorX on HomeDoctor {
     }
 
     return DoctorModel(
+      id: id,
       name: {'en': name},
       image: imageAsset,
       phone: '+1 234 567 8900',
@@ -164,6 +186,22 @@ extension HomeDoctorX on HomeDoctor {
         'If you run your practice you know how frustrating.',
         "That's why some of appointment reminder system.",
       ],
+    );
+  }
+}
+
+extension DoctorModelX on DoctorModel {
+  HomeDoctor toHomeDoctor({String locale = 'en', bool isFavorite = false}) {
+    final localizedName = name[locale] ?? name.values.firstOrNull ?? 'Doctor';
+    return HomeDoctor(
+      id: id,
+      name: localizedName,
+      imageAsset: image ?? ImageAssets.popDoctor1,
+      rating: rating,
+      specialization: specialization,
+      hourlyRate: '\$ ${hourlyRate.toStringAsFixed(2)}/ hours',
+      viewsCount: patientsCount,
+      isFavorite: isFavorite,
     );
   }
 }

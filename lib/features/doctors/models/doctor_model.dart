@@ -4,6 +4,8 @@ part 'doctor_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class DoctorModel {
+  @JsonKey(defaultValue: '')
+  final String id;
   final Map<String, String> name;
   final String? image;
   final String phone;
@@ -34,6 +36,7 @@ class DoctorModel {
   final List<String> services;
 
   const DoctorModel({
+    this.id = '',
     required this.name,
     this.image,
     required this.phone,

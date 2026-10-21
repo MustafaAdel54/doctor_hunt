@@ -1,10 +1,13 @@
 import 'package:doctor_hunt/core/router/routes.dart';
+import 'package:doctor_hunt/features/appointments/cubit/appointments_cubit.dart';
+import 'package:doctor_hunt/features/appointments/cubit/appointments_state.dart';
 import 'package:doctor_hunt/shared/generated/app_colors.dart';
 import 'package:doctor_hunt/shared/generated/image_assets.dart';
 import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 class ThankYouDialog extends StatelessWidget {
@@ -110,6 +113,11 @@ class ThankYouDialog extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
+                  if (GetIt.instance.isRegistered<AppointmentsCubit>()) {
+                    final apptCubit = GetIt.instance<AppointmentsCubit>();
+                    apptCubit.switchTab(AppointmentTab.upcoming);
+                    apptCubit.refreshAppointments();
+                  }
                   context.go(Paths.myAppointments);
                 },
                 style: ElevatedButton.styleFrom(
