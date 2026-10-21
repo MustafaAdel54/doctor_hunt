@@ -279,8 +279,11 @@ class _Translations$appointments$ar extends Translations$appointments$en {
 	@override String get selectTime => 'اختر الوقت';
 	@override String get noSlotsAvailable => 'لا توجد مواعيد متاحة';
 	@override String slotsAvailable({required Object count}) => '${count} مواعيد متاحة';
+	@override String morningSlots({required Object count}) => 'فترة الصباح (${count} مواعيد)';
 	@override String afternoonSlots({required Object count}) => 'فترة الظهيرة (${count} مواعيد)';
 	@override String eveningSlots({required Object count}) => 'فترة المساء (${count} مواعيد)';
+	@override String get selectSlotPrompt => 'يرجى تحديد وقت الموعد';
+	@override String get loadAvailabilityError => 'فشل في تحميل جدول مواعيد الطبيب';
 	@override String get confirm => 'تأكيد';
 	@override String get thankYou => 'شكراً لك !';
 	@override String get appointmentSuccessful => 'تم حجز موعدك بنجاح';

@@ -3,8 +3,12 @@ import 'package:doctor_hunt/core/session/session_service.dart';
 import 'package:doctor_hunt/features/appointments/cubit/appointments_cubit.dart';
 import 'package:doctor_hunt/features/appointments/models/appointment_model.dart';
 import 'package:doctor_hunt/features/appointments/repo/appointment_repo.dart';
+import 'package:doctor_hunt/features/availability/models/availability_model.dart';
+import 'package:doctor_hunt/features/availability/repo/availability_repo.dart';
+import 'package:doctor_hunt/features/availability/repo/slot_calculator.dart';
 import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
 import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
+import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -12,220 +16,348 @@ import 'package:intl/intl.dart';
 import 'booking_state.dart';
 
 class BookingCubit extends Cubit<BookingState> {
-  final AppointmentRepo repo;
+  final AppointmentRepo appointmentRepo;
+  final AvailabilityRepo availabilityRepo;
   final SessionService sessionService;
+  final DateTime Function() _clock;
+
   String? _currentDoctorId;
+  AvailabilityModel? _availability;
 
   BookingCubit({
-    required this.repo,
+    required this.appointmentRepo,
+    required this.availabilityRepo,
     required this.sessionService,
-  }) : super(_initialState());
+    DateTime Function()? clock,
+  })  : _clock = clock ?? DateTime.now,
+        super(_createInitialState(clock ?? DateTime.now));
 
-  static BookingState _initialState() {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final tomorrow = today.add(const Duration(days: 1));
+  DateTime get _nowUtc => _clock().toUtc();
 
-    final dates = _generateDates(today);
+  static BookingState _createInitialState(DateTime Function() clock) {
+    final nowUtc = clock().toUtc();
+    final todayUtc = DateTime.utc(nowUtc.year, nowUtc.month, nowUtc.day);
+    final tomorrowUtc = todayUtc.add(const Duration(days: 1));
 
-    // Initial selected date is tomorrow (has slots available per Figma 1:741)
-    final afternoon = [
-      '1:00 PM',
-      '1:30 PM',
-      '2:00 PM',
-      '2:30 PM',
-      '3:00 PM',
-      '3:30 PM',
-      '4:00 PM',
-    ];
-    final evening = [
-      '5:00 PM',
-      '5:30 PM',
-      '6:00 PM',
-      '6:30 PM',
-      '7:00 PM',
-    ];
+    final initialDates = _generateInitialDates(todayUtc);
 
     return BookingState(
-      selectedDate: tomorrow,
-      selectedSlot: '2:00 PM',
-      availableDates: dates,
-      afternoonSlots: afternoon,
-      eveningSlots: evening,
+      selectedDate: tomorrowUtc,
+      availableDates: initialDates,
     );
   }
 
-  static List<BookingDateItem> _generateDates(DateTime today) {
+  static List<BookingDateItem> _generateInitialDates(DateTime todayUtc) {
     final dates = <BookingDateItem>[];
 
-    // Today (0 slots - Figma 1:671)
+    // Today
     dates.add(BookingDateItem(
-      date: today,
+      date: todayUtc,
       slotsCount: 0,
-      label: 'Today, ${DateFormat('d MMM').format(today)}',
+      label: 'Today, ${DateFormat('d MMM').format(todayUtc)}',
     ));
 
-    // Tomorrow (12 slots - Figma 1:741)
-    final tomorrow = today.add(const Duration(days: 1));
+    // Tomorrow
+    final tomorrowUtc = todayUtc.add(const Duration(days: 1));
     dates.add(BookingDateItem(
-      date: tomorrow,
-      slotsCount: 12,
-      label: 'Tomorrow, ${DateFormat('d MMM').format(tomorrow)}',
+      date: tomorrowUtc,
+      slotsCount: 0,
+      label: 'Tomorrow, ${DateFormat('d MMM').format(tomorrowUtc)}',
     ));
 
-    // Next 5 days
+    // Next 5 days (total 7 days)
     for (int i = 2; i <= 6; i++) {
-      final nextDay = today.add(Duration(days: i));
-      final weekdayName = DateFormat('EEE').format(nextDay);
+      final nextDay = todayUtc.add(Duration(days: i));
+      final weekday = DateFormat('EEE').format(nextDay);
       final dayMonth = DateFormat('d MMM').format(nextDay);
       dates.add(BookingDateItem(
         date: nextDay,
-        slotsCount: i % 2 == 0 ? 10 : 8,
-        label: '$weekdayName, $dayMonth',
+        slotsCount: 0,
+        label: '$weekday, $dayMonth',
       ));
     }
 
     return dates;
   }
 
-  void initDoctor(String doctorId) {
-    _currentDoctorId = HomeMockData.getRealDoctorId(doctorId);
-    loadBookedSlots(_currentDoctorId!, state.selectedDate);
-  }
-
-  Future<void> loadBookedSlots(String doctorId, DateTime date) async {
+  /// Initializes booking flow for [doctorId]. Loads doctor's weekly availability
+  /// from Supabase and sets up dynamic slot schedule.
+  Future<void> initDoctor(String doctorId) async {
     final realDoctorId = HomeMockData.getRealDoctorId(doctorId);
-    emit(state.copyWith(isLoadingSlots: true));
+    _currentDoctorId = realDoctorId;
 
-    final result = await repo.getBookedSlots(realDoctorId, date);
-    result.fold(
-      (_) {
-        if (!isClosed) emit(state.copyWith(isLoadingSlots: false));
+    emit(state.copyWith(
+      isLoadingAvailability: true,
+      isLoadingSlots: true,
+      clearError: true,
+    ));
+
+    final result = await availabilityRepo.getDoctorAvailability(realDoctorId);
+
+    if (isClosed) return;
+
+    await result.fold(
+      (failure) async {
+        final message = failure is NetworkFailure
+            ? t.errors.network
+            : t.appointments.loadAvailabilityError;
+        emit(state.copyWith(
+          isLoadingAvailability: false,
+          isLoadingSlots: false,
+          errorMessage: message,
+        ));
       },
-      (bookedTimes) {
-        if (!isClosed) {
-          final bookedSet = bookedTimes
-              .map((dt) => DateFormat('h:mm a', 'en_US').format(dt))
-              .toSet();
+      (availability) async {
+        _availability = availability;
 
-          String? newSelected = state.selectedSlot;
-          if (newSelected != null && bookedSet.contains(newSelected)) {
-            // Find first available slot
-            final allSlots = [...state.afternoonSlots, ...state.eveningSlots];
-            newSelected = allSlots.where((s) => !bookedSet.contains(s)).firstOrNull;
+        final now = _nowUtc;
+        final todayUtc = DateTime.utc(now.year, now.month, now.day);
+        final dateTabs = _buildDateTabs(todayUtc, availability);
+
+        // Pick initial selected date:
+        // If today has available slots, start with today.
+        // Otherwise, prefer tomorrow (matching Figma standard flow) or first day with slots.
+        DateTime chosenDate = state.selectedDate;
+        final todayItem = dateTabs.firstOrNull;
+        final tomorrowItem =
+            dateTabs.length > 1 ? dateTabs[1] : null;
+
+        if (todayItem != null && todayItem.hasSlots) {
+          chosenDate = todayItem.date;
+        } else if (tomorrowItem != null && tomorrowItem.hasSlots) {
+          chosenDate = tomorrowItem.date;
+        } else {
+          final firstWithSlots =
+              dateTabs.where((d) => d.hasSlots).firstOrNull;
+          if (firstWithSlots != null) {
+            chosenDate = firstWithSlots.date;
+          } else {
+            chosenDate = tomorrowItem?.date ?? todayUtc;
           }
-
-          final updatedDates = state.availableDates.map((item) {
-            if (item.date.year == date.year &&
-                item.date.month == date.month &&
-                item.date.day == date.day) {
-              final total = state.afternoonSlots.length + state.eveningSlots.length;
-              final remaining = (total - bookedSet.length).clamp(0, total);
-              return BookingDateItem(
-                date: item.date,
-                slotsCount: remaining,
-                label: item.label,
-              );
-            }
-            return item;
-          }).toList();
-
-          emit(state.copyWith(
-            bookedSlots: bookedSet,
-            selectedSlot: newSelected,
-            clearSelectedSlot: newSelected == null,
-            availableDates: updatedDates,
-            isLoadingSlots: false,
-          ));
         }
+
+        emit(state.copyWith(
+          isLoadingAvailability: false,
+          availableDates: dateTabs,
+          selectedDate: chosenDate,
+        ));
+
+        // Load slots for the selected date
+        await _loadSlotsForDate(chosenDate);
+
+        // In parallel, prefetch booked slots for the remaining days so tab counters are exact
+        _prefetchRemainingDaysBookedSlots(realDoctorId, availability, chosenDate);
       },
     );
   }
 
-  void selectDate(DateTime date, {String? doctorId}) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
+  List<BookingDateItem> _buildDateTabs(
+    DateTime todayUtc,
+    AvailabilityModel availability,
+  ) {
+    final tabs = <BookingDateItem>[];
 
-    final isToday = date.year == today.year &&
-        date.month == today.month &&
-        date.day == today.day;
+    for (int i = 0; i < 7; i++) {
+      final date = todayUtc.add(Duration(days: i));
+      final potentialSlots = SlotCalculator.getAvailableSlots(
+        date: date,
+        availability: availability,
+        bookedSlots: const [],
+        now: _nowUtc,
+      );
 
-    final docId = doctorId ?? _currentDoctorId;
+      final label = i == 0
+          ? 'Today, ${DateFormat('d MMM').format(date)}'
+          : i == 1
+              ? 'Tomorrow, ${DateFormat('d MMM').format(date)}'
+              : '${DateFormat('EEE').format(date)}, ${DateFormat('d MMM').format(date)}';
 
-    if (isToday) {
-      // Empty state per Figma 1:671
-      emit(state.copyWith(
-        selectedDate: date,
-        clearSelectedSlot: true,
-        afternoonSlots: const [],
-        eveningSlots: const [],
-        bookedSlots: const {},
-        clearError: true,
+      tabs.add(BookingDateItem(
+        date: date,
+        slotsCount: potentialSlots.length,
+        label: label,
       ));
-    } else {
-      // Available slots per Figma 1:741
-      final afternoon = [
-        '1:00 PM',
-        '1:30 PM',
-        '2:00 PM',
-        '2:30 PM',
-        '3:00 PM',
-        '3:30 PM',
-        '4:00 PM',
-      ];
-      final evening = [
-        '5:00 PM',
-        '5:30 PM',
-        '6:00 PM',
-        '6:30 PM',
-        '7:00 PM',
-      ];
-
-      emit(state.copyWith(
-        selectedDate: date,
-        selectedSlot: state.selectedSlot ?? '2:00 PM',
-        afternoonSlots: afternoon,
-        eveningSlots: evening,
-        clearError: true,
-      ));
-
-      if (docId != null && docId.isNotEmpty) {
-        loadBookedSlots(docId, date);
-      }
     }
+
+    return tabs;
   }
 
+  Future<void> _prefetchRemainingDaysBookedSlots(
+    String doctorId,
+    AvailabilityModel availability,
+    DateTime selectedDate,
+  ) async {
+    final remainingDates = state.availableDates
+        .where((item) => !_isSameDay(item.date, selectedDate) && item.hasSlots)
+        .toList();
+
+    if (remainingDates.isEmpty) return;
+
+    final futures = remainingDates.map((item) async {
+      final res = await appointmentRepo.getBookedSlots(doctorId, item.date);
+      return res.fold(
+        (_) => item,
+        (bookedTimes) {
+          final available = SlotCalculator.getAvailableSlots(
+            date: item.date,
+            availability: availability,
+            bookedSlots: bookedTimes,
+            now: _nowUtc,
+          );
+          return item.copyWith(slotsCount: available.length);
+        },
+      );
+    });
+
+    final updatedItems = await Future.wait(futures);
+
+    if (isClosed) return;
+
+    final map = {for (final item in updatedItems) item.date: item};
+    final updatedList = state.availableDates.map((item) {
+      return map[item.date] ?? item;
+    }).toList();
+
+    emit(state.copyWith(availableDates: updatedList));
+  }
+
+  /// Selects a date and refreshes the slots for that date.
+  void selectDate(DateTime date) {
+    final utcDate = DateTime.utc(date.year, date.month, date.day);
+
+    if (_isSameDay(state.selectedDate, utcDate) &&
+        !state.isLoadingSlots &&
+        state.hasSlotsOnSelectedDate) {
+      return;
+    }
+
+    if (_availability == null && _currentDoctorId != null) {
+      initDoctor(_currentDoctorId!);
+      return;
+    }
+
+    _loadSlotsForDate(utcDate);
+  }
+
+  Future<void> _loadSlotsForDate(
+    DateTime utcDate, {
+    bool keepError = false,
+  }) async {
+    final doctorId = _currentDoctorId;
+    if (doctorId == null || _availability == null) return;
+
+    emit(state.copyWith(
+      selectedDate: utcDate,
+      isLoadingSlots: true,
+      clearSelectedSlot: true,
+      clearError: !keepError,
+    ));
+
+    final result = await appointmentRepo.getBookedSlots(doctorId, utcDate);
+
+    if (isClosed) return;
+
+    result.fold(
+      (failure) {
+        emit(state.copyWith(
+          isLoadingSlots: false,
+          errorMessage: failure is NetworkFailure
+              ? t.errors.network
+              : t.errors.server,
+        ));
+      },
+      (bookedTimes) {
+        final bookedSet = bookedTimes
+            .map((dt) => DateFormat('h:mm a', 'en_US').format(dt.toUtc()))
+            .toSet();
+
+        final availableSlots = SlotCalculator.getAvailableSlots(
+          date: utcDate,
+          availability: _availability!,
+          bookedSlots: bookedTimes,
+          now: _nowUtc,
+        );
+
+        final partitioned = SlotCalculator.partitionSlots(availableSlots);
+
+        // Automatically select the first available slot if one exists
+        final allAvailableStrings = [
+          ...partitioned.morning,
+          ...partitioned.afternoon,
+          ...partitioned.evening,
+        ];
+        final defaultSelection = allAvailableStrings.firstOrNull;
+
+        // Update slotsCount in the tab for this date
+        final updatedDates = state.availableDates.map((item) {
+          if (_isSameDay(item.date, utcDate)) {
+            return item.copyWith(slotsCount: availableSlots.length);
+          }
+          return item;
+        }).toList();
+
+        emit(state.copyWith(
+          selectedDate: utcDate,
+          selectedSlot: defaultSelection,
+          clearSelectedSlot: defaultSelection == null,
+          morningSlots: partitioned.morning,
+          afternoonSlots: partitioned.afternoon,
+          eveningSlots: partitioned.evening,
+          bookedSlots: bookedSet,
+          availableDates: updatedDates,
+          isLoadingSlots: false,
+          clearError: !keepError,
+        ));
+      },
+    );
+  }
+
+  /// Selects a specific slot string (e.g. '2:00 PM').
   void selectSlot(String slot) {
     if (state.isSlotBooked(slot)) return;
+
+    final allAvailable = [
+      ...state.morningSlots,
+      ...state.afternoonSlots,
+      ...state.eveningSlots,
+    ];
+
+    if (!allAvailable.contains(slot)) return;
+
     emit(state.copyWith(
       selectedSlot: slot,
       clearError: true,
     ));
   }
 
+  /// Submits the appointment booking request to Supabase.
   Future<void> confirmBooking({
     required DoctorModel doctor,
     required String doctorId,
     String? notes,
   }) async {
+    // Prevent duplicate submissions
+    if (state.isBooking) return;
+
     if (state.selectedSlot == null) {
-      emit(state.copyWith(errorMessage: 'Please select a time slot'));
+      emit(state.copyWith(errorMessage: t.appointments.selectSlotPrompt));
       return;
     }
 
     if (state.isSlotBooked(state.selectedSlot!)) {
-      emit(state.copyWith(
-        errorMessage: 'This slot is already booked. Please choose another slot.',
-      ));
+      emit(state.copyWith(errorMessage: t.errors.slotTaken));
       return;
     }
 
     emit(state.copyWith(isBooking: true, clearError: true));
 
-    final realDoctorId = HomeMockData.getRealDoctorId(
-      doctorId.isNotEmpty ? doctorId : doctor.id,
-    );
-    final parsedTime = _parseSlotTime(state.selectedDate, state.selectedSlot!);
+    final realDoctorId = _currentDoctorId ??
+        HomeMockData.getRealDoctorId(
+          doctorId.isNotEmpty ? doctorId : doctor.id,
+        );
+
+    final parsedTimeUtc =
+        _parseSlotTimeToUtc(state.selectedDate, state.selectedSlot!);
     final patientId = sessionService.currentUserId ?? 'guest_patient';
     final patientName =
         (sessionService.currentUser?.userMetadata?['name'] as String?) ??
@@ -237,58 +369,78 @@ class BookingCubit extends Cubit<BookingState> {
       doctorId: realDoctorId,
       doctorName: doctor.name,
       status: 'pending',
-      startTime: parsedTime,
+      startTime: parsedTimeUtc,
       patientName: patientName,
       notes: notes ?? 'Consultation booking',
     );
 
-    final start = DateTime.now();
-    final result = await repo.bookAppointment(appointment);
-    final elapsed = DateTime.now().difference(start);
-    if (elapsed.inMilliseconds < 800) {
+    final startTime = DateTime.now();
+    final result = await appointmentRepo.bookAppointment(appointment);
+    final elapsed = DateTime.now().difference(startTime);
+
+    if (elapsed.inMilliseconds < 600) {
       await Future.delayed(
-        Duration(milliseconds: 800 - elapsed.inMilliseconds),
+        Duration(milliseconds: 600 - elapsed.inMilliseconds),
       );
     }
 
+    if (isClosed) return;
+
     result.fold(
       (failure) {
-        if (!isClosed) {
-          final msg = failure is SlotTakenFailure
-              ? 'This time slot was just booked by another user. Please choose another.'
-              : failure is NetworkFailure
-                  ? 'No internet connection. Please check your network and try again.'
-                  : 'Failed to book appointment. Please try again.';
+        if (failure is SlotTakenFailure) {
           emit(state.copyWith(
             isBooking: false,
-            errorMessage: msg,
+            errorMessage: t.errors.slotTaken,
+            clearSelectedSlot: true,
           ));
-          loadBookedSlots(realDoctorId, state.selectedDate);
+          // Refresh slots while preserving the slot-taken error message
+          _loadSlotsForDate(state.selectedDate, keepError: true);
+        } else if (failure is NetworkFailure) {
+          emit(state.copyWith(
+            isBooking: false,
+            errorMessage: t.errors.network,
+          ));
+        } else {
+          emit(state.copyWith(
+            isBooking: false,
+            errorMessage: t.errors.server,
+          ));
         }
       },
       (booked) {
-        if (!isClosed) {
-          final updatedBooked = Set<String>.from(state.bookedSlots)
-            ..add(state.selectedSlot!);
-          emit(state.copyWith(
-            isBooking: false,
-            isSuccess: true,
-            bookedAppointment: booked,
-            bookedSlots: updatedBooked,
-          ));
+        final updatedBooked = Set<String>.from(state.bookedSlots)
+          ..add(state.selectedSlot!);
 
-          // Immediately push to AppointmentsCubit so it is available without refreshing
-          if (GetIt.instance.isRegistered<AppointmentsCubit>()) {
-            final apptCubit = GetIt.instance<AppointmentsCubit>();
-            apptCubit.addAppointment(booked);
-            apptCubit.refreshAppointments();
-          }
+        emit(state.copyWith(
+          isBooking: false,
+          isSuccess: true,
+          bookedAppointment: booked,
+          bookedSlots: updatedBooked,
+        ));
+
+        // Immediately notify AppointmentsCubit so it reflects without page refresh
+        if (GetIt.instance.isRegistered<AppointmentsCubit>()) {
+          final apptCubit = GetIt.instance<AppointmentsCubit>();
+          apptCubit.addAppointment(booked);
+          apptCubit.refreshAppointments();
         }
       },
     );
   }
 
-  DateTime _parseSlotTime(DateTime date, String slot) {
+  /// Retries loading availability or slots.
+  void retry() {
+    if (_currentDoctorId != null) {
+      if (_availability == null) {
+        initDoctor(_currentDoctorId!);
+      } else {
+        _loadSlotsForDate(state.selectedDate);
+      }
+    }
+  }
+
+  DateTime _parseSlotTimeToUtc(DateTime date, String slot) {
     try {
       final format = DateFormat('h:mm a', 'en_US');
       final time = format.parse(slot);
@@ -300,7 +452,11 @@ class BookingCubit extends Cubit<BookingState> {
         time.minute,
       );
     } catch (_) {
-      return DateTime.utc(date.year, date.month, date.day, 14, 0);
+      return DateTime.utc(date.year, date.month, date.day, 12, 0);
     }
+  }
+
+  bool _isSameDay(DateTime a, DateTime b) {
+    return a.year == b.year && a.month == b.month && a.day == b.day;
   }
 }

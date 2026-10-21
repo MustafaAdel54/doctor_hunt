@@ -566,11 +566,20 @@ class Translations$appointments$en {
 	/// en: '{{count}} slots available'
 	String slotsAvailable({required Object count}) => '${count} slots available';
 
+	/// en: 'Morning {{count}} slots'
+	String morningSlots({required Object count}) => 'Morning ${count} slots';
+
 	/// en: 'Afternoon {{count}} slots'
 	String afternoonSlots({required Object count}) => 'Afternoon ${count} slots';
 
 	/// en: 'Evening {{count}} slots'
 	String eveningSlots({required Object count}) => 'Evening ${count} slots';
+
+	/// en: 'Please select a time slot'
+	String get selectSlotPrompt => 'Please select a time slot';
+
+	/// en: 'Failed to load doctor availability'
+	String get loadAvailabilityError => 'Failed to load doctor availability';
 
 	/// en: 'Confirm'
 	String get confirm => 'Confirm';

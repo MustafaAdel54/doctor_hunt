@@ -117,4 +117,19 @@ class TimeSlot {
   final DateTime start;
   final DateTime end;
   final bool isAvailable;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TimeSlot &&
+          runtimeType == other.runtimeType &&
+          start.isAtSameMomentAs(other.start) &&
+          end.isAtSameMomentAs(other.end) &&
+          isAvailable == other.isAvailable;
+
+  @override
+  int get hashCode => Object.hash(start, end, isAvailable);
+
+  @override
+  String toString() => 'TimeSlot($start - $end, available: $isAvailable)';
 }

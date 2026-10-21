@@ -135,12 +135,14 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
           final isTomorrow = _isTomorrow(state.selectedDate);
 
           final dateHeading = isToday
-              ? '${t.appointments.today}, ${DateFormat('d MMM').format(state.selectedDate)}'
+              ? '${t.appointments.today}, ${DateFormat('d MMM', locale).format(state.selectedDate)}'
               : isTomorrow
-                  ? '${t.appointments.tomorrow}, ${DateFormat('d MMM').format(state.selectedDate)}'
-                  : DateFormat('EEE, d MMM').format(state.selectedDate);
+                  ? '${t.appointments.tomorrow}, ${DateFormat('d MMM', locale).format(state.selectedDate)}'
+                  : DateFormat('EEE, d MMM', locale).format(state.selectedDate);
 
-          final canConfirm = state.hasSlotsOnSelectedDate && state.selectedSlot != null;
+          final canConfirm = state.hasSlotsOnSelectedDate &&
+              state.selectedSlot != null &&
+              !state.isLoadingSlots;
 
           return Scaffold(
             backgroundColor: palette.surface,
@@ -210,14 +212,64 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
 
                       SizedBox(height: 10.h),
 
-                      // Slots or Empty State Content
+                      // Slots, Loading, Error, or Empty State Content
                       Expanded(
-                        child: SingleChildScrollView(
-                          physics: const BouncingScrollPhysics(),
-                          child: state.hasSlotsOnSelectedDate
-                              ? BookingSlotsView(dateHeading: dateHeading)
-                              : BookingEmptySlots(dateHeading: dateHeading),
-                        ),
+                        child: state.isLoadingAvailability
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                  color: FigmaRaw.green500,
+                                ),
+                              )
+                            : state.errorMessage != null &&
+                                    !state.hasSlotsOnSelectedDate &&
+                                    !state.isBooking
+                                ? Center(
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 24.w),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.error_outline_rounded,
+                                            size: 48.r,
+                                            color: palette.danger,
+                                          ),
+                                          SizedBox(height: 12.h),
+                                          Text(
+                                            state.errorMessage!,
+                                            style: context.medium14TextMain,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(height: 16.h),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              context
+                                                  .read<BookingCubit>()
+                                                  .retry();
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  FigmaRaw.green500,
+                                              foregroundColor: Colors.white,
+                                            ),
+                                            child: Text(t.common.retry),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : SingleChildScrollView(
+                                    physics: const BouncingScrollPhysics(),
+                                    child: state.hasSlotsOnSelectedDate
+                                        ? BookingSlotsView(
+                                            dateHeading: dateHeading,
+                                          )
+                                        : BookingEmptySlots(
+                                            dateHeading: dateHeading,
+                                          ),
+                                  ),
                       ),
 
                       // Bottom Confirm Button (Figma 1:741)
@@ -278,12 +330,12 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
   }
 
   bool _isToday(DateTime date) {
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
     return date.year == now.year && date.month == now.month && date.day == now.day;
   }
 
   bool _isTomorrow(DateTime date) {
-    final tomorrow = DateTime.now().add(const Duration(days: 1));
+    final tomorrow = DateTime.now().toUtc().add(const Duration(days: 1));
     return date.year == tomorrow.year &&
         date.month == tomorrow.month &&
         date.day == tomorrow.day;

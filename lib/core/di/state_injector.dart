@@ -13,7 +13,11 @@ void initState() {
   sl.registerFactory(() => AuthCubit(repo: sl(), sessionService: sl()));
   sl.registerFactory(() => ForgotPasswordCubit(repo: sl(), sessionService: sl()));
   sl.registerFactory(() => ProfileCubit(repo: sl(), sessionService: sl()));
-  sl.registerFactory(() => BookingCubit(repo: sl(), sessionService: sl()));
+  sl.registerFactory(() => BookingCubit(
+        appointmentRepo: sl(),
+        availabilityRepo: sl(),
+        sessionService: sl(),
+      ));
   sl.registerLazySingleton(() => AppointmentsCubit(repo: sl(), sessionService: sl()));
   sl.registerLazySingleton(() => FavoritesCubit(repo: sl()));
   sl.registerLazySingleton(() => DoctorsCubit(doctorRepo: sl()));

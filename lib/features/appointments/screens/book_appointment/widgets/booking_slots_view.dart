@@ -41,6 +41,22 @@ class BookingSlotsView extends StatelessWidget {
 
               SizedBox(height: 20.h),
 
+              // Morning Slots Section
+              if (state.morningSlots.isNotEmpty) ...[
+                Text(
+                  t.appointments.morningSlots(count: state.morningSlots.length),
+                  style: context.medium16TextMain,
+                ),
+                SizedBox(height: 12.h),
+                _buildSlotGrid(
+                  context,
+                  state.morningSlots,
+                  state.selectedSlot,
+                  state.bookedSlots,
+                ),
+                SizedBox(height: 24.h),
+              ],
+
               // Afternoon Slots Section
               if (state.afternoonSlots.isNotEmpty) ...[
                 Text(

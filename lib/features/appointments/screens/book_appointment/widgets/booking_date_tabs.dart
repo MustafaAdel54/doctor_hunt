@@ -6,6 +6,7 @@ import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class BookingDateTabs extends StatelessWidget {
   const BookingDateTabs({super.key});
@@ -66,7 +67,7 @@ class BookingDateTabs extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        item.label,
+                        _getDateTabLabel(context, item.date),
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
@@ -97,5 +98,24 @@ class BookingDateTabs extends StatelessWidget {
         );
       },
     );
+  }
+
+  String _getDateTabLabel(BuildContext context, DateTime date) {
+    final now = DateTime.now().toUtc();
+    final isToday =
+        date.year == now.year && date.month == now.month && date.day == now.day;
+    final tomorrow = now.add(const Duration(days: 1));
+    final isTomorrow = date.year == tomorrow.year &&
+        date.month == tomorrow.month &&
+        date.day == tomorrow.day;
+
+    final locale = Localizations.localeOf(context).languageCode;
+    if (isToday) {
+      return '${t.appointments.today}, ${DateFormat('d MMM', locale).format(date)}';
+    }
+    if (isTomorrow) {
+      return '${t.appointments.tomorrow}, ${DateFormat('d MMM', locale).format(date)}';
+    }
+    return '${DateFormat('EEE', locale).format(date)}, ${DateFormat('d MMM', locale).format(date)}';
   }
 }

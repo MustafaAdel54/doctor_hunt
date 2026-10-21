@@ -5,6 +5,7 @@ import 'package:doctor_hunt/core/network/supabase_error_mapper.dart';
 import 'package:doctor_hunt/features/appointments/models/appointment_model.dart';
 import 'package:doctor_hunt/features/availability/models/availability_model.dart';
 import 'package:doctor_hunt/features/availability/service/availability_service.dart';
+import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
 
 import 'availability_repo.dart';
 import 'slot_calculator.dart';
@@ -22,9 +23,10 @@ class AvailabilityRepoImpl implements AvailabilityRepo {
   Future<Either<Failure, AvailabilityModel>> getDoctorAvailability(
     String doctorId,
   ) async {
+    final realDoctorId = HomeMockData.getRealDoctorId(doctorId);
     if (!await networkInfo.isConnected) return const Left(NetworkFailure());
     try {
-      final availability = await service.getDoctorAvailability(doctorId);
+      final availability = await service.getDoctorAvailability(realDoctorId);
       return Right(availability);
     } catch (e) {
       return Left(SupabaseErrorMapper.map(e));
