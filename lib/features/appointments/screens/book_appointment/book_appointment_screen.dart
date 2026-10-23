@@ -3,7 +3,7 @@ import 'package:doctor_hunt/features/appointments/cubit/booking_cubit.dart';
 import 'package:doctor_hunt/features/appointments/cubit/booking_state.dart';
 import 'package:doctor_hunt/features/doctors/cubit/doctors_cubit.dart';
 import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
-import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
+import 'package:doctor_hunt/features/doctors/repo/doctor_repo.dart';
 import 'package:doctor_hunt/features/home/screens/popular_doctors/widgets/popular_doctors_background_glow.dart';
 import 'package:doctor_hunt/shared/generated/app_colors.dart';
 import 'package:doctor_hunt/shared/generated/image_assets.dart';
@@ -50,10 +50,6 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
       _doctor = widget.extra as DoctorModel;
       return;
     }
-    if (widget.extra is HomeDoctor) {
-      _doctor = (widget.extra as HomeDoctor).toDoctorModel();
-      return;
-    }
     if (widget.extra is Map<String, dynamic>) {
       _doctor = DoctorModel.fromJson(widget.extra as Map<String, dynamic>);
       return;
@@ -66,40 +62,44 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
       return;
     }
 
-    // Fallback: search HomeMockData
-    final allMock = [
-      ...HomeMockData.popularDoctors,
-      ...HomeMockData.featureDoctors,
-    ];
-    for (final d in allMock) {
-      if (d.id == widget.doctorId) {
-        _doctor = d.toDoctorModel();
-        return;
-      }
-    }
-
-    // Default Doctor per Figma (Dr. Shruti Kedia)
-    _doctor = const DoctorModel(
-      name: {'en': 'Dr. Shruti Kedia', 'ar': 'د. شروتي كيديا'},
-      image: null,
-      phone: '+1234567890',
-      ratingSum: 160,
-      ratingCount: 40,
-      specialization: 'Upasana Dental Clinic, salt lake',
-      yearsExperience: 5,
-      patientsCount: 500,
-      runningCount: 80,
-      ongoingCount: 300,
-      hourlyRate: 28.0,
-      services: [],
+    // Default placeholder with the real ID while fetching
+    _doctor = DoctorModel(
+      id: widget.doctorId,
+      name: const {'en': 'Doctor'},
+      phone: '',
+      specialization: '',
+      services: const [],
+      ratingSum: 0,
+      ratingCount: 0,
+      yearsExperience: 0,
+      patientsCount: 0,
+      runningCount: 0,
+      ongoingCount: 0,
+      hourlyRate: 0.0,
     );
+
+    _loadRemoteDoctor();
+  }
+
+  Future<void> _loadRemoteDoctor() async {
+    try {
+      final repo = sl<DoctorRepo>();
+      final result = await repo.getDoctorById(widget.doctorId);
+      result.fold((_) {}, (doctor) {
+        if (mounted) {
+          setState(() {
+            _doctor = doctor;
+          });
+        }
+      });
+    } catch (_) {}
   }
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
     final locale = Localizations.localeOf(context).languageCode;
-    final doctorName = _doctor.name[locale] ?? _doctor.name.values.firstOrNull ?? 'Doctor';
+    final doctorName = _doctor.localizedName(locale);
 
     return BlocProvider(
       create: (_) => sl<BookingCubit>()..initDoctor(widget.doctorId),

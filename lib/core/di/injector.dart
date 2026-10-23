@@ -47,7 +47,7 @@ Future<void> initCore() async {
   );
 
   // Core
-  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl());
+  sl.registerLazySingleton<NetworkInfo>(() => const NetworkInfoImpl());
 
   // Session
   sl.registerLazySingleton(() => SessionService(supabase: sl()));

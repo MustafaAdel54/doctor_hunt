@@ -27,6 +27,7 @@ import 'package:doctor_hunt/features/profile/screens/edit_profile/edit_profile_s
 import 'package:doctor_hunt/features/profile/screens/profile/profile_screen.dart';
 import 'package:doctor_hunt/features/reviews/screens/doctor_reviews/doctor_reviews_screen.dart';
 import 'package:doctor_hunt/features/reviews/screens/rate_doctor/rate_doctor_screen.dart';
+import 'package:doctor_hunt/features/settings/screens/privacy_policy_screen.dart';
 import 'package:doctor_hunt/features/settings/screens/settings_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -132,6 +133,28 @@ GoRouter createRouter(SessionService session) => GoRouter(
       path: Paths.accountInactive,
       name: Routes.accountInactive,
       builder: (_, __) => const AccountInactiveScreen(),
+    ),
+
+    // Patient profile & settings sub-routes (full screen over bottom nav)
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      path: Paths.profilePatient,
+      name: Routes.profilePatient,
+      builder: (_, __) => const ProfileScreen(),
+      routes: [
+        GoRoute(
+          parentNavigatorKey: rootNavigatorKey,
+          path: 'edit',
+          name: Routes.editProfilePatient,
+          builder: (_, __) => const EditProfileScreen(),
+        ),
+      ],
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      path: Paths.privacyPolicy,
+      name: Routes.privacyPolicy,
+      builder: (_, __) => const PrivacyPolicyScreen(),
     ),
 
     // ---- Patient shell (bottom nav) ----

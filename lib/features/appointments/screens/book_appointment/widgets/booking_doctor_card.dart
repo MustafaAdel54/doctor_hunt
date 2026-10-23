@@ -1,4 +1,5 @@
 import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
+import 'package:doctor_hunt/features/doctors/widgets/doctor_image.dart';
 import 'package:doctor_hunt/features/favorites/cubit/favorites_cubit.dart';
 import 'package:doctor_hunt/features/favorites/cubit/favorites_state.dart';
 import 'package:doctor_hunt/shared/generated/app_colors.dart';
@@ -24,7 +25,7 @@ class BookingDoctorCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final palette = context.palette;
     final locale = Localizations.localeOf(context).languageCode;
-    final name = doctor.name[locale] ?? doctor.name.values.firstOrNull ?? 'Doctor';
+    final name = doctor.localizedName(locale);
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
@@ -44,9 +45,11 @@ class BookingDoctorCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Doctor Image (72w x 68h, rounded 8.r)
-          ClipRRect(
+          DoctorImage(
+            image: doctor.image,
+            width: 72.w,
+            height: 68.h,
             borderRadius: BorderRadius.circular(8.r),
-            child: _buildDoctorImage(doctor.image, palette),
           ),
           SizedBox(width: 12.w),
 
@@ -141,48 +144,6 @@ class BookingDoctorCard extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildDoctorImage(String? image, AppPalette palette) {
-    const double width = 72;
-    const double height = 68;
-
-    if (image == null || image.isEmpty) {
-      return Image.asset(
-        ImageAssets.popDoctor1,
-        width: width.w,
-        height: height.h,
-        fit: BoxFit.cover,
-      );
-    }
-
-    if (image.startsWith('http://') || image.startsWith('https://')) {
-      return Image.network(
-        image,
-        width: width.w,
-        height: height.h,
-        fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => Image.asset(
-          ImageAssets.popDoctor1,
-          width: width.w,
-          height: height.h,
-          fit: BoxFit.cover,
-        ),
-      );
-    }
-
-    return Image.asset(
-      image,
-      width: width.w,
-      height: height.h,
-      fit: BoxFit.cover,
-      errorBuilder: (_, __, ___) => Image.asset(
-        ImageAssets.popDoctor1,
-        width: width.w,
-        height: height.h,
-        fit: BoxFit.cover,
       ),
     );
   }

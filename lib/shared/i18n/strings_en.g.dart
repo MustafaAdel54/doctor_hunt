@@ -49,6 +49,8 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$doctor$en doctor = Translations$doctor$en.internal(_root);
 	late final Translations$specializations$en specializations = Translations$specializations$en.internal(_root);
 	late final Translations$settings$en settings = Translations$settings$en.internal(_root);
+	late final Translations$profile$en profile = Translations$profile$en.internal(_root);
+	late final Translations$privacyPolicy$en privacyPolicy = Translations$privacyPolicy$en.internal(_root);
 	late final Translations$validation$en validation = Translations$validation$en.internal(_root);
 	late final Translations$errors$en errors = Translations$errors$en.internal(_root);
 }
@@ -790,6 +792,123 @@ class Translations$settings$en {
 
 	/// en: 'Sign out'
 	String get signOut => 'Sign out';
+
+	/// en: 'Account settings'
+	String get accountSettings => 'Account settings';
+
+	/// en: 'Change Password'
+	String get changePassword => 'Change Password';
+
+	/// en: 'Notifications'
+	String get notifications => 'Notifications';
+
+	/// en: 'Privacy Policy'
+	String get privacyPolicy => 'Privacy Policy';
+
+	/// en: 'More options'
+	String get moreOptions => 'More options';
+
+	/// en: 'Languages'
+	String get languages => 'Languages';
+
+	/// en: 'Build version'
+	String get buildVersion => 'Build version';
+
+	/// en: 'Log Out'
+	String get logout => 'Log Out';
+
+	/// en: 'Log Out'
+	String get logoutConfirmTitle => 'Log Out';
+
+	/// en: 'Are you sure you want to logout?'
+	String get logoutConfirmMessage => 'Are you sure you want to logout?';
+
+	/// en: 'Ok'
+	String get ok => 'Ok';
+}
+
+// Path: profile
+class Translations$profile$en {
+	Translations$profile$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Profile'
+	String get title => 'Profile';
+
+	/// en: 'Personal information'
+	String get personalInfo => 'Personal information';
+
+	/// en: 'Name'
+	String get name => 'Name';
+
+	/// en: 'Contact Number'
+	String get contactNumber => 'Contact Number';
+
+	/// en: 'Continue'
+	String get continueText => 'Continue';
+
+	/// en: 'Edit Profile'
+	String get editProfile => 'Edit Profile';
+
+	/// en: 'Update'
+	String get update => 'Update';
+
+	/// en: 'Profile updated successfully'
+	String get updateSuccess => 'Profile updated successfully';
+
+	/// en: 'Failed to update profile'
+	String get updateError => 'Failed to update profile';
+
+	/// en: 'Not provided'
+	String get notProvided => 'Not provided';
+
+	/// en: 'Enter your name'
+	String get enterName => 'Enter your name';
+
+	/// en: 'Enter your phone number'
+	String get enterPhone => 'Enter your phone number';
+
+	/// en: 'Enter a valid phone number'
+	String get invalidPhone => 'Enter a valid phone number';
+}
+
+// Path: privacyPolicy
+class Translations$privacyPolicy$en {
+	Translations$privacyPolicy$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Privacy Policy'
+	String get title => 'Privacy Policy';
+
+	/// en: 'Doctor Hunt Apps Privacy Policy'
+	String get headline => 'Doctor Hunt Apps Privacy Policy';
+
+	/// en: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.'
+	String get paragraph1 => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.';
+
+	/// en: 'If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.'
+	String get paragraph2 => 'If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.';
+
+	/// en: 'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.'
+	String get bullet1 => 'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.';
+
+	/// en: 'Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form.'
+	String get bullet2 => 'Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form.';
+
+	/// en: 'Accompanied by English versions from the 1914 translation by H. Rackham.'
+	String get bullet3 => 'Accompanied by English versions from the 1914 translation by H. Rackham.';
+
+	/// en: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
+	String get bullet4 => 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.';
+
+	/// en: 'The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.'
+	String get paragraph3 => 'The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English.';
 }
 
 // Path: validation

@@ -33,13 +33,9 @@ dependencies:
   get_it: ^7.7.0
 
   # Models / functional
-  freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
   dartz: ^0.10.1
   equatable: ^2.0.5
-
-  # Launchers
-  url_launcher: ^6.3.0
 
   # UI helpers
   cached_network_image: ^3.4.1
@@ -54,7 +50,6 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^4.0.0
   build_runner: ^2.4.13
-  freezed: ^2.5.7
   json_serializable: ^6.8.0
   mocktail: ^1.0.4
 

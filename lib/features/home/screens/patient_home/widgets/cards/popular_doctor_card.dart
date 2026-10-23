@@ -1,4 +1,5 @@
-import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
+import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
+import 'package:doctor_hunt/features/doctors/widgets/doctor_image.dart';
 import 'package:doctor_hunt/shared/constants/app_constants.dart';
 import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +13,14 @@ class PopularDoctorCard extends StatelessWidget {
     required this.onTap,
   });
 
-  final HomeDoctor doctor;
+  final DoctorModel doctor;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final locale = Localizations.localeOf(context).languageCode;
+    final doctorName = doctor.localizedName(locale);
 
     return GestureDetector(
       onTap: onTap,
@@ -40,25 +43,12 @@ class PopularDoctorCard extends StatelessWidget {
           children: [
             Hero(
               tag: 'doctor_image_${doctor.id}',
-              child: ClipRRect(
+              child: DoctorImage(
+                image: doctor.image,
+                width: 190.w,
+                height: 180.h,
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(12.r),
-                ),
-                child: Image.asset(
-                  doctor.imageAsset,
-                  width: 190.w,
-                  height: 180.h,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    width: 190.w,
-                    height: 180.h,
-                    color: palette.surfaceAlt,
-                    child: Icon(
-                      Icons.person,
-                      color: palette.textPlaceholder,
-                      size: 40.sp,
-                    ),
-                  ),
                 ),
               ),
             ),
@@ -70,16 +60,16 @@ class PopularDoctorCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      doctor.name,
+                      doctorName,
                       style: context.medium18TextMain,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
                     ),
-                    if (doctor.specialization != null) ...[
+                    if (doctor.specialization.isNotEmpty) ...[
                       Gaps.h4,
                       Text(
-                        doctor.specialization!,
+                        doctor.specialization,
                         style: context.regular12TextSub,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

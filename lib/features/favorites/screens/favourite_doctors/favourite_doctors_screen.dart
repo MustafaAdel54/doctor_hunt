@@ -1,7 +1,7 @@
 import 'package:doctor_hunt/features/doctors/cubit/doctors_cubit.dart';
+import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
 import 'package:doctor_hunt/features/favorites/cubit/favorites_cubit.dart';
 import 'package:doctor_hunt/features/favorites/cubit/favorites_state.dart';
-import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
 import 'package:doctor_hunt/features/home/screens/popular_doctors/widgets/popular_doctors_background_glow.dart';
 import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:doctor_hunt/shared/i18n/strings.g.dart';
@@ -23,26 +23,14 @@ class FavouriteDoctorsScreen extends StatefulWidget {
 class _FavouriteDoctorsScreenState extends State<FavouriteDoctorsScreen> {
   String _searchQuery = '';
 
-  // Source list of all available doctors
-  List<HomeDoctor> _getAllDoctors(BuildContext context) {
-    final docs = context.watch<DoctorsCubit>().state.allDoctors;
-    if (docs.isNotEmpty) return docs;
-    final seen = <String>{};
-    final list = <HomeDoctor>[];
-    for (final doc in [
-      ...HomeMockData.popularDoctors,
-      ...HomeMockData.featureDoctors,
-    ]) {
-      if (seen.add(doc.id)) {
-        list.add(doc);
-      }
-    }
-    return list;
+  List<DoctorModel> _getAllDoctors(BuildContext context) {
+    return context.watch<DoctorsCubit>().state.allDoctors;
   }
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final locale = Localizations.localeOf(context).languageCode;
 
     return Scaffold(
       backgroundColor: palette.surface,
@@ -84,13 +72,13 @@ class _FavouriteDoctorsScreenState extends State<FavouriteDoctorsScreen> {
                       final filteredDoctors = _searchQuery.isEmpty
                           ? favoritedDoctors
                           : favoritedDoctors.where((doctor) {
-                              final nameMatches = doctor.name
+                              final name = doctor.localizedName(locale);
+                              final nameMatches = name
                                   .toLowerCase()
                                   .contains(_searchQuery.toLowerCase());
                               final specMatches = doctor.specialization
-                                      ?.toLowerCase()
-                                      .contains(_searchQuery.toLowerCase()) ??
-                                  false;
+                                  .toLowerCase()
+                                  .contains(_searchQuery.toLowerCase());
                               return nameMatches || specMatches;
                             }).toList();
 

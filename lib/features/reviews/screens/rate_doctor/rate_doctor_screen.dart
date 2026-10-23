@@ -1,7 +1,7 @@
 import 'package:doctor_hunt/core/di/injector.dart';
 import 'package:doctor_hunt/core/session/session_service.dart';
 import 'package:doctor_hunt/features/appointments/models/appointment_model.dart';
-import 'package:doctor_hunt/features/appointments/service/appointment_service.dart';
+import 'package:doctor_hunt/features/appointments/repo/appointment_repo.dart';
 import 'package:doctor_hunt/features/home/screens/popular_doctors/widgets/popular_doctors_background_glow.dart';
 import 'package:doctor_hunt/features/reviews/models/review_model.dart';
 import 'package:doctor_hunt/features/reviews/repo/review_repo.dart';
@@ -53,9 +53,15 @@ class _RateDoctorScreenState extends State<RateDoctorScreen> {
 
   Future<void> _fetchAppointment() async {
     try {
-      final service = sl<AppointmentService>();
-      final patientId = sl<SessionService>().currentUserId ?? 'guest_patient';
-      final list = await service.getPatientAppointments(patientId);
+      final session = sl<SessionService>();
+      final patientId = session.currentUserId;
+      if (patientId == null || patientId.isEmpty) {
+        if (mounted) setState(() => _isLoadingAppointment = false);
+        return;
+      }
+      final repo = sl<AppointmentRepo>();
+      final result = await repo.getPatientAppointments(patientId);
+      final list = result.getOrElse(() => []);
       final found =
           list.where((a) => a.id == widget.appointmentId).firstOrNull;
 
@@ -87,7 +93,17 @@ class _RateDoctorScreenState extends State<RateDoctorScreen> {
   Future<void> _submitReview() async {
     final session = sl<SessionService>();
     final doctorId = _appointment?.doctorId ?? '';
-    final patientId = session.currentUserId ?? _appointment?.patientId ?? '';
+    final patientId = session.currentUserId ?? _appointment?.patientId;
+    if (patientId == null || patientId.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(t.errors.auth.unknown),
+          backgroundColor: context.palette.danger,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
     final patientName = (session.currentUser?.userMetadata?['name'] as String?) ??
         _appointment?.patientName ??
         'Patient';

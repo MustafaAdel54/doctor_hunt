@@ -1,6 +1,5 @@
 import 'package:doctor_hunt/core/error/failures.dart';
 import 'package:doctor_hunt/core/session/session_service.dart';
-import 'package:doctor_hunt/features/appointments/cubit/appointments_cubit.dart';
 import 'package:doctor_hunt/features/appointments/models/appointment_model.dart';
 import 'package:doctor_hunt/features/appointments/repo/appointment_repo.dart';
 import 'package:doctor_hunt/features/availability/models/availability_model.dart';
@@ -10,7 +9,6 @@ import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
 import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
 import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 
 import 'booking_state.dart';
@@ -358,7 +356,15 @@ class BookingCubit extends Cubit<BookingState> {
 
     final parsedTimeUtc =
         _parseSlotTimeToUtc(state.selectedDate, state.selectedSlot!);
-    final patientId = sessionService.currentUserId ?? 'guest_patient';
+    final patientId = sessionService.currentUserId;
+    if (patientId == null || patientId.isEmpty) {
+      emit(state.copyWith(
+        isBooking: false,
+        errorMessage: t.errors.auth.unknown,
+      ));
+      return;
+    }
+
     final patientName =
         (sessionService.currentUser?.userMetadata?['name'] as String?) ??
             'Patient';
@@ -418,13 +424,6 @@ class BookingCubit extends Cubit<BookingState> {
           bookedAppointment: booked,
           bookedSlots: updatedBooked,
         ));
-
-        // Immediately notify AppointmentsCubit so it reflects without page refresh
-        if (GetIt.instance.isRegistered<AppointmentsCubit>()) {
-          final apptCubit = GetIt.instance<AppointmentsCubit>();
-          apptCubit.addAppointment(booked);
-          apptCubit.refreshAppointments();
-        }
       },
     );
   }

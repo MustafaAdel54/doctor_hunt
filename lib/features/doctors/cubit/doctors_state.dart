@@ -1,46 +1,41 @@
 import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
-import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
 import 'package:equatable/equatable.dart';
 
 class DoctorsState extends Equatable {
   final List<DoctorModel> doctors;
-  final List<HomeDoctor> popularDoctors;
-  final List<HomeDoctor> featureDoctors;
+  final List<DoctorModel> popularDoctors;
+  final List<DoctorModel> featureDoctors;
+  final List<DoctorModel> searchResults;
   final bool isLoading;
+  final bool isSearching;
   final String? errorMessage;
 
   const DoctorsState({
     this.doctors = const [],
     this.popularDoctors = const [],
     this.featureDoctors = const [],
+    this.searchResults = const [],
     this.isLoading = false,
+    this.isSearching = false,
     this.errorMessage,
   });
 
   factory DoctorsState.initial() {
     return const DoctorsState(
       doctors: [],
-      popularDoctors: HomeMockData.popularDoctors,
-      featureDoctors: HomeMockData.featureDoctors,
+      popularDoctors: [],
+      featureDoctors: [],
+      searchResults: [],
       isLoading: false,
+      isSearching: false,
     );
   }
 
-  List<HomeDoctor> get allDoctors {
-    final seen = <String>{};
-    final combined = <HomeDoctor>[];
-    for (final doc in [...popularDoctors, ...featureDoctors]) {
-      if (seen.add(doc.id)) {
-        combined.add(doc);
-      }
-    }
-    return combined;
-  }
+  List<DoctorModel> get allDoctors => doctors;
 
   DoctorModel? findDoctorById(String id) {
-    final realId = HomeMockData.getRealDoctorId(id);
     for (final doc in doctors) {
-      if (doc.id == realId || doc.id == id) {
+      if (doc.id == id) {
         return doc;
       }
     }
@@ -49,9 +44,11 @@ class DoctorsState extends Equatable {
 
   DoctorsState copyWith({
     List<DoctorModel>? doctors,
-    List<HomeDoctor>? popularDoctors,
-    List<HomeDoctor>? featureDoctors,
+    List<DoctorModel>? popularDoctors,
+    List<DoctorModel>? featureDoctors,
+    List<DoctorModel>? searchResults,
     bool? isLoading,
+    bool? isSearching,
     String? errorMessage,
     bool clearError = false,
   }) {
@@ -59,7 +56,9 @@ class DoctorsState extends Equatable {
       doctors: doctors ?? this.doctors,
       popularDoctors: popularDoctors ?? this.popularDoctors,
       featureDoctors: featureDoctors ?? this.featureDoctors,
+      searchResults: searchResults ?? this.searchResults,
       isLoading: isLoading ?? this.isLoading,
+      isSearching: isSearching ?? this.isSearching,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
     );
   }
@@ -69,7 +68,9 @@ class DoctorsState extends Equatable {
         doctors,
         popularDoctors,
         featureDoctors,
+        searchResults,
         isLoading,
+        isSearching,
         errorMessage,
       ];
 }

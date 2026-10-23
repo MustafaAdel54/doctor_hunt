@@ -2,11 +2,12 @@ import 'package:doctor_hunt/core/di/injector.dart';
 import 'package:doctor_hunt/features/doctors/cubit/doctors_cubit.dart';
 import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
 import 'package:doctor_hunt/features/doctors/repo/doctor_repo.dart';
-import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
 import 'package:doctor_hunt/features/home/screens/popular_doctors/widgets/popular_doctors_background_glow.dart';
+import 'package:doctor_hunt/shared/constants/app_constants.dart';
 import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'widgets/doctor_details_animated_content.dart';
 import 'widgets/doctor_details_shimmer.dart';
@@ -41,10 +42,6 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
       _doctor = widget.extra as DoctorModel;
       return;
     }
-    if (widget.extra is HomeDoctor) {
-      _doctor = (widget.extra as HomeDoctor).toDoctorModel();
-      return;
-    }
     if (widget.extra is Map<String, dynamic>) {
       _doctor = DoctorModel.fromJson(widget.extra as Map<String, dynamic>);
       return;
@@ -57,54 +54,17 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
       return;
     }
 
-    // 3. Mock fallback by ID
-    final allMock = [
-      ...HomeMockData.popularDoctors,
-      ...HomeMockData.featureDoctors,
-    ];
-    for (final d in allMock) {
-      if (d.id == widget.doctorId) {
-        _doctor = d.toDoctorModel();
-        return;
-      }
-    }
-
     // 3. Fallback: Fetch remotely from Supabase repo if deep-linked
     _doctorFuture = _fetchRemoteDoctor();
   }
 
   Future<DoctorModel> _fetchRemoteDoctor() async {
-    try {
-      final repo = sl<DoctorRepo>();
-      final result = await repo.getDoctorById(widget.doctorId);
+    final repo = sl<DoctorRepo>();
+    final result = await repo.getDoctorById(widget.doctorId);
 
-      return result.fold(
-        (failure) => _defaultDoctorModel(),
-        (doctor) => doctor,
-      );
-    } catch (_) {
-      return _defaultDoctorModel();
-    }
-  }
-
-  DoctorModel _defaultDoctorModel() {
-    return const DoctorModel(
-      name: {'en': 'Dr. Pediatrician'},
-      image: null,
-      phone: '+1234567890',
-      ratingSum: 200,
-      ratingCount: 50,
-      specialization: 'Specialist Cardiologist',
-      yearsExperience: 7,
-      patientsCount: 700,
-      runningCount: 100,
-      ongoingCount: 500,
-      hourlyRate: 28.0,
-      services: [
-        'Patient care should be the number one priority.',
-        'If you run your practice you know how frustrating.',
-        "That's why some of appointment reminder system.",
-      ],
+    return result.fold(
+      (failure) => throw Exception(failure.toString()),
+      (doctor) => doctor,
     );
   }
 
@@ -130,11 +90,45 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                         return const DoctorDetailsShimmer();
                       }
 
-                      if (snapshot.hasError || !snapshot.hasData) {
+                      if (snapshot.hasError ||
+                          !snapshot.hasData ||
+                          snapshot.data == null) {
                         return Center(
-                          child: Text(
-                            t.errors.loadDoctor,
-                            style: context.regular14TextSub,
+                          child: Padding(
+                            padding: EdgeInsets.all(24.r),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.error_outline,
+                                  color: palette.danger,
+                                  size: 40.sp,
+                                ),
+                                Gaps.h12,
+                                Text(
+                                  t.errors.loadDoctor,
+                                  style: context.regular14TextSub,
+                                  textAlign: TextAlign.center,
+                                ),
+                                Gaps.h16,
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    setState(() {
+                                      _doctorFuture = _fetchRemoteDoctor();
+                                    });
+                                  },
+                                  icon: const Icon(Icons.refresh),
+                                  label: Text(t.common.retry),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: palette.primary,
+                                    foregroundColor: palette.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       }

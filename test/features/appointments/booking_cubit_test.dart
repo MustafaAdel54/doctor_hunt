@@ -182,6 +182,48 @@ void main() {
       expect(cubit.state.selectedSlot, '1:00 PM');
     });
 
+    test('selectDate handles booked slots retrieval failure gracefully', () async {
+      when(() => availabilityRepo.getDoctorAvailability('doctor-uuid-1'))
+          .thenAnswer((_) async => const Right(standardAvailability));
+
+      when(() => appointmentRepo.getBookedSlots('doctor-uuid-1', any()))
+          .thenAnswer((_) async => const Right([]));
+
+      await cubit.initDoctor('doctor-uuid-1');
+
+      // Now Tuesday getBookedSlots fails
+      final tuesday = DateTime.utc(2026, 10, 27);
+      when(() => appointmentRepo.getBookedSlots('doctor-uuid-1', tuesday))
+          .thenAnswer((_) async => const Left(ServerFailure()));
+
+      cubit.selectDate(tuesday);
+      await pumpEventQueue();
+
+      expect(cubit.state.isLoadingSlots, isFalse);
+      expect(cubit.state.errorMessage, t.errors.server);
+    });
+
+    test('selectDate avoids redundant network calls when re-selecting the current date', () async {
+      when(() => availabilityRepo.getDoctorAvailability('doctor-uuid-1'))
+          .thenAnswer((_) async => const Right(standardAvailability));
+
+      when(() => appointmentRepo.getBookedSlots(any(), any()))
+          .thenAnswer((_) async => const Right([]));
+
+      await cubit.initDoctor('doctor-uuid-1');
+      final monday = DateTime.utc(2026, 10, 26);
+      expect(cubit.state.selectedDate, monday);
+
+      // Clear interaction history for booked slots
+      clearInteractions(appointmentRepo);
+
+      // Re-selecting the already selected date
+      cubit.selectDate(monday);
+      await pumpEventQueue();
+
+      verifyNever(() => appointmentRepo.getBookedSlots(any(), any()));
+    });
+
     test('selectSlot selects a valid slot and ignores booked slots', () async {
       when(() => availabilityRepo.getDoctorAvailability('doctor-uuid-1'))
           .thenAnswer((_) async => const Right(standardAvailability));

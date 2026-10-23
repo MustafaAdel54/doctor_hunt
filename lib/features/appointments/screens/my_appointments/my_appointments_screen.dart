@@ -1,4 +1,5 @@
 import 'package:doctor_hunt/core/di/injector.dart';
+import 'package:doctor_hunt/core/utils/error_mapper.dart';
 import 'package:doctor_hunt/features/appointments/cubit/appointments_cubit.dart';
 import 'package:doctor_hunt/features/appointments/cubit/appointments_state.dart';
 import 'package:doctor_hunt/features/appointments/models/appointment_model.dart';
@@ -52,13 +53,16 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                 prev.errorMessage != curr.errorMessage,
             listener: (context, state) {
               if (state.errorMessage != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.errorMessage!),
-                    backgroundColor: palette.danger,
-                    behavior: SnackBarBehavior.floating,
-                  ),
-                );
+                final msg = getErrorMessage(state.errorMessage!);
+                if (msg.isNotEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(msg),
+                      backgroundColor: palette.danger,
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
+                }
               }
 
               // Synchronize page view when tab is tapped

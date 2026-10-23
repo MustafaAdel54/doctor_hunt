@@ -47,6 +47,8 @@ class TranslationsAr extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$doctor$ar doctor = _Translations$doctor$ar._(_root);
 	@override late final _Translations$specializations$ar specializations = _Translations$specializations$ar._(_root);
 	@override late final _Translations$settings$ar settings = _Translations$settings$ar._(_root);
+	@override late final _Translations$profile$ar profile = _Translations$profile$ar._(_root);
+	@override late final _Translations$privacyPolicy$ar privacyPolicy = _Translations$privacyPolicy$ar._(_root);
 	@override late final _Translations$validation$ar validation = _Translations$validation$ar._(_root);
 	@override late final _Translations$errors$ar errors = _Translations$errors$ar._(_root);
 }
@@ -124,6 +126,10 @@ class _Translations$auth$ar extends Translations$auth$en {
 	@override String get welcomeBackTitle => 'مرحباً بعودتك';
 	@override String get loginSubtitle => 'يمكنك البحث عن الأطباء وحجز المواعيد بكل سهولة';
 	@override String get joinUsTitle => 'انضم إلينا لتبدأ البحث';
+	@override String get agreeTerms => 'أوافق على شروط الخدمة وسياسة الخصوصية';
+	@override String get name => 'الاسم';
+	@override String get google => 'جوجل';
+	@override String get facebook => 'فيسبوك';
 	@override String get joinUs => 'انضم إلينا';
 	@override String get termsRequired => 'يجب عليك الموافقة على شروط الخدمة';
 	@override String get forgotPasswordTitle => 'نسيت كلمة المرور';
@@ -375,6 +381,57 @@ class _Translations$settings$ar extends Translations$settings$en {
 	@override String get themeDark => 'داكن';
 	@override String get themeSystem => 'النظام';
 	@override String get signOut => 'تسجيل الخروج';
+	@override String get accountSettings => 'إعدادات الحساب';
+	@override String get changePassword => 'تغيير كلمة المرور';
+	@override String get notifications => 'الإشعارات';
+	@override String get privacyPolicy => 'سياسة الخصوصية';
+	@override String get moreOptions => 'خيارات إضافية';
+	@override String get languages => 'اللغات';
+	@override String get buildVersion => 'إصدار التطبيق';
+	@override String get logout => 'تسجيل الخروج';
+	@override String get logoutConfirmTitle => 'تسجيل الخروج';
+	@override String get logoutConfirmMessage => 'هل أنت متأكد أنك تريد تسجيل الخروج؟';
+	@override String get ok => 'حسناً';
+}
+
+// Path: profile
+class _Translations$profile$ar extends Translations$profile$en {
+	_Translations$profile$ar._(TranslationsAr root) : this._root = root, super.internal(root);
+
+	final TranslationsAr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'الملف الشخصي';
+	@override String get personalInfo => 'المعلومات الشخصية';
+	@override String get name => 'الاسم';
+	@override String get contactNumber => 'رقم الهاتف';
+	@override String get continueText => 'متابعة';
+	@override String get editProfile => 'تعديل الملف الشخصي';
+	@override String get update => 'تحديث';
+	@override String get updateSuccess => 'تم تحديث الملف الشخصي بنجاح';
+	@override String get updateError => 'فشل تحديث الملف الشخصي';
+	@override String get notProvided => 'غير محدد';
+	@override String get enterName => 'أدخل اسمك';
+	@override String get enterPhone => 'أدخل رقم هاتفك';
+	@override String get invalidPhone => 'أدخل رقم هاتف صحيح';
+}
+
+// Path: privacyPolicy
+class _Translations$privacyPolicy$ar extends Translations$privacyPolicy$en {
+	_Translations$privacyPolicy$ar._(TranslationsAr root) : this._root = root, super.internal(root);
+
+	final TranslationsAr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'سياسة الخصوصية';
+	@override String get headline => 'سياسة خصوصية تطبيقات دكتور هانت';
+	@override String get paragraph1 => 'هناك العديد من الأنواع المتوفرة لنصوص لوريم إيبسوم، ولكن الغالبية خضعت لتعديلات بشكل ما عبر إضافة بعض الكلمات أو التعبيرات العشوائية غير المقنعة تماماً.';
+	@override String get paragraph2 => 'إذا كنت تريد استخدام نص من لوريم إيبسوم، فعليك أن تتأكد أولاً من عدم وجود أي كلمات غير لائقة مخفية في النص. جميع مولدات النصوص في الإنترنت تميل إلى تكرار مقاطع محددة.';
+	@override String get bullet1 => 'المقطع القياسي من لوريم إيبسوم المستخدم منذ القرن السادس عشر مستنسخ أدناه للراغبين.';
+	@override String get bullet2 => 'الفقرتان 1.10.32 و 1.10.33 من كتاب سيسرو مستنسختان أيضاً بشكلهما الأصلي الدقيق.';
+	@override String get bullet3 => 'مصحوبة بالنسخ المترجمة من ترجمة عام 1914 بواسطة إتش راكهام.';
+	@override String get bullet4 => 'من الحقائق الثابتة منذ زمن طويل أن القارئ سينشغل بالمحتوى المقروء للصفحة عند النظر إلى تصميمها.';
+	@override String get paragraph3 => 'الهدف من استخدام لوريم إيبسوم هو الحصول على توزيع طبيعي إلى حد ما للأحرف مما يجعلها تبدو كأنها لغة حقيقية.';
 }
 
 // Path: validation

@@ -33,6 +33,7 @@ abstract final class Routes {
 
   // shared
   static const settings = 'settings';
+  static const privacyPolicy = 'privacyPolicy';
 }
 
 abstract final class Paths {
@@ -66,4 +67,5 @@ abstract final class Paths {
   static const editProfilePatient = '/patient/profile/edit';
   static const editProfileDoctor = '/doctor/profile/edit';
   static const settings = '/settings';
+  static const privacyPolicy = '/patient/settings/privacy-policy';
 }

@@ -1,6 +1,7 @@
+import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
+import 'package:doctor_hunt/features/doctors/widgets/doctor_image.dart';
 import 'package:doctor_hunt/features/favorites/cubit/favorites_cubit.dart';
 import 'package:doctor_hunt/features/favorites/cubit/favorites_state.dart';
-import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
 import 'package:doctor_hunt/shared/generated/app_colors.dart';
 import 'package:doctor_hunt/shared/generated/image_assets.dart';
 import 'package:doctor_hunt/shared/generated/style_atoms.dart';
@@ -13,7 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class PopularDoctorListCard extends StatelessWidget {
-  final HomeDoctor doctor;
+  final DoctorModel doctor;
   final VoidCallback onTap;
 
   const PopularDoctorListCard({
@@ -25,6 +26,8 @@ class PopularDoctorListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final locale = Localizations.localeOf(context).languageCode;
+    final doctorName = doctor.localizedName(locale);
 
     return Container(
       width: double.infinity,
@@ -53,24 +56,11 @@ class PopularDoctorListCard extends StatelessWidget {
                 // Doctor Photo
                 Hero(
                   tag: 'doctor_image_${doctor.id}',
-                  child: ClipRRect(
+                  child: DoctorImage(
+                    image: doctor.image,
+                    width: 82.w,
+                    height: 82.h,
                     borderRadius: BorderRadius.circular(8.r),
-                    child: Image.asset(
-                      doctor.imageAsset,
-                      width: 82.w,
-                      height: 82.h,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        width: 82.w,
-                        height: 82.h,
-                        color: palette.surfaceAlt,
-                        child: Icon(
-                          Icons.person,
-                          color: palette.textPlaceholder,
-                          size: 32.sp,
-                        ),
-                      ),
-                    ),
                   ),
                 ),
                 SizedBox(width: 15.w),
@@ -86,7 +76,7 @@ class PopularDoctorListCard extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              doctor.name,
+                              doctorName,
                               style: context.medium18TextMain.copyWith(
                                 height: 1.2,
                               ),
@@ -136,10 +126,10 @@ class PopularDoctorListCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      if (doctor.specialization != null) ...[
+                      if (doctor.specialization.isNotEmpty) ...[
                         SizedBox(height: 4.h),
                         Text(
-                          doctor.specialization!,
+                          doctor.specialization,
                           style: context.light14TextSub.copyWith(
                             height: 1.2,
                           ),
@@ -172,10 +162,10 @@ class PopularDoctorListCard extends StatelessWidget {
                                         '${doctor.rating.toStringAsFixed(1)} ',
                                     style: context.semiBold14TextMain,
                                   ),
-                                  if (doctor.viewsCount != null)
+                                  if (doctor.patientsCount > 0)
                                     TextSpan(
                                       text: t.doctors.viewsCount(
-                                          count: doctor.viewsCount.toString()),
+                                          count: doctor.patientsCount.toString()),
                                       style: context.light12TextSub,
                                     ),
                                 ],

@@ -1,7 +1,8 @@
 import 'package:doctor_hunt/core/router/routes.dart';
+import 'package:doctor_hunt/features/doctors/models/doctor_model.dart';
+import 'package:doctor_hunt/features/doctors/widgets/doctor_image.dart';
 import 'package:doctor_hunt/features/favorites/cubit/favorites_cubit.dart';
 import 'package:doctor_hunt/features/favorites/cubit/favorites_state.dart';
-import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
 import 'package:doctor_hunt/shared/generated/app_colors.dart';
 import 'package:doctor_hunt/shared/generated/image_assets.dart';
 import 'package:doctor_hunt/shared/generated/style_atoms.dart';
@@ -18,11 +19,13 @@ class FavouriteDoctorGridCard extends StatelessWidget {
     required this.doctor,
   });
 
-  final HomeDoctor doctor;
+  final DoctorModel doctor;
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final locale = Localizations.localeOf(context).languageCode;
+    final doctorName = doctor.localizedName(locale);
 
     return Container(
       decoration: BoxDecoration(
@@ -44,7 +47,7 @@ class FavouriteDoctorGridCard extends StatelessWidget {
             context.pushNamed(
               Routes.doctorDetails,
               pathParameters: {'doctorId': doctor.id},
-              extra: doctor.toDoctorModel(),
+              extra: doctor,
             );
           },
           child: Stack(
@@ -99,43 +102,16 @@ class FavouriteDoctorGridCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Doctor Avatar
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(42.r),
-                      child: Container(
-                        width: 84.r,
-                        height: 84.r,
-                        color: palette.surfaceAlt,
-                        child: doctor.imageAsset.isNotEmpty
-                            ? (doctor.imageAsset.startsWith('assets/')
-                                ? Image.asset(
-                                    doctor.imageAsset,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (_, __, ___) => Icon(
-                                      Icons.person,
-                                      size: 40.r,
-                                      color: palette.textPlaceholder,
-                                    ),
-                                  )
-                                : Image.network(
-                                    doctor.imageAsset,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (_, __, ___) => Icon(
-                                      Icons.person,
-                                      size: 40.r,
-                                      color: palette.textPlaceholder,
-                                    ),
-                                  ))
-                            : Icon(
-                                Icons.person,
-                                size: 40.r,
-                                color: palette.textPlaceholder,
-                              ),
-                      ),
+                    DoctorImage(
+                      image: doctor.image,
+                      width: 84.r,
+                      height: 84.r,
+                      shape: BoxShape.circle,
                     ),
                     SizedBox(height: 10.h),
                     // Doctor Name
                     Text(
-                      doctor.name,
+                      doctorName,
                       style: context.medium16TextMain,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -143,9 +119,9 @@ class FavouriteDoctorGridCard extends StatelessWidget {
                     ),
                     SizedBox(height: 4.h),
                     // Doctor Specialization
-                    if (doctor.specialization != null)
+                    if (doctor.specialization.isNotEmpty)
                       Text(
-                        doctor.specialization!,
+                        doctor.specialization,
                         style: context.regular12Primary,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

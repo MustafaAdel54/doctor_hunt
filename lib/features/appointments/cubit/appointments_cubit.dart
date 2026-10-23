@@ -22,7 +22,18 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
       emit(state.copyWith(isLoading: true, clearError: true));
     }
 
-    final patientId = sessionService.currentUserId ?? 'guest_patient';
+    final patientId = sessionService.currentUserId;
+    if (patientId == null || patientId.isEmpty) {
+      if (!isClosed) {
+        emit(state.copyWith(
+          isLoading: false,
+          appointments: const [],
+          errorMessage: 'unauthenticated',
+        ));
+      }
+      return;
+    }
+
     final result = await repo.getPatientAppointments(patientId);
 
     result.fold(
@@ -30,9 +41,7 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
         if (!isClosed) {
           emit(state.copyWith(
             isLoading: false,
-            errorMessage: failure is NetworkFailure
-                ? 'Network connection error'
-                : 'Failed to load appointments',
+            errorMessage: failure is NetworkFailure ? 'network' : 'server',
           ));
         }
       },
@@ -66,9 +75,7 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
         if (!isClosed) {
           emit(state.copyWith(
             clearCancellingId: true,
-            errorMessage: failure is NetworkFailure
-                ? 'No internet connection to cancel appointment'
-                : 'Failed to cancel appointment',
+            errorMessage: failure is NetworkFailure ? 'network' : 'server',
           ));
         }
         return false;

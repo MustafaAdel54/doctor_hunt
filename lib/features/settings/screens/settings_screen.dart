@@ -1,7 +1,18 @@
 import 'package:doctor_hunt/core/di/injector.dart';
 import 'package:doctor_hunt/core/router/routes.dart';
+import 'package:doctor_hunt/core/session/session_service.dart';
 import 'package:doctor_hunt/features/auth/cubit/auth_cubit.dart';
 import 'package:doctor_hunt/features/auth/cubit/auth_state.dart';
+import 'package:doctor_hunt/features/auth/models/user_model.dart';
+import 'package:doctor_hunt/features/profile/cubit/profile_cubit.dart';
+import 'package:doctor_hunt/features/profile/cubit/profile_state.dart';
+import 'package:doctor_hunt/features/settings/screens/widgets/logout_dialog.dart';
+import 'package:doctor_hunt/features/settings/screens/widgets/settings_language_bottom_sheet.dart';
+import 'package:doctor_hunt/features/settings/screens/widgets/settings_logout_button.dart';
+import 'package:doctor_hunt/features/settings/screens/widgets/settings_menu_item.dart';
+import 'package:doctor_hunt/features/settings/screens/widgets/settings_profile_card.dart';
+import 'package:doctor_hunt/features/settings/screens/widgets/settings_section_card.dart';
+import 'package:doctor_hunt/features/settings/screens/widgets/settings_section_header.dart';
 import 'package:doctor_hunt/shared/generated/style_atoms.dart';
 import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
@@ -14,61 +25,29 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<AuthCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => sl<AuthCubit>()),
+        BlocProvider(create: (_) => sl<ProfileCubit>()..loadProfile()),
+      ],
       child: const _SettingsView(),
     );
   }
 }
 
-class _SettingsView extends StatelessWidget {
+class _SettingsView extends StatefulWidget {
   const _SettingsView();
 
-  Future<void> _showLogoutDialog(BuildContext context) async {
-    final palette = context.palette;
-    final shouldLogout = await showDialog<bool>(
-      context: context,
-      builder: (dialogCtx) => AlertDialog(
-        backgroundColor: palette.surface,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.r),
-        ),
-        title: Text(
-          t.settings.signOut,
-          style: dialogCtx.bold18TextMain,
-        ),
-        content: Text(
-          t.common.confirm,
-          style: dialogCtx.regular14TextSub,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogCtx).pop(false),
-            child: Text(
-              t.common.cancel,
-              style: dialogCtx.medium14TextSub,
-            ),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: palette.danger,
-              foregroundColor: palette.white,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-            ),
-            onPressed: () => Navigator.of(dialogCtx).pop(true),
-            child: Text(
-              t.settings.signOut,
-              style: dialogCtx.bold14White,
-            ),
-          ),
-        ],
-      ),
-    );
+  @override
+  State<_SettingsView> createState() => _SettingsViewState();
+}
 
-    if (shouldLogout == true && context.mounted) {
+class _SettingsViewState extends State<_SettingsView> {
+  bool _notificationsEnabled = true;
+
+  Future<void> _handleLogout(BuildContext context) async {
+    final confirmed = await showLogoutConfirmationDialog(context);
+    if (confirmed == true && context.mounted) {
       await context.read<AuthCubit>().logout();
       if (context.mounted) {
         context.go(Paths.login);
@@ -89,9 +68,19 @@ class _SettingsView extends StatelessWidget {
         ),
         backgroundColor: palette.surface,
         elevation: 0,
-        centerTitle: true,
+        centerTitle: false,
+        leading: context.canPop()
+            ? IconButton(
+                icon: Icon(
+                  Icons.chevron_left_rounded,
+                  color: palette.textMain,
+                  size: 28.sp,
+                ),
+                onPressed: () => context.pop(),
+              )
+            : null,
       ),
-      body: BlocConsumer<AuthCubit, AuthState>(
+      body: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
           state.whenOrNull(
             error: (code) {
@@ -104,111 +93,140 @@ class _SettingsView extends StatelessWidget {
             },
           );
         },
-        builder: (context, state) {
-          final isLoading = state.maybeWhen(
-            loading: () => true,
-            orElse: () => false,
-          );
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // User Profile Summary Card
+              BlocBuilder<ProfileCubit, ProfileState>(
+                builder: (context, state) {
+                  final user = _resolveUser(context, state);
+                  final sessionUser = sl<SessionService>().currentUser;
+                  final fallbackName = sessionUser?.userMetadata?['name'] as String? ??
+                      sessionUser?.email?.split('@').first ??
+                      '';
 
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Language Selection Tile
-                Container(
-                  decoration: BoxDecoration(
-                    color: palette.surface,
-                    borderRadius: BorderRadius.circular(12.r),
-                    border: Border.all(color: palette.textBorders),
+                  return SettingsProfileCard(
+                    user: user,
+                    sessionEmail: sessionUser?.email ?? '',
+                    fallbackName: fallbackName,
+                    onTap: () async {
+                      await context.push(Paths.profilePatient);
+                      if (context.mounted) {
+                        context.read<ProfileCubit>().loadProfile();
+                      }
+                    },
+                  );
+                },
+              ),
+
+              SizedBox(height: 18.h),
+
+              // Account Settings Group
+              SettingsSectionHeader(title: t.settings.accountSettings),
+              SizedBox(height: 10.h),
+              SettingsSectionCard(
+                children: [
+                  SettingsMenuItem(
+                    icon: Icons.lock_outline_rounded,
+                    title: t.settings.changePassword,
+                    onTap: () => context.push(Paths.forgotPassword),
                   ),
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.language_rounded,
-                      color: palette.primary,
-                      size: 22.sp,
-                    ),
-                    title: Text(
-                      t.settings.language,
-                      style: context.medium14TextMain,
-                    ),
-                    trailing: DropdownButtonHideUnderline(
-                      child: DropdownButton<AppLocale>(
-                        value: LocaleSettings.currentLocale,
-                        items: const [
-                          DropdownMenuItem(
-                            value: AppLocale.en,
-                            child: Text('English'),
-                          ),
-                          DropdownMenuItem(
-                            value: AppLocale.ar,
-                            child: Text('العربية'),
-                          ),
-                        ],
-                        onChanged: (newLocale) {
-                          if (newLocale != null) {
-                            LocaleSettings.setLocale(newLocale);
-                          }
-                        },
-                      ),
+                  SettingsSectionCard.buildDivider(context),
+                  SettingsMenuItem(
+                    icon: Icons.notifications_none_rounded,
+                    title: t.settings.notifications,
+                    trailing: Switch.adaptive(
+                      value: _notificationsEnabled,
+                      activeTrackColor: palette.primary,
+                      onChanged: (val) => setState(() => _notificationsEnabled = val),
                     ),
                   ),
-                ),
+                  SettingsSectionCard.buildDivider(context),
+                  SettingsMenuItem(
+                    icon: Icons.shield_outlined,
+                    title: t.settings.privacyPolicy,
+                    onTap: () => context.push(Paths.privacyPolicy),
+                  ),
+                ],
+              ),
 
-                SizedBox(height: 24.h),
+              SizedBox(height: 18.h),
 
-                // Log Out Button
-                Material(
-                  color: palette.transparent,
-                  child: InkWell(
-                    onTap: isLoading ? null : () => _showLogoutDialog(context),
-                    borderRadius: BorderRadius.circular(12.r),
-                    child: Ink(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 14.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: palette.danger.withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(12.r),
-                        border: Border.all(
-                          color: palette.danger.withValues(alpha: 0.3),
+              // More Options Group
+              SettingsSectionHeader(title: t.settings.moreOptions),
+              SizedBox(height: 10.h),
+              SettingsSectionCard(
+                children: [
+                  SettingsMenuItem(
+                    icon: Icons.language_rounded,
+                    title: t.settings.languages,
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          LocaleSettings.currentLocale == AppLocale.ar
+                              ? 'العربية'
+                              : 'English',
+                          style: context.medium14TextSub,
                         ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (isLoading)
-                            SizedBox(
-                              width: 20.w,
-                              height: 20.w,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2.w,
-                                color: palette.danger,
-                              ),
-                            )
-                          else ...[
-                            Icon(
-                              Icons.logout_rounded,
-                              color: palette.danger,
-                              size: 20.sp,
-                            ),
-                            SizedBox(width: 8.w),
-                            Text(
-                              t.settings.signOut,
-                              style: context.bold14Danger,
-                            ),
-                          ],
-                        ],
-                      ),
+                        SizedBox(width: 4.w),
+                        Icon(
+                          Icons.chevron_right_rounded,
+                          color: palette.textSub.withValues(alpha: 0.6),
+                          size: 20.sp,
+                        ),
+                      ],
+                    ),
+                    onTap: () async {
+                      await showSettingsLanguageBottomSheet(context);
+                      if (mounted) setState(() {});
+                    },
+                  ),
+                  SettingsSectionCard.buildDivider(context),
+                  SettingsMenuItem(
+                    icon: Icons.info_outline_rounded,
+                    title: t.settings.buildVersion,
+                    trailing: Text(
+                      'v1.0.0',
+                      style: context.regular14TextSub,
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                ],
+              ),
+
+              SizedBox(height: 24.h),
+
+              // Log Out Button
+              BlocBuilder<AuthCubit, AuthState>(
+                builder: (context, authState) {
+                  final isLoading = authState.maybeWhen(
+                    loading: () => true,
+                    orElse: () => false,
+                  );
+
+                  return SettingsLogoutButton(
+                    isLoading: isLoading,
+                    onTap: () => _handleLogout(context),
+                  );
+                },
+              ),
+
+              // Bottom Navigation Clearance (PatientShell extendBody)
+              SizedBox(height: 100.h),
+            ],
+          ),
+        ),
       ),
     );
+  }
+
+  UserModel? _resolveUser(BuildContext context, ProfileState state) {
+    if (state is ProfileLoaded) return state.user;
+    if (state is ProfileUpdating) return state.user;
+    if (state is ProfileUpdateSuccess) return state.user;
+    return context.read<ProfileCubit>().currentUser;
   }
 }

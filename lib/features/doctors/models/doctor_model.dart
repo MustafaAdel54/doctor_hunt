@@ -54,6 +54,18 @@ class DoctorModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   double get rating => ratingCount == 0 ? 0.0 : ratingSum / ratingCount;
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String localizedName(String locale) {
+    return name[locale] ?? name.values.firstOrNull ?? 'Doctor';
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String get formattedHourlyRate =>
+      '\$ ${hourlyRate.toStringAsFixed(2)}/ hours';
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get hasValidImage => image != null && image!.trim().isNotEmpty;
+
   factory DoctorModel.fromJson(Map<String, dynamic> json) =>
       _$DoctorModelFromJson(json);
 

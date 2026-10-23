@@ -1,7 +1,6 @@
 import 'package:doctor_hunt/core/router/routes.dart';
 import 'package:doctor_hunt/features/doctors/cubit/doctors_cubit.dart';
 import 'package:doctor_hunt/features/doctors/cubit/doctors_state.dart';
-import 'package:doctor_hunt/features/home/models/home_mock_data.dart';
 import 'package:doctor_hunt/shared/constants/app_constants.dart';
 import 'package:doctor_hunt/shared/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +20,10 @@ class FeatureDoctorsSection extends StatelessWidget {
       buildWhen: (prev, curr) => prev.featureDoctors != curr.featureDoctors,
       builder: (context, state) {
         final doctors = state.featureDoctors;
+
+        if (doctors.isEmpty) {
+          return const SizedBox.shrink();
+        }
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +48,7 @@ class FeatureDoctorsSection extends StatelessWidget {
                       context.pushNamed(
                         Routes.doctorDetails,
                         pathParameters: {'doctorId': doctor.id},
-                        extra: doctor.toDoctorModel(),
+                        extra: doctor,
                       );
                     },
                   );
